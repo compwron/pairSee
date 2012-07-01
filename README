@@ -1,0 +1,3 @@
+to run: edit config file with names of devs and location of git repo, then run "ruby pairSee.rb"
+
+Coming someday: detection of solo commit counts
