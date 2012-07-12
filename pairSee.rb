@@ -1,54 +1,32 @@
-require 'yamler'
+class PairSee
+  require 'yamler'
+    
+  def initialize(config_file)
+    config = YAML.load_file(config_file)
+    git_home = config['root']
+    @devs = config['names'].split(" ")
+    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s'`.split("\n")
+  end
 
-CONFIG = YAML.load_file("config/config.yml")
-GIT_HOME = CONFIG['root']
-NAMES = CONFIG['names'].split(" ")
+  def commits_for_pair(person1, person2) 
+    @git_log.map { |log_line|
+      log_line.match(person1) && log_line.match(person2) ? 1 : 0
+    }.reduce(:+)
+  end
 
-pair_combinations = NAMES.combination(2).to_a
-git_log = `git --git-dir=#{GIT_HOME}/.git log --pretty=format:'%s'`.split("\n")
+  def commits_by_only(person)
+    @git_log.map { |log_line|
+      log_line.match(person) && @devs.map { |dev| !log_line.match(dev) }
+    }
+  end
 
-pair_counts = {}
-
-def pair_worked_on_commit(names, log_line)
-  (log_line.match(names.split(',').first)) && (log_line.match(names.split(',').last))
-end
-
-def get_pair_counts(pair_counts, git_log)
-  pair_counts.each do |key, val|
-    git_log.each do |log_line|
-        if pair_worked_on_commit(key, log_line)
-           pair_counts[key] += 1
-        end
-      end
+  def pair_commits_list
+    @devs.combination(2).map { |person1, person2| 
+      [[person1, person2], commits_for_pair(person1, person2)]
+    }.sort {|combo| 
+        combo.last
+      }.map { |combo|
+        "#{combo.first.first}, #{combo.first.last}: #{combo.last}"
+      }
   end
 end
-
-pair_combinations.each do |pair|
-  pair_counts[pair.join(',')] = 0
-end
-
-def sorted_pair_data(pair_data, sorted_pair_data={})
-  pair_data.each do |key, value|
-    sorted_pair_data[value] = key
-  end
-  sorted_pair_data.sort
-end
-
-p sorted_pair_data(get_pair_counts pair_counts, git_log)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

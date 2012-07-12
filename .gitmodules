@@ -1,0 +1,3 @@
+[submodule "fake_git"]
+	path = fake_git
+	url = ./fake_git/
