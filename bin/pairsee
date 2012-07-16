@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/pair_see"
+
+puts PairSee.new(ARGV[0] || ".", "#{__FILE__}/../../config/config.yml").all_commits.join("\n")
