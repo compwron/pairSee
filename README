@@ -1,5 +1,8 @@
-to run: 
-./main.rb /path/to/repo
+to run:
+bin/pairsee /path/to/repo 
+
+to put on path:
+ln -s `pwd`/bin/pairsee ~/bin
 
 to run tests:
 rspec
