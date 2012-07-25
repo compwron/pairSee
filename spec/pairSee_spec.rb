@@ -3,7 +3,7 @@ require_relative "../lib/pair_see"
 
 describe PairSee do
 
-  subject { PairSee.new "fake_git", "spec/spec_config.yml", Time.new(0) }
+  subject { PairSee.new "fake_git", "spec/spec_config.yml", "0-1-1" }
 
     before do
       `mkdir fake_git; git init fake_git; cd fake_git ; 
@@ -37,7 +37,7 @@ describe PairSee do
     end
 
     it "can see all commits since a passed-in date" do
-      all_commits_made_next_year = PairSee.new("fake_git", "spec/spec_config.yml", Time.new("2013-01-01"))
+      all_commits_made_next_year = PairSee.new("fake_git", "spec/spec_config.yml", "2013-01-01")
       all_commits_made_next_year.all_commits.size.should == 0
     end
 

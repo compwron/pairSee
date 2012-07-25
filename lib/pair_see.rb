@@ -1,16 +1,15 @@
 class PairSee
   require 'yamler'
+  require 'time'
 
   attr_reader :git_log, :devs
   
-  def initialize git_home, config_file, date
+  def initialize git_home, config_file, date_string
     config = YAML.load_file(config_file)
     git_home = git_home
     @devs = config['names'].split(" ") # todo: yaml array
-    format_time_for_git = "#{date.year}-#{date.month}-#{date.day}" # find a better way to do this?
-    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s' --since=#{format_time_for_git}`.split("\n")
+    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s' --since=#{date_string}`.split("\n")
   end
-
 
   def pair_commits
     devs.combination(2).map { |person1, person2| 

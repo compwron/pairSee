@@ -1,13 +1,16 @@
-to run:
-bin/pairsee /path/to/repo 
+Usage (all options are optional)
+bin/pairsee --githome ../../my_code --since 2012-07-10 --config ../../config/config.yml
+
+Defaults:
+githome -- current directory 
+since -- beginning of time
+config -- pairSee/config/config.yml
 
 to put on path:
 ln -s `pwd`/bin/pairsee ~/bin
 
 to run tests:
 rspec
-
-Not currently under development
 
 Config file: config/config.yml
 contains names, a la

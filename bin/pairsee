@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
 require_relative "../lib/pair_see"
+require 'trollop'
 
-require 'time'
-if ARGV[1] 
-	since = Time.parse(ARGV[1]) 
-else 
-	since = Time.new(0)
+opts = Trollop::options do
+  opt :githome, "Folder in which .git folder is",  :default => "."  
+  opt :config, "location of config file, example: ../../config/config.yml", :default => "#{__FILE__}/../../config/config.yml"
+  opt :since, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
 end
 
-puts PairSee.new(ARGV[0] || ".", "#{__FILE__}/../../config/config.yml", since).all_commits.join("\n")
+puts PairSee.new(opts[:githome], opts[:config], opts[:since]).all_commits.join("\n")
