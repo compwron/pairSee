@@ -2,4 +2,11 @@
 
 require_relative "../lib/pair_see"
 
-puts PairSee.new(ARGV[0] || ".", "#{__FILE__}/../../config/config.yml").all_commits.join("\n")
+require 'time'
+if ARGV[1] 
+	since = Time.parse(ARGV[1]) 
+else 
+	since = Time.new(0)
+end
+
+puts PairSee.new(ARGV[0] || ".", "#{__FILE__}/../../config/config.yml", since).all_commits.join("\n")

@@ -2,18 +2,20 @@ class PairSee
   require 'yamler'
 
   attr_reader :git_log, :devs
-    
-  def initialize git_home, config_file
+  
+  def initialize git_home, config_file, date
     config = YAML.load_file(config_file)
     git_home = git_home
     @devs = config['names'].split(" ") # todo: yaml array
-    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s'`.split("\n")
+    format_time_for_git = "#{date.year}-#{date.month}-#{date.day}" # find a better way to do this?
+    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s' --since=#{format_time_for_git}`.split("\n")
   end
 
-  def commits_for_pair person1, person2
-    git_log.select { |log_line|
-      log_line.match(person1) && log_line.match(person2)
-    }.count
+
+  def pair_commits
+    devs.combination(2).map { |person1, person2| 
+      Combo.new(commits_for_pair(person1, person2), person1, person2)
+    }
   end
 
   def solo_commits 
@@ -25,23 +27,24 @@ class PairSee
     }
   end
 
+  def all_commits
+    (pair_commits + solo_commits).sort_by() { |combo| 
+      combo.count
+      }.reject(&:empty?).map(&:to_s)
+  end
+
+  def commits_for_pair person1, person2
+    git_log.select { |log_line|
+      log_line.match(person1) && log_line.match(person2)
+    }.count
+  end
+
   def does_not_match_other_devs log_line, person
     devs.reject { |dev| 
       dev == person}.none? { |dev| log_line.match(dev) 
     }
   end
 
-  def pair_commits
-    devs.combination(2).map { |person1, person2| 
-      Combo.new(commits_for_pair(person1, person2), person1, person2)
-    }
-  end
-
-  def all_commits
-    (pair_commits + solo_commits).sort_by() { |combo| 
-      combo.count
-      }.reject(&:empty?).map(&:to_s)
-  end
 
   class Combo
     attr_reader :count, :devs
