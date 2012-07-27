@@ -4,9 +4,16 @@ require_relative "../lib/pair_see"
 require 'trollop'
 
 opts = Trollop::options do
-  opt :githome, "Folder in which .git folder is",  :default => "."  
+  opt :root, "Folder in which .git folder is",  :default => "."  
   opt :config, "location of config file, example: ../../config/config.yml", :default => "#{__FILE__}/../../config/config.yml"
-  opt :since, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
+  opt :after, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
+  opt :extras, "See all commits without the name of any dev in them", :default => false
 end
 
-puts PairSee.new(opts[:githome], opts[:config], opts[:since]).all_commits.join("\n")
+pair_see = PairSee.new(opts[:root], opts[:config], opts[:after])
+
+if opts[:extras]
+	puts pair_see.commits_not_by_known_pair.join("\n")
+else
+	puts pair_see.all_commits.join("\n")
+end

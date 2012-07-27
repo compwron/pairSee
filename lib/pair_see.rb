@@ -48,6 +48,17 @@ class PairSee
     }
   end
 
+  def commits_not_by_known_pair 
+    # todo: do this better.
+    git_log.reject {|log_line|
+      drop_line = false
+      devs.each { |dev|
+        drop_line = true if logContainsDev(log_line, dev)
+      }
+      drop_line
+    }
+  end
+
 
   class Combo
     attr_reader :count, :devs

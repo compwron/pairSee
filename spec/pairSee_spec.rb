@@ -11,7 +11,8 @@ describe PairSee do
           echo bar > bar.txt ; git add . ; git commit -m "Person1 Person3 made bar" ; 
           echo baz > baz.txt ; git add . ; git commit -m "Person3 made baz" ; 
           echo cat > cat.txt ; git add . ; git commit -m "Person1,Person3 made cat" 
-          echo dog > dog.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing" ` # testing capitalization typos
+          echo dog > dog.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing"  # testing capitalization typos
+          echo dog > hai.txt ; git add . ; git commit -m "commit message without names in it" `
     end
 
     after do
@@ -47,6 +48,10 @@ describe PairSee do
     end
 
     it "prints a list of commits it did not connect with a name" do
+      subject.commits_not_by_known_pair.should include "commit message without names in it"
+      subject.commits_not_by_known_pair.should_not include "Person1,Person3 made cat"
+      subject.commits_not_by_known_pair.should_not include "Person1, Person3: 2"
+
     end
 
   end
