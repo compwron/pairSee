@@ -20,7 +20,7 @@ class PairSee
   def solo_commits 
     devs.map { |dev| 
       commits_by_only = git_log.select { |log_line|
-        log_line.match(dev) && does_not_match_other_devs(log_line, dev)
+        logContainsDev(log_line, dev) && does_not_match_other_devs(log_line, dev)
       }.count
       Combo.new(commits_by_only, dev)
     }
@@ -34,13 +34,17 @@ class PairSee
 
   def commits_for_pair person1, person2
     git_log.select { |log_line|
-      log_line.match(person1) && log_line.match(person2)
+      logContainsDev(log_line, person1) && logContainsDev(log_line, person2)
     }.count
+  end
+
+  def logContainsDev log_line, person
+    /#{person}/i =~ log_line
   end
 
   def does_not_match_other_devs log_line, person
     devs.reject { |dev| 
-      dev == person}.none? { |dev| log_line.match(dev) 
+      dev == person}.none? { |dev| logContainsDev(log_line, dev) 
     }
   end
 

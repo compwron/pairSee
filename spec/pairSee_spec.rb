@@ -8,9 +8,10 @@ describe PairSee do
     before do
       `mkdir fake_git; git init fake_git; cd fake_git ; 
           echo foo > foo.txt ; git add . ; git commit -m "Person1/Person2 made foo" ; 
-          echo bar > bar.txt ; git add . ; git commit -m "Person1/Person3 made bar" ; 
+          echo bar > bar.txt ; git add . ; git commit -m "Person1 Person3 made bar" ; 
           echo baz > baz.txt ; git add . ; git commit -m "Person3 made baz" ; 
-          echo cat > cat.txt ; git add . ; git commit -m "Person1/Person3 made cat" `
+          echo cat > cat.txt ; git add . ; git commit -m "Person1,Person3 made cat" 
+          echo dog > dog.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing" ` # testing capitalization typos
     end
 
     after do
@@ -42,6 +43,7 @@ describe PairSee do
     end
 
     it "sees names with capitalization typos" do
+      subject.all_commits.should include "Person4, Person5: 1"
     end
 
     it "prints a list of commits it did not connect with a name" do
