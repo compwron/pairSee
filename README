@@ -1,10 +1,14 @@
-Usage (all options are optional)
-bin/pairsee --githome ../../my_code --since 2012-07-10 --config ../../config/config.yml
+example usage 
+bin/pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
+pairsee --extras --root ../../my_code
 
-Defaults:
-githome -- current directory 
-since -- beginning of time
-config -- pairSee/config/config.yml
+Options:
+    --root, -r <s>:   Folder in which .git folder is (default: .)
+  --config, -c <s>:   location of config file, example: ../../config/config.yml (default: #{__FILE__}../../config/config.yml)
+   --after, -a <s>:   Date since which you want to get commits, in yyyy-mm-dd format (default: 0-1-1)
+      --extras, -e:   See all commits without the name of any dev in them
+        --help, -h:   Show this message
+
 
 to put on path:
 ln -s `pwd`/bin/pairsee ~/bin
