@@ -53,10 +53,14 @@ class PairSee
     git_log.reject {|log_line|
       drop_line = false
       devs.each { |dev|
-        drop_line = true if logContainsDev(log_line, dev)
+        drop_line = true if logContainsDev(log_line, dev) || isMergeCommit(log_line)
       }
       drop_line
     }
+  end
+
+  def isMergeCommit log_line
+    log_line.match("Merge remote-tracking branch") || log_line.match("Merge branch")
   end
 
 

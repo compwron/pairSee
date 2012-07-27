@@ -7,12 +7,14 @@ describe PairSee do
 
     before do
       `mkdir fake_git; git init fake_git; cd fake_git ; 
-          echo foo > foo.txt ; git add . ; git commit -m "Person1/Person2 made foo" ; 
-          echo bar > bar.txt ; git add . ; git commit -m "Person1 Person3 made bar" ; 
-          echo baz > baz.txt ; git add . ; git commit -m "Person3 made baz" ; 
-          echo cat > cat.txt ; git add . ; git commit -m "Person1,Person3 made cat" 
-          echo dog > dog.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing"  # testing capitalization typos
-          echo dog > hai.txt ; git add . ; git commit -m "commit message without names in it" `
+          echo foo >> foo.txt ; git add . ; git commit -m "Person1/Person2 made foo" ; 
+          echo bar >> foo.txt ; git add . ; git commit -m "Person1 Person3 made bar" ; 
+          echo baz >> foo.txt ; git add . ; git commit -m "Person3 made baz" ; 
+          echo cat >> foo.txt ; git add . ; git commit -m "Person1,Person3 made cat" 
+          echo dog >> foo.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing"  # testing capitalization typos
+          echo dog >> foo.txt ; git add . ; git commit -m "commit message without names in it" 
+          echo dog >> hai.txt ; git add . ; git commit -m "Merge remote-tracking branch 'origin/master'" 
+          echo dog >> hai.txt ; git add . ; git commit -m "Person5: Merge thing and foo" `
     end
 
     after do
@@ -51,7 +53,14 @@ describe PairSee do
       subject.commits_not_by_known_pair.should include "commit message without names in it"
       subject.commits_not_by_known_pair.should_not include "Person1,Person3 made cat"
       subject.commits_not_by_known_pair.should_not include "Person1, Person3: 2"
+    end
 
+    it "does not include merge commits in the list of commits without dev names" do
+      subject.commits_not_by_known_pair.should_not include "Merge"
+    end
+
+    it "does not wrongfully exclude commits with 'merge' in the message from the count" do
+      subject.all_commits.should include "Person5: 1"
     end
 
   end
