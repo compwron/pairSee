@@ -2,13 +2,13 @@ class PairSee
   require 'yamler'
   require 'time'
 
-  attr_reader :git_log, :devs
+  attr_reader :log_lines, :devs
   
   def initialize git_home, config_file, date_string
     config = YAML.load_file(config_file)
     git_home = git_home
-    @devs = config['names'].split(" ") # todo: yaml array
-    @git_log = `git --git-dir=#{git_home}/.git log --pretty=format:'%s' --since=#{date_string}`.split("\n")
+    @devs = config['names'].split(" ")
+    @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
   end
 
   def pair_commits
@@ -17,52 +17,54 @@ class PairSee
     }
   end
 
-  def solo_commits 
+  def solo_commits  
     devs.map { |dev| 
-      commits_by_only = git_log.select { |log_line|
-        logContainsDev(log_line, dev) && does_not_match_other_devs(log_line, dev)
+      commits_by_only = log_lines.select { |log_line|
+        log_line.authored_by?(dev) && (devs - [dev]).none? { |d| log_line.authored_by?(d)}
       }.count
       Combo.new(commits_by_only, dev)
     }
   end
 
   def all_commits
-    (pair_commits + solo_commits).sort_by() { |combo| 
+    (pair_commits + solo_commits).sort_by { |combo| 
       combo.count
-      }.reject(&:empty?).map(&:to_s)
+    }.reject(&:empty?).map(&:to_s)
   end
 
   def commits_for_pair person1, person2
-    git_log.select { |log_line|
-      logContainsDev(log_line, person1) && logContainsDev(log_line, person2)
+    log_lines.select { |log_line|
+      log_line.authored_by?(person1, person2)
     }.count
   end
 
-  def logContainsDev log_line, person
-    /#{person}/i =~ log_line
-  end
-
-  def does_not_match_other_devs log_line, person
-    devs.reject { |dev| 
-      dev == person}.none? { |dev| logContainsDev(log_line, dev) 
-    }
-  end
-
   def commits_not_by_known_pair 
-    # todo: do this better.
-    git_log.reject {|log_line|
-      drop_line = false
-      devs.each { |dev|
-        drop_line = true if logContainsDev(log_line, dev) || isMergeCommit(log_line)
-      }
-      drop_line
-    }
+    log_lines.reject { |log_line| log_line.not_by_pair? devs }
   end
 
-  def isMergeCommit log_line
-    log_line.match("Merge remote-tracking branch") || log_line.match("Merge branch")
-  end
+  class LogLine
+    attr_reader :line
 
+    def initialize line
+      @line = line 
+    end
+
+    def authored_by? *people
+      people.all? { |person| /#{person}/i =~ line }
+    end
+
+    def merge_commit?
+      line.match("Merge remote-tracking branch") || line.match("Merge branch")
+    end
+
+    def not_by_pair? devs
+      devs.any? { |dev| authored_by?(dev) || merge_commit? }
+    end
+
+    def to_s
+      line
+    end
+  end
 
   class Combo
     attr_reader :count, :devs

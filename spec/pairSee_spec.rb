@@ -50,9 +50,10 @@ describe PairSee do
     end
 
     it "prints a list of commits it did not connect with a name" do
-      subject.commits_not_by_known_pair.should include "commit message without names in it"
-      subject.commits_not_by_known_pair.should_not include "Person1,Person3 made cat"
-      subject.commits_not_by_known_pair.should_not include "Person1, Person3: 2"
+      extras = subject.commits_not_by_known_pair.map(&:to_s)
+      extras.should include "commit message without names in it"
+      extras.should_not include "Person1,Person3 made cat"
+      extras.should_not include "Person1, Person3: 2"
     end
 
     it "does not include merge commits in the list of commits without dev names" do
