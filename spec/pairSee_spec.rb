@@ -12,9 +12,15 @@ describe PairSee do
           echo baz >> foo.txt ; git add . ; git commit -m "Person3 made baz" ; 
           echo cat >> foo.txt ; git add . ; git commit -m "Person1,Person3 made cat" 
           echo dog >> foo.txt ; git add . ; git commit -m "PErson4|person5 thing a thing thing"  # testing capitalization typos
-          echo dog >> foo.txt ; git add . ; git commit -m "commit message without names in it" 
+          echo dog >> foo.txt ; git add . ; git commit -m "nameless commit" 
           echo dog >> hai.txt ; git add . ; git commit -m "Merge remote-tracking branch 'origin/master'" 
-          echo dog >> hai.txt ; git add . ; git commit -m "Person5: Merge thing and foo" `
+          echo dog >> hai.txt ; git add . ; git commit -m "Person5: Merge thing and foo"
+          echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person6 just a commit by this pair"
+          echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person7 most recent commit by this pair" 
+          echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person6 most recent commit by this pair" `
+
+      @current_date_string = "#{Time.now.year}-#{Time.now.strftime("%m")}-#{Time.now.strftime("%d")}"
+      @never = Time.parse("1970-1-1")    
     end
 
     after do
@@ -51,8 +57,8 @@ describe PairSee do
 
     it "prints a list of commits it did not connect with a name" do
       extras = subject.commits_not_by_known_pair.map(&:to_s)
-      extras.should include "commit message without names in it"
-      extras.should_not include "Person1,Person3 made cat"
+      extras[0].should include "nameless" #hack to avoid regex right now
+      extras.should_not include "Person1, Person3: made cat"
       extras.should_not include "Person1, Person3: 2"
     end
 
@@ -62,6 +68,26 @@ describe PairSee do
 
     it "does not wrongfully exclude commits with 'merge' in the message from the count" do
       subject.all_commits.should include "Person5: 1"
+    end
+
+    it "gets accurate dates for commit" do
+      commit_line = "2012-09-07 14:12:33 -0500 Person1|Person2 made foo inherit from bar"
+      subject.commit_date(commit_line).should == Time.new(2012,9,7)
+    end
+
+    it "sees most recent commit by a pair" do
+      subject.most_recent_commit_date("Person4", "Person5").should == Time.parse(@current_date_string)
+      subject.most_recent_commit_date("Person4", "Person1").should == @never
+    end
+
+    it "gets most recent dates of all pair commits" do
+      subject.all_most_recent_commits.should include "Person1, Person3: #{@current_date_string}"
+      subject.all_most_recent_commits.should include "Person1, Person6: not yet"
+    end
+
+    it "gets most recent dates of all pair commits, sorted temporally" do
+      subject.all_most_recent_commits.first.should include "Person1, Person2: #{@current_date_string}"
+      subject.all_most_recent_commits.last.should include "Person6, Person7: not yet"
     end
 
   end
