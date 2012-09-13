@@ -5,10 +5,21 @@ class PairSee
   attr_reader :log_lines, :devs
   
   def initialize git_home, config_file, date_string
-    config = YAML.load_file(config_file)
     git_home = git_home
-    @devs = config['names'].split(" ")
     @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
+    @devs = active_devs(config_file)
+   end
+
+  def active_devs config_file
+    config = YAML.load_file(config_file)
+    devs_in_config = config['names'].split(" ")
+    devs_in_config.select { |dev| is_active(dev) }
+  end
+
+  def is_active dev
+    log_lines.map { |log_line|
+      log_line.authored_by?(dev) 
+    }.include?(true)
   end
 
   def pair_commits
@@ -61,6 +72,9 @@ class PairSee
     }.reverse.map { |date_combo| 
       date_combo.to_s
     }
+  end
+
+  def recommended_pairings
   end
 
   class LogLine

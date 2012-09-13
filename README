@@ -1,12 +1,14 @@
 example usage 
 bin/pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
 pairsee --extras --root ../../my_code
+pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by all devs who have committed since given date (purpose of this is to exclude people who are no longer committers)
 
 Options:
     --root, -r <s>:   Folder in which .git folder is (default: .)
-  --config, -c <s>:   location of config file, example: ../../config/config.yml (default: #{__FILE__}../../config/config.yml)
+  --config, -c <s>:   location of config file, example: ../../config/config.yml (default: "#{__FILE__}/../../config/config.yml")
    --after, -a <s>:   Date since which you want to get commits, in yyyy-mm-dd format (default: 0-1-1)
       --extras, -e:   See all commits without the name of any dev in them
+      --latest, -l:   See dates of most recent commits by pairs
         --help, -h:   Show this message
 
 

@@ -17,7 +17,8 @@ describe PairSee do
           echo dog >> hai.txt ; git add . ; git commit -m "Person5: Merge thing and foo"
           echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person6 just a commit by this pair"
           echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person7 most recent commit by this pair" 
-          echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person6 most recent commit by this pair" `
+          echo dog >> foo.txt ; git add . ; git commit -m "Person4 Person6 most recent commit by this pair"
+          echo dog >> foo.txt ; git add . ; git commit -m "ActiveDev wrote some code" `
 
       @current_date_string = "#{Time.now.year}-#{Time.now.strftime("%m")}-#{Time.now.strftime("%d")}"
       @never = Time.parse("1970-1-1")    
@@ -87,7 +88,24 @@ describe PairSee do
 
     it "gets most recent dates of all pair commits, sorted temporally" do
       subject.all_most_recent_commits.first.should include "Person1, Person2: #{@current_date_string}"
-      subject.all_most_recent_commits.last.should include "Person6, Person7: not yet"
+      subject.all_most_recent_commits.last.should include "not yet"
+    end
+
+    # it "should recommend pairs based on least recent active dev pair" do
+    #   subject.recommended_pairings.should include "not sure what this should be yet"
+    #   subject.recommended_pairings.should_not include "whatever the most recent pair is"
+    # end
+
+    it "should identify active devs, i.e. has committed in the last two weeks" do
+      active_devs = subject.active_devs("spec/spec_config.yml")
+      active_devs.should include "ActiveDev"
+      active_devs.should include "Person1" 
+      active_devs.should_not include "InactiveDev"
+    end
+
+    it "knows whether dev is active" do
+      subject.is_active("ActiveDev").should == true
+      subject.is_active("InactiveDev").should == false
     end
 
   end
