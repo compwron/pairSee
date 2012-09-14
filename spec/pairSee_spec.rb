@@ -91,10 +91,10 @@ describe PairSee do
       subject.all_most_recent_commits.last.should include "not yet"
     end
 
-    # it "should recommend pairs based on least recent active dev pair" do
-    #   subject.recommended_pairings.should include "not sure what this should be yet"
-    #   subject.recommended_pairings.should_not include "whatever the most recent pair is"
-    # end
+    it "should recommend pairs based on least recent active dev pair" do
+      subject.recommended_pairings.should include "Person1, ActiveDev"
+      subject.recommended_pairings.should_not include "Person1, Person2"
+    end
 
     it "should identify active devs, i.e. has committed in the last two weeks" do
       active_devs = subject.active_devs("spec/spec_config.yml")

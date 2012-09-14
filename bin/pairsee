@@ -9,6 +9,7 @@ opts = Trollop::options do
   opt :after, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
   opt :extras, "See all commits without the name of any dev in them", :default => false
   opt :latest, "See dates of most recent commits by pairs", :default => false
+  opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
 end
 
 pair_see = PairSee.new(opts[:root], opts[:config], opts[:after])
@@ -17,6 +18,8 @@ if opts[:extras]
 	puts pair_see.commits_not_by_known_pair.join("\n")
 elsif opts[:latest]
 	puts pair_see.all_most_recent_commits.join("\n")
+elsif opts[:recommended]
+	puts pair_see.recommended_pairings.join("\n")
 else
 	puts pair_see.all_commits.join("\n")
 end

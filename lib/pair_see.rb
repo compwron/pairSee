@@ -2,12 +2,16 @@ class PairSee
   require 'yamler'
   require 'time'
 
-  attr_reader :log_lines, :devs
+  attr_reader :log_lines, :devs, :dev_pairs, :never
+
+  
   
   def initialize git_home, config_file, date_string
     git_home = git_home
     @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
     @devs = active_devs(config_file)
+    @dev_pairs = devs.combination(2)
+    @never = Time.parse("1970-1-1")
    end
 
   def active_devs config_file
@@ -23,7 +27,7 @@ class PairSee
   end
 
   def pair_commits
-    devs.combination(2).map { |person1, person2| 
+    dev_pairs.map { |person1, person2| 
       Combo.new(commits_for_pair(person1, person2).count, person1, person2)
     }
   end
@@ -57,7 +61,7 @@ class PairSee
     most_recent_commits = commits_for_pair(person1, person2).sort_by { |log_line| 
       commit_date(log_line.line)
     }
-    most_recent_commits.empty? ? Time.parse("1970-1-1") : most_recent_commits.first.date
+    most_recent_commits.empty? ? never : most_recent_commits.first.date
   end
 
   def commit_date log_line
@@ -65,7 +69,7 @@ class PairSee
   end
 
   def all_most_recent_commits
-    devs.combination(2).map { |person1, person2|
+    dev_pairs.map { |person1, person2|
       DateCombo.new(most_recent_commit_date(person1, person2), person1, person2)
     }.sort_by { |date_combo|
       date_combo.date 
@@ -75,6 +79,15 @@ class PairSee
   end
 
   def recommended_pairings
+    # if devs have been active in timeframe but not paired, recommend
+    # bonus points: if all devs have paired, recommend least recent pairing. 
+    
+    # this is a hack, replace with .before when you get internet access
+    dev_pairs.reject { |person1, person2| 
+      most_recent_commit_date(person1, person2) - never > 0 
+    }.map { |person1, person2| 
+      "#{person1}, #{person2}"
+    }
   end
 
   class LogLine
@@ -122,15 +135,16 @@ class PairSee
   end
 
   class DateCombo
-    attr_reader :date, :devs
+    attr_reader :date, :devs, :never
 
     def initialize date, *devs
       @date, @devs = date, devs
+      @never = Time.parse("1970-1-1")
     end
 
     def to_s
       pretty_date = "#{date.year}-#{date.strftime("%m")}-#{date.strftime("%d")}"
-      date == Time.parse("1970-1-1") ? "#{devs.join ", "}: not yet" : "#{devs.join ", "}: #{pretty_date}"
+      date == never ? "#{devs.join ", "}: not yet" : "#{devs.join ", "}: #{pretty_date}"
     end
 
     def empty?
