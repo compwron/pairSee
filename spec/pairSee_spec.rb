@@ -71,11 +71,6 @@ describe PairSee do
       subject.all_commits.should include "Person5: 1"
     end
 
-    it "gets accurate dates for commit" do
-      commit_line = "2012-09-07 14:12:33 -0500 Person1|Person2 made foo inherit from bar"
-      subject.commit_date(commit_line).should == Time.new(2012,9,7)
-    end
-
     it "sees most recent commit by a pair" do
       subject.most_recent_commit_date("Person4", "Person5").should == Time.parse(@current_date_string)
       subject.most_recent_commit_date("Person4", "Person1").should == @never
@@ -92,8 +87,8 @@ describe PairSee do
     end
 
     it "should recommend pairs based on least recent active dev pair" do
-      subject.recommended_pairings.should include "Person1, ActiveDev"
-      subject.recommended_pairings.should_not include "Person1, Person2"
+      subject.unpaired_in_range.should include "Person1, ActiveDev"
+      subject.unpaired_in_range.should_not include "Person1, Person2"
     end
 
     it "should identify active devs, i.e. has committed in the last two weeks" do
@@ -106,6 +101,11 @@ describe PairSee do
     it "knows whether dev is active" do
       subject.is_active("ActiveDev").should == true
       subject.is_active("InactiveDev").should == false
+    end
+
+    it "sees least recent pairing" do
+      subject.least_recent_pair.should include "Person1, Person2"
+      subject.least_recent_pair.should_not include "ActiveDev"
     end
 
   end

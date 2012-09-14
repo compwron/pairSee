@@ -59,13 +59,9 @@ class PairSee
 
   def most_recent_commit_date person1, person2
     most_recent_commits = commits_for_pair(person1, person2).sort_by { |log_line| 
-      commit_date(log_line.line)
+      log_line.date
     }
     most_recent_commits.empty? ? never : most_recent_commits.first.date
-  end
-
-  def commit_date log_line
-    Time.parse(log_line.split(" ").first)
   end
 
   def all_most_recent_commits
@@ -79,12 +75,20 @@ class PairSee
   end
 
   def recommended_pairings
-    # if devs have been active in timeframe but not paired, recommend
     # bonus points: if all devs have paired, recommend least recent pairing. 
-    
-    # this is a hack, replace with .before when you get internet access
+    should_pair = unpaired_in_range
+    should_pair.empty? ? least_recent_pair : should_pair
+  end
+
+  def least_recent_pair
+    devs.select {|dev| 
+      log_lines.last.line.match(dev)
+    }.join(", ")
+  end
+
+  def unpaired_in_range
     dev_pairs.reject { |person1, person2| 
-      most_recent_commit_date(person1, person2) - never > 0 
+      most_recent_commit_date(person1, person2) - never > 0 # this is a hack, replace with .before when you get internet access
     }.map { |person1, person2| 
       "#{person1}, #{person2}"
     }
