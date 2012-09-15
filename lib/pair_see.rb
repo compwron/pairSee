@@ -5,7 +5,7 @@ class PairSee
   attr_reader :log_lines, :devs, :dev_pairs
 
   def initialize git_home, config_file, date_string
-    @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
+    @log_lines = LogLines.new git_home, date_string
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
    end
@@ -17,7 +17,7 @@ class PairSee
   end
 
   def is_active dev
-    log_lines.any? { |log_line| log_line.authored_by?(dev) }
+    log_lines.active? dev
   end
 
   def pair_commits
@@ -27,11 +27,8 @@ class PairSee
   end
 
   def solo_commits  
-    devs.map { |dev| 
-      commits_by_only = log_lines.select { |log_line|
-        log_line.authored_by?(dev) && (devs - [dev]).none? { |d| log_line.authored_by?(d)}
-      }.count
-      Combo.new(commits_by_only, dev)
+    devs.map { |dev|
+      Combo.new(log_lines.solo_commits(devs, dev).count, dev)
     }
   end
 
@@ -40,11 +37,11 @@ class PairSee
   end
 
   def commits_for_pair person1, person2
-    log_lines.select { |log_line| log_line.authored_by?(person1, person2) }
+    log_lines.commits_for_pair person1, person2
   end
 
   def commits_not_by_known_pair 
-    log_lines.reject { |log_line| log_line.not_by_pair? devs }
+    log_lines.commits_not_by_known_pair devs
   end
 
   def most_recent_commit_date person1, person2
@@ -75,6 +72,43 @@ class PairSee
     }.map { |person1, person2| 
       "#{person1}, #{person2}"
     }
+  end
+
+  class LogLines
+    include Enumerable
+
+    def initialize git_home, date_string
+      @lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
+    end
+
+    def each &block
+      lines.each &block
+    end
+
+    def last
+      lines.last
+    end
+
+    def active? dev
+      any? { |log_line| log_line.authored_by?(dev) }
+    end
+
+    def commits_for_pair person1, person2
+      select { |log_line| log_line.authored_by?(person1, person2) }
+    end
+
+    def commits_not_by_known_pair devs
+      reject { |log_line| log_line.not_by_pair? devs }
+    end
+
+    def solo_commits devs, dev
+      select { |log_line|
+        log_line.authored_by?(dev) && (devs - [dev]).none? { |d| log_line.authored_by?(d)}
+      }
+    end
+
+    private
+      attr_reader :lines
   end
 
   class LogLine
