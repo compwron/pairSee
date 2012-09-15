@@ -5,7 +5,7 @@ pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by al
 
 Options:
      --root, -r <s>:   Folder in which .git folder is (default: .)
-   --config, -c <s>:   location of config file, example: ../../config/config.yml (default: /Users/ThoughtWorks/bin/pairsee/../../config/config.yml)
+   --config, -c <s>:   location of config file, example: ../../config/config.yml (default: ../../config/config.yml)
     --after, -a <s>:   Date since which you want to get commits, in yyyy-mm-dd format (default: 0-1-1)
        --extras, -e:   See all commits without the name of any dev in them
        --latest, -l:   See dates of most recent commits by pairs
