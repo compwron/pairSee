@@ -4,8 +4,6 @@ class PairSee
 
   attr_reader :log_lines, :devs, :dev_pairs, :never
 
-  
-  
   def initialize git_home, config_file, date_string
     git_home = git_home
     @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
