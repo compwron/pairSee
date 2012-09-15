@@ -3,14 +3,18 @@ require_relative "../lib/pair_see"
 describe PairSee do
   let(:current_date_string) { "#{Time.now.year}-#{Time.now.strftime("%m")}-#{Time.now.strftime("%d")}" }
   let(:never) { Time.parse("1970-1-1") }
-  subject { PairSee.new "fake_git", "spec/spec_config.yml", "0-1-1" }
+  let(:repo) { 'fake_git' }
+  let(:config) { 'spec/spec_config.yml' }
+  let(:after_date) { '0-1-1' }
+
+  subject { PairSee.new repo, config, after_date }
 
   def create_commit message
-     `cd fake_git && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
+     `cd #{repo} && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
   end
 
   before do
-    `mkdir fake_git; git init fake_git;`
+    `mkdir #{repo} && git init #{repo}`
 
     create_commit("Person1/Person2 made foo")
     create_commit("Person1 Person3 made bar")
@@ -27,7 +31,7 @@ describe PairSee do
   end
 
   after do
-    `rm -rf fake_git`
+    `rm -rf #{repo}`
   end
 
   describe "#all_commits" do
@@ -50,9 +54,12 @@ describe PairSee do
       subject.all_commits.first.should include ": 1"
     end
 
-    it "can see all commits since a passed-in date" do
-      all_commits_made_next_year = PairSee.new("fake_git", "spec/spec_config.yml", "2013-01-01")
-      all_commits_made_next_year.all_commits.size.should == 0
+    context "with an after date in the future" do
+      let(:after_date) { '2013-01-01' }
+
+      it "can see all commits since a passed-in date" do
+        subject.all_commits.size.should == 0
+      end
     end
 
     it "sees names with capitalization typos" do
@@ -105,7 +112,7 @@ describe PairSee do
 
   describe "#active_devs" do
     it "identifies active devs" do
-      active_devs = subject.active_devs("spec/spec_config.yml")
+      active_devs = subject.active_devs(config)
       active_devs.should include "ActiveDev"
       active_devs.should include "Person1" 
       active_devs.should_not include "InactiveDev"
