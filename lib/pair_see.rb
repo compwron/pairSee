@@ -2,14 +2,12 @@ class PairSee
   require 'yamler'
   require 'time'
 
-  attr_reader :log_lines, :devs, :dev_pairs, :never
+  attr_reader :log_lines, :devs, :dev_pairs
 
   def initialize git_home, config_file, date_string
-    git_home = git_home
     @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
-    @never = Date.parse("1970-1-1")
    end
 
   def active_devs config_file
@@ -56,20 +54,14 @@ class PairSee
   end
 
   def most_recent_commit_date person1, person2
-    most_recent_commits = commits_for_pair(person1, person2).sort_by { |log_line| 
-      log_line.date
-    }
-    most_recent_commits.empty? ? never : most_recent_commits.first.date
+    recent_commit = commits_for_pair(person1, person2).sort_by(&:date).first
+    recent_commit ? recent_commit.date : nil
   end
 
   def all_most_recent_commits
     dev_pairs.map { |person1, person2|
       DateCombo.new(most_recent_commit_date(person1, person2), person1, person2)
-    }.sort_by { |date_combo|
-      date_combo.date 
-    }.reverse.map { |date_combo| 
-      date_combo.to_s
-    }
+    }.sort.reverse.map &:to_s
   end
 
   def recommended_pairings
@@ -85,8 +77,8 @@ class PairSee
   end
 
   def unpaired_in_range
-    dev_pairs.reject { |person1, person2| 
-      most_recent_commit_date(person1, person2) != never # this is a hack, replace with .before when you get internet access
+    dev_pairs.select { |person1, person2|
+      most_recent_commit_date(person1, person2).nil?
     }.map { |person1, person2| 
       "#{person1}, #{person2}"
     }
@@ -137,20 +129,25 @@ class PairSee
   end
 
   class DateCombo
-    attr_reader :date, :devs, :never
+    attr_reader :date, :devs
 
     def initialize date, *devs
       @date, @devs = date, devs
-      @never = Date.parse("1970-1-1")
     end
 
     def to_s
-      pretty_date = "#{date.year}-#{date.strftime("%m")}-#{date.strftime("%d")}"
-      date == never ? "#{devs.join ", "}: not yet" : "#{devs.join ", "}: #{pretty_date}"
+      return "#{devs.join ", "}: not yet" if date.nil?
+      "#{devs.join ", "}: #{date.to_s}"
     end
 
-    def empty?
-      count == 0
+    def <=> other
+      if date && other.date
+        date <=> other.date
+      elsif date
+        1
+      else
+        -1
+      end
     end
   end
 

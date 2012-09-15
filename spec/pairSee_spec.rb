@@ -90,7 +90,7 @@ describe PairSee do
   describe "#most_recent_commit_date" do
     it "sees most recent commit by a pair" do
       subject.most_recent_commit_date("Person4", "Person5").should == current_date
-      subject.most_recent_commit_date("Person4", "Person1").should == never
+      subject.most_recent_commit_date("Person4", "Person1").should be_nil
     end
   end
 
