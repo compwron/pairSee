@@ -12,14 +12,17 @@ opts = Trollop::options do
   opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
 end
 
-pair_see = PairSee.new(opts[:root], opts[:config], opts[:after])
-
-if opts[:extras]
-	puts pair_see.commits_not_by_known_pair.join("\n")
-elsif opts[:latest]
-	puts pair_see.all_most_recent_commits.join("\n")
-elsif opts[:recommended]
-	puts pair_see.recommended_pairings.join("\n")
-else
-	puts pair_see.all_commits.join("\n")
+def run_command opts
+  pair_see = PairSee.new(opts[:root], opts[:config], opts[:after])
+  if opts[:extras]
+    pair_see.commits_not_by_known_pair
+  elsif opts[:latest]
+    pair_see.all_most_recent_commits
+  elsif opts[:recommended]
+    pair_see.recommended_pairings
+  else
+    pair_see.all_commits
+  end
 end
+
+puts run_command(opts).join("\n")
