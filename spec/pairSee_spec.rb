@@ -1,8 +1,8 @@
 require_relative "../lib/pair_see"
 
 describe PairSee do
-  let(:current_date_string) { "#{Time.now.year}-#{Time.now.strftime("%m")}-#{Time.now.strftime("%d")}" }
-  let(:never) { Time.parse("1970-1-1") }
+  let(:current_date) { Date.today }
+  let(:never) { Date.parse("1970-1-1") }
   let(:repo) { 'fake_git' }
   let(:config) { 'spec/spec_config.yml' }
   let(:after_date) { '0-1-1' }
@@ -35,39 +35,42 @@ describe PairSee do
   end
 
   describe "#all_commits" do
+    let(:all_commits) { subject.all_commits }
+
     it "contains counts for all pairs which have committed" do
-      subject.all_commits.should include "Person1, Person3: 2"
-      subject.all_commits.should include "Person1, Person2: 1"
+      all_commits.should include "Person1, Person3: 2"
+      all_commits.should include "Person1, Person2: 1"
+#      all_commits.should have_pair("person1", "Person2").with_count(2)
     end
 
     it "doesn't list counts for pairs who have no commits" do
-      subject.all_commits.should_not include "Person2, Person3: 0"
+      all_commits.should_not include "Person2, Person3: 0"
     end
 
     it "gets all commits which only have person1's name on them" do
-      subject.all_commits.should_not include "Person1: 0"
-      subject.all_commits.should include "Person3: 1"
+      all_commits.should_not include "Person1: 0"
+      all_commits.should include "Person3: 1"
     end
 
     it "sorts all by count" do
-      subject.all_commits.last.should include ": 2"
-      subject.all_commits.first.should include ": 1"
+      all_commits.last.should end_with ": 2"
+      all_commits.first.should end_with ": 1"
     end
 
     context "with an after date in the future" do
       let(:after_date) { '2013-01-01' }
 
       it "can see all commits since a passed-in date" do
-        subject.all_commits.size.should == 0
+        all_commits.should have(0).commits
       end
     end
 
     it "sees names with capitalization typos" do
-      subject.all_commits.should include "Person4, Person5: 1"
+      all_commits.should include "Person4, Person5: 1"
     end
 
     it "does not wrongfully exclude commits with 'merge' in the message from the count" do
-      subject.all_commits.should include "Person5: 1"
+      all_commits.should include "Person5: 1"
     end
   end
 
@@ -86,19 +89,19 @@ describe PairSee do
 
   describe "#most_recent_commit_date" do
     it "sees most recent commit by a pair" do
-      subject.most_recent_commit_date("Person4", "Person5").should == Time.parse(current_date_string)
+      subject.most_recent_commit_date("Person4", "Person5").should == current_date
       subject.most_recent_commit_date("Person4", "Person1").should == never
     end
   end
 
   describe "#all_most_recent_commits" do
     it "gets most recent dates of all pair commits" do
-      subject.all_most_recent_commits.should include "Person1, Person3: #{current_date_string}"
+      subject.all_most_recent_commits.should include "Person1, Person3: #{current_date.to_s}"
       subject.all_most_recent_commits.should include "Person1, Person6: not yet"
     end
 
     it "gets most recent dates of all pair commits, sorted temporally" do
-      subject.all_most_recent_commits.first.should include "Person1, Person2: #{current_date_string}"
+      subject.all_most_recent_commits.first.should include "Person1, Person2: #{current_date.to_s}"
       subject.all_most_recent_commits.last.should include "not yet"
     end
   end
@@ -121,8 +124,8 @@ describe PairSee do
 
   describe "#is_active" do
     it "is true when the dev is active" do
-      subject.is_active("ActiveDev").should == true
-      subject.is_active("InactiveDev").should == false
+      subject.is_active("ActiveDev").should be_true
+      subject.is_active("InactiveDev").should be_false
     end
   end
 

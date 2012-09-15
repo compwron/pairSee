@@ -9,7 +9,7 @@ class PairSee
     @log_lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
-    @never = Time.parse("1970-1-1")
+    @never = Date.parse("1970-1-1")
    end
 
   def active_devs config_file
@@ -86,7 +86,7 @@ class PairSee
 
   def unpaired_in_range
     dev_pairs.reject { |person1, person2| 
-      most_recent_commit_date(person1, person2) - never > 0 # this is a hack, replace with .before when you get internet access
+      most_recent_commit_date(person1, person2) != never # this is a hack, replace with .before when you get internet access
     }.map { |person1, person2| 
       "#{person1}, #{person2}"
     }
@@ -108,7 +108,7 @@ class PairSee
     end
 
     def date
-      Time.parse(line.split(" ")[0])
+      Date.parse(line.split(" ")[0])
     end
 
     def not_by_pair? devs
@@ -141,7 +141,7 @@ class PairSee
 
     def initialize date, *devs
       @date, @devs = date, devs
-      @never = Time.parse("1970-1-1")
+      @never = Date.parse("1970-1-1")
     end
 
     def to_s
