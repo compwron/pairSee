@@ -17,9 +17,7 @@ class PairSee
   end
 
   def is_active dev
-    log_lines.map { |log_line|
-      log_line.authored_by?(dev) 
-    }.include?(true)
+    log_lines.any? { |log_line| log_line.authored_by?(dev) }
   end
 
   def pair_commits
@@ -38,15 +36,11 @@ class PairSee
   end
 
   def all_commits
-    (pair_commits + solo_commits).sort_by { |combo| 
-      combo.count
-    }.reject(&:empty?).map(&:to_s)
+    (pair_commits + solo_commits).sort_by(&:count).reject(&:empty?).map(&:to_s)
   end
 
   def commits_for_pair person1, person2
-    log_lines.select { |log_line|
-      log_line.authored_by?(person1, person2)
-    }
+    log_lines.select { |log_line| log_line.authored_by?(person1, person2) }
   end
 
   def commits_not_by_known_pair 
@@ -65,7 +59,6 @@ class PairSee
   end
 
   def recommended_pairings
-    # bonus points: if all devs have paired, recommend least recent pairing. 
     should_pair = unpaired_in_range
     should_pair.empty? ? least_recent_pair : should_pair
   end
@@ -150,7 +143,4 @@ class PairSee
       end
     end
   end
-
 end
-
-
