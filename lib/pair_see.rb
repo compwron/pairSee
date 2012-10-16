@@ -163,8 +163,11 @@ class PairSee
     end
 
     def to_s
-      return "#{devs.join ", "}: not yet" if date.nil?
-      "#{devs.join ", "}: #{date.to_s}"
+      if date.nil?
+        "#{devs.join ", "}: not yet"
+      else
+        "#{devs.join ", "}: #{date.to_s}"
+      end
     end
 
     def <=> other
