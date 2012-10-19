@@ -10,12 +10,13 @@ class PairSee
     @dev_pairs = devs.combination(2)
    end
 
-   def pretty_card_data card_prefix
-    card_data(card_prefix).map {|card, commit_number| "#{card} #{commit_number}"}
-   end
+   # def pretty_card_data card_prefix
+   #  card_data(card_prefix).map {|card, commit_number| "#{card} #{commit_number}"}
+   # end
 
    def card_data card_prefix
     card_numbers(card_prefix).map { |card_number|
+      puts "card number is #{card_number}"
       { card_number => commits_on_card(card_number) }
     }
    end
@@ -32,6 +33,7 @@ class PairSee
     log_lines.select { |line| 
       line.contains_card?(card_prefix) 
     }.map { |line|
+      puts "line is #{line}"
       line.card_number(card_prefix)
     }.uniq
    end
@@ -159,10 +161,12 @@ class PairSee
     end
 
     def card_number card_prefix
-      # regex = /#{card_prefix}-(\d)/
-      # matcher = line.match(regex)
-      # matcher.nil? ? nil : (line.match regex)[1]
-      line.match(/#{card_prefix}-(\d)/)[0]
+      regex = /#{card_prefix}-(\d+)/
+      matcher = line.match(regex)
+      return_value = matcher.nil? ? nil : (line.match regex)[1]
+      puts "return_value of regex matcher is #{return_value}"
+      return_value
+      # line.match(/#{card_prefix}-(\d)/)[0]
     end
 
     def merge_commit?

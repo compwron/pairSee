@@ -42,6 +42,11 @@ describe PairSee do
       subject.cards_worked(card_prefix).should == 1
     end
 
+    it "sees multidigit card number" do
+      create_commit("[FOO-8710581403530872]")
+      subject.cards_worked(card_prefix).should == 1
+    end
+
     it "does not imagine that a card has been worked when it has not been" do
       create_commit("whatever")
       subject.cards_worked(card_prefix).should == 0

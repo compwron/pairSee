@@ -10,8 +10,7 @@ opts = Trollop::options do
   opt :extras, "See all commits without the name of any dev in them", :default => false
   opt :latest, "See dates of most recent commits by pairs", :default => false
   opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
-  opt :cards, "See cards and number of commits on each", :default => false
-  opt :card_prefix, "Required if seeing all cards. Someday set this in config file", :default => "FOO"
+  opt :cards, "See cards and number of commits on each", :default => nil
 end
 
 def run_command opts
@@ -23,8 +22,8 @@ def run_command opts
   elsif opts[:recommended]
     pair_see.recommended_pairings
   elsif opts[:cards]
-    puts pair_see.pretty_card_data("SSL")
-    "foo"
+    puts " in bin, card prefix is #{opts[:cards]}"
+    puts pair_see.card_data("SSL")
   else
     pair_see.all_commits
   end
