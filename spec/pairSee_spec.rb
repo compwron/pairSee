@@ -104,7 +104,12 @@ describe PairSee do
       subject.card_data(card_prefix).should include card_2_data
     end
 
-    it "outputs card worked data in format FOO-1 date1 date2 length-in-days" do
+    it "pretty putput should be human-readable" do
+      create_commit("[FOO-1] code")
+      subject.pretty_card_data(card_prefix).should include "FOO-1 1"
+    end
+
+    it "outputs card worked data in format: FOO-1 number-of-commits first-commit-date last-commit-date length-in-days" do
     end
   end
 

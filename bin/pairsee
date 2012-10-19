@@ -22,8 +22,7 @@ def run_command opts
   elsif opts[:recommended]
     pair_see.recommended_pairings
   elsif opts[:cards]
-    puts " in bin, card prefix is #{opts[:cards]}"
-    puts pair_see.card_data("SSL")
+    pair_see.pretty_card_data("SSL").compact
   else
     pair_see.all_commits
   end
