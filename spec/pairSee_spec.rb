@@ -42,9 +42,14 @@ describe PairSee do
       subject.cards_worked(card_prefix).should == 1
     end
 
-    it "does not imagine that a card has not been worked when it has not been" do
+    it "does not imagine that a card has been worked when it has not been" do
       create_commit("whatever")
       subject.cards_worked(card_prefix).should == 0
+    end
+
+    it "does not break on a commit without a card mentioned" do
+      create_commit("whatever")
+      subject.card_data(card_prefix).should == []
     end
 
     it "sees multiple cards worked" do
