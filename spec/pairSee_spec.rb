@@ -34,6 +34,26 @@ describe PairSee do
     `rm -rf #{repo}`
   end
 
+  describe "see cards worked on" do
+    card_prefix = "FOO"
+
+    it "sees that a card has been worked" do
+      create_commit("[FOO-1]")
+      subject.cards_worked(card_prefix).should == 1
+    end
+
+    it "does not imagine that a card has not been worked when it has not been" do
+      create_commit("whatever")
+      subject.cards_worked(card_prefix).should == 0
+    end
+
+    it "sees multiple cards worked" do
+      create_commit("[FOO-1] stuff")
+      create_commit("[FOO-1] more stuff")
+      subject.cards_worked(card_prefix).should == 2
+    end
+  end
+
   describe "#all_commits" do
     let(:all_commits) { subject.all_commits }
 
@@ -135,4 +155,17 @@ describe PairSee do
       subject.least_recent_pair.should_not include "ActiveDev"
     end
   end
+
+  
 end
+
+
+
+
+
+
+
+
+
+
+

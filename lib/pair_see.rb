@@ -10,6 +10,10 @@ class PairSee
     @dev_pairs = devs.combination(2)
    end
 
+   def cards_worked card_prefix
+    log_lines.select{|line| line.contains_card?(card_prefix) }.count
+   end
+
   def active_devs config_file
     config = YAML.load_file(config_file)
     devs_in_config = config['names'].split(" ")
@@ -78,7 +82,9 @@ class PairSee
     include Enumerable
 
     def initialize git_home, date_string
-      @lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| LogLine.new line }
+      @lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map {|line| 
+        LogLine.new line 
+      }
     end
 
     def each &block
@@ -120,6 +126,10 @@ class PairSee
 
     def authored_by? *people
       people.all? { |person| /#{person}/i =~ line }
+    end
+
+    def contains_card? card_prefix
+      line.match(card_prefix)
     end
 
     def merge_commit?
