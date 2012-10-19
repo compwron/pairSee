@@ -14,6 +14,14 @@ class PairSee
     log_lines.select{|line| line.contains_card?(card_prefix) }.count
    end
 
+   def card_numbers card_prefix
+    log_lines.select { |line| 
+      line.contains_card?(card_prefix) 
+    }.map { |line|
+      line.card_number(card_prefix)
+    }
+   end
+
   def active_devs config_file
     config = YAML.load_file(config_file)
     devs_in_config = config['names'].split(" ")
@@ -130,6 +138,10 @@ class PairSee
 
     def contains_card? card_prefix
       line.match(card_prefix)
+    end
+
+    def card_number card_prefix
+      line.match(/#{card_prefix}-(\d)/)[0]
     end
 
     def merge_commit?

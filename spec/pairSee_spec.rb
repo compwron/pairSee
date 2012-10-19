@@ -52,6 +52,22 @@ describe PairSee do
       create_commit("[FOO-1] more stuff")
       subject.cards_worked(card_prefix).should == 2
     end
+
+    it "sees which cards have been worked" do
+      create_commit("[FOO-1]")
+      subject.card_numbers(card_prefix).should == ["FOO-1"]
+    end
+
+    it "sees multiple card numbers  worked" do
+      create_commit("[FOO-1]")
+      create_commit("[FOO-2]")
+      subject.card_numbers(card_prefix).should include "FOO-1"
+      subject.card_numbers(card_prefix).should include "FOO-2"
+      subject.card_numbers(card_prefix).size.should == 2
+    end
+
+    it "outputs card worked data in format FOO-1 date1 date2 length-in-days" do
+    end
   end
 
   describe "#all_commits" do
