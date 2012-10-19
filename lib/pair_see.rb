@@ -10,6 +10,10 @@ class PairSee
     @dev_pairs = devs.combination(2)
    end
 
+   def commits_on_card card_name
+    log_lines.select{|line| line.contains_card_name?(card_name)}.count
+   end
+
    def cards_worked card_prefix
     log_lines.select{|line| line.contains_card?(card_prefix) }.count
    end
@@ -138,6 +142,10 @@ class PairSee
 
     def contains_card? card_prefix
       line.match(card_prefix)
+    end
+
+    def contains_card_name? card_name
+      line.match(card_name)
     end
 
     def card_number card_prefix

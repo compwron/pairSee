@@ -66,6 +66,20 @@ describe PairSee do
       subject.card_numbers(card_prefix).size.should == 2
     end
 
+    it "given card name, sees number of commits on a card" do
+      create_commit("[FOO-1]")
+      card_name = "FOO-1"
+      subject.commits_on_card(card_name).should == 1
+    end
+
+    it "sees multiple commits on a card" do
+      create_commit("[FOO-1] code")
+      create_commit("[FOO-1] more code")
+      create_commit("[FOO-2] code for other card")
+      card_name = "FOO-1"
+      subject.commits_on_card(card_name).should == 2
+    end
+
     it "outputs card worked data in format FOO-1 date1 date2 length-in-days" do
     end
   end
