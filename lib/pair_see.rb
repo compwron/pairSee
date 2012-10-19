@@ -175,8 +175,10 @@ class PairSee
         date <=> other.date
       elsif date
         1
-      else
+      elsif other.date
         -1
+      else
+        0
       end
     end
   end
