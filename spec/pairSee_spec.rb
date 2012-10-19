@@ -80,6 +80,20 @@ describe PairSee do
       subject.commits_on_card(card_name).should == 2
     end
 
+    it "gets card data (WIP)" do
+      create_commit("[FOO-1] code")
+      create_commit("[FOO-2] commit 1 on this card")
+      create_commit("[FOO-2] commit 2")
+      create_commit("[FOO-2] commit 3")
+      number_of_cards = 2
+      card_prefix = "FOO"
+      card_1_data = {"FOO-1" => 1}
+      card_2_data = {"FOO-2" => 3}
+      subject.card_data(card_prefix).size.should == number_of_cards
+      subject.card_data(card_prefix).should include card_1_data
+      subject.card_data(card_prefix).should include card_2_data
+    end
+
     it "outputs card worked data in format FOO-1 date1 date2 length-in-days" do
     end
   end

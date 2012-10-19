@@ -10,6 +10,12 @@ class PairSee
     @dev_pairs = devs.combination(2)
    end
 
+   def card_data card_prefix
+    card_numbers(card_prefix).map { |card_number|
+      { card_number => commits_on_card(card_number) }
+    }
+   end
+
    def commits_on_card card_name
     log_lines.select{|line| line.contains_card_name?(card_name)}.count
    end
@@ -23,7 +29,7 @@ class PairSee
       line.contains_card?(card_prefix) 
     }.map { |line|
       line.card_number(card_prefix)
-    }
+    }.uniq
    end
 
   def active_devs config_file
