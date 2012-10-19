@@ -35,7 +35,7 @@ class PairSee
     }.map { |line|
       puts "line is #{line}"
       line.card_number(card_prefix)
-    }.uniq
+    }.uniq.compact
    end
 
   def active_devs config_file
