@@ -147,7 +147,7 @@ describe PairSee do
 
     it "pretty output should be human-readable" do
       create_commit("[BAZ-1] code")
-      subject.pretty_card_data.should include "BAZ-1 1"
+      subject.pretty_card_data.should include "BAZ-1 commits: 1"
     end
 
     it "outputs card worked data in format: FOO-1 number-of-commits first-commit-date last-commit-date length-in-days" do

@@ -13,7 +13,7 @@ class PairSee
 
    def pretty_card_data
     card_data(card_prefix).map {|card_datum| 
-      "#{card_datum.keys.first} #{card_datum.values.first}"
+      "#{card_datum.keys.first} commits: #{card_datum.values.first}"
     }
    end
 
