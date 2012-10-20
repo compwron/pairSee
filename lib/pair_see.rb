@@ -3,6 +3,7 @@ class PairSee
   require_relative 'combo'
   require_relative 'date_combo'
   require_relative 'log_lines'
+  require_relative 'card'
 
   attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
@@ -14,23 +15,21 @@ class PairSee
    end
 
    def pretty_card_data
-    card_data(card_prefix).map {|card_datum| 
-      "#{card_datum.keys.first} commits: #{card_datum.values.first}"
+    card_data(card_prefix).map {|card| 
+      "#{card.card_name} commits: #{card.number_of_commits}"
     }
    end
 
    def card_data card_prefix
-    card_numbers(card_prefix).map { |card_number|
-      { card_number => commits_on_card(card_number) }
-    }.sort_by {|item| item.values.first}.reverse.first(30)
+    card_numbers(card_prefix).map { |card_name|
+      Card.new(card_name, commits_on_card(card_name))
+    }.sort_by { |card| 
+      card.number_of_commits
+    }.reverse.first(30)
    end
 
    def commits_on_card card_name
     log_lines.select{|line| line.contains_card_name?(card_name)}.count
-   end
-
-   def cards_worked card_prefix
-    log_lines.select{|line| line.contains_card?(card_prefix) }.count
    end
 
    def card_numbers card_prefix
@@ -45,6 +44,8 @@ class PairSee
     config = YAML.load_file(config_file)
     config['card_prefix']
    end
+
+   #################################################################
 
   def active_devs config_file
     config = YAML.load_file(config_file)

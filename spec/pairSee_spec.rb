@@ -3,6 +3,7 @@ require_relative "../lib/pair_see"
   require_relative '../lib/date_combo'
   require_relative '../lib/log_lines'  
   require_relative '../lib/log_line'
+  require_relative '../lib/card'
 
 describe PairSee do
   let(:current_date) { Date.today }
@@ -57,8 +58,8 @@ describe PairSee do
       
       data = subject.card_data("FOO")
 
-      three_commit_card = {"FOO-1" => 3}
-      one_commit_card = {"FOO-3" => 1}
+      three_commit_card = Card.new("FOO-1", 3)
+      one_commit_card = Card.new("FOO-1", 1)
 
       data.size.should == 3
       data.first.should == three_commit_card
@@ -70,8 +71,8 @@ describe PairSee do
       create_commit("[FOO-10]")
       create_commit("[FOO-100]")
       subject.card_data("FOO").count.should == 3
-      only_one_FOO1 = {"FOO-1" => 1}
-      only_one_FOO10 = {"FOO-10" => 1}
+      only_one_FOO1 = Card.new("FOO-1", 1)
+      only_one_FOO10 = Card.new("FOO-10", 1)
       subject.card_data("FOO").should include only_one_FOO1
       subject.card_data("FOO").should include only_one_FOO10
     end
@@ -82,31 +83,15 @@ describe PairSee do
 
     card_prefix = "FOO"
 
-    it "sees that a card has been worked" do
-      create_commit("[FOO-1]")
-      subject.cards_worked(card_prefix).should == 1
-    end
 
-    it "sees multidigit card number" do
-      create_commit("[FOO-8710581403530872]")
-      subject.cards_worked(card_prefix).should == 1
-    end
 
-    it "does not imagine that a card has been worked when it has not been" do
-      create_commit("whatever")
-      subject.cards_worked(card_prefix).should == 0
-    end
 
     it "does not break on a commit without a card mentioned" do
       create_commit("whatever")
       subject.card_data(card_prefix).should == []
     end
 
-    it "sees multiple cards worked" do
-      create_commit("[FOO-1] stuff")
-      create_commit("[FOO-1] more stuff")
-      subject.cards_worked(card_prefix).should == 2
-    end
+
 
     it "sees which cards have been worked" do
       create_commit("[FOO-1]")
@@ -142,8 +127,8 @@ describe PairSee do
       create_commit("[FOO-2] commit 3")
       number_of_cards = 2
       card_prefix = "FOO"
-      card_1_data = {"FOO-1" => 1}
-      card_2_data = {"FOO-2" => 3}
+      card_1_data = Card.new("FOO-1", 1)
+      card_2_data = Card.new("FOO-2", 3)
       subject.card_data(card_prefix).size.should == number_of_cards
       subject.card_data(card_prefix).should include card_1_data
       subject.card_data(card_prefix).should include card_2_data
