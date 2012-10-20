@@ -46,6 +46,12 @@ describe PairSee do
   # end
 
   describe "#card_data" do
+    it "apparently needs to see card names without brackets" do
+      create_commit("[FOO-1] one")
+      create_commit("FOO-1 two")
+      subject.card_data("FOO").should == [Card.new("FOO-1", 2)]
+    end
+
     it "in order by number of commits, with most at the top (to see what I should look at most closely)" do
       create_commit("[FOO-1] one")
       create_commit("[FOO-1] two")
