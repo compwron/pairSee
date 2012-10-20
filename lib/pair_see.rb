@@ -20,7 +20,7 @@ class PairSee
    def card_data card_prefix
     card_numbers(card_prefix).map { |card_number|
       { card_number => commits_on_card(card_number) }
-    }.sort_by {|item| item.values.first}.reverse
+    }.sort_by {|item| item.values.first}.reverse.first(30)
    end
 
    def commits_on_card card_name
