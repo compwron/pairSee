@@ -34,7 +34,7 @@ class PairSee
     log_lines.select { |line| 
       line.contains_card?(card_prefix) 
     }.map { |line|
-      line.card_number(card_prefix)
+      line.card_name(card_prefix)
     }.uniq.compact
    end
 
@@ -160,8 +160,8 @@ class PairSee
       line.match(card_name)
     end
 
-    def card_number card_prefix
-      regex = /#{card_prefix}-(\d+)/
+    def card_name card_prefix
+      regex = /(#{card_prefix}-\d+)/
       matcher = line.match(regex)
       matcher.nil? ? nil : (line.match regex)[1]
     end

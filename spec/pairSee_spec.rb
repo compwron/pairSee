@@ -109,6 +109,9 @@ describe PairSee do
       subject.pretty_card_data(card_prefix).should include "FOO-1 1"
     end
 
+    it "should not read only part of a card number" do
+    end
+
     it "outputs card worked data in format: FOO-1 number-of-commits first-commit-date last-commit-date length-in-days" do
     end
   end
