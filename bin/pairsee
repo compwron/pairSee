@@ -4,7 +4,7 @@ require_relative "../lib/pair_see"
 require 'trollop'
 
 opts = Trollop::options do
-  opt :root, "Folder in which .git folder is",  :default => "."  
+  opt :root, "Folder in which .git folder is", :default => "."
   opt :config, "location of config file, example: ../../config/config.yml", :default => "#{__FILE__}/../../config/config.yml"
   opt :after, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
   opt :extras, "See all commits without the name of any dev in them", :default => false

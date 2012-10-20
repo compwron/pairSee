@@ -12,40 +12,40 @@ class PairSee
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
     @card_prefix = get_card_prefix(config_file)
-   end
+  end
 
-   def pretty_card_data
-    card_data(card_prefix).map {|card| 
+  def pretty_card_data
+    card_data(card_prefix).map { |card|
       "#{card.card_name} commits: #{card.number_of_commits}"
     }
-   end
+  end
 
-   def card_data card_prefix
+  def card_data card_prefix
     card_numbers(card_prefix).map { |card_name|
       Card.new(card_name, commits_on_card(card_name))
-    }.sort_by { |card| 
+    }.sort_by { |card|
       card.number_of_commits
     }.reverse.first(30)
-   end
+  end
 
-   def commits_on_card card_name
-    log_lines.select{|line| line.contains_card_name?(card_name)}.count
-   end
+  def commits_on_card card_name
+    log_lines.select { |line| line.contains_card_name?(card_name) }.count
+  end
 
-   def card_numbers card_prefix
-    log_lines.select { |line| 
-      line.contains_card?(card_prefix) 
+  def card_numbers card_prefix
+    log_lines.select { |line|
+      line.contains_card?(card_prefix)
     }.map { |line|
       line.card_name(card_prefix)
     }.uniq.compact
-   end
+  end
 
-   def get_card_prefix config_file
+  def get_card_prefix config_file
     config = YAML.load_file(config_file)
     config['card_prefix']
-   end
+  end
 
-   #################################################################
+  #################################################################
 
   def active_devs config_file
     config = YAML.load_file(config_file)
@@ -58,12 +58,12 @@ class PairSee
   end
 
   def pair_commits
-    dev_pairs.map { |person1, person2| 
+    dev_pairs.map { |person1, person2|
       Combo.new(commits_for_pair(person1, person2).count, person1, person2)
     }
   end
 
-  def solo_commits  
+  def solo_commits
     devs.map { |dev|
       Combo.new(log_lines.solo_commits(devs, dev).count, dev)
     }
@@ -77,7 +77,7 @@ class PairSee
     log_lines.commits_for_pair person1, person2
   end
 
-  def commits_not_by_known_pair 
+  def commits_not_by_known_pair
     log_lines.commits_not_by_known_pair devs
   end
 
@@ -98,7 +98,7 @@ class PairSee
   end
 
   def least_recent_pair
-    devs.select {|dev| 
+    devs.select { |dev|
       log_lines.last.line.match(dev)
     }.join(", ")
   end
@@ -106,7 +106,7 @@ class PairSee
   def unpaired_in_range
     dev_pairs.select { |person1, person2|
       most_recent_commit_date(person1, person2).nil?
-    }.map { |person1, person2| 
+    }.map { |person1, person2|
       "#{person1}, #{person2}"
     }
   end
