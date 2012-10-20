@@ -35,6 +35,21 @@ describe PairSee do
   end
 
   describe "see cards worked on" do
+    it "should not read only part of a card number" do
+      create_commit("[FOO-1]")
+      create_commit("[FOO-10]")
+      create_commit("[FOO-100]")
+      subject.card_data("FOO").count.should == 3
+      only_one_FOO1 = {"FOO-1" => 1}
+      only_one_FOO10 = {"FOO-10" => 1}
+      subject.card_data("FOO").should include only_one_FOO1
+      subject.card_data("FOO").should include only_one_FOO10
+    end
+
+    it "should see card prefix" do
+      subject.get_card_prefix(config).should == "BAZ"
+    end
+
     card_prefix = "FOO"
 
     it "sees that a card has been worked" do
@@ -105,12 +120,11 @@ describe PairSee do
     end
 
     it "pretty putput should be human-readable" do
-      create_commit("[FOO-1] code")
-      subject.pretty_card_data(card_prefix).should include "FOO-1 1"
+      create_commit("[BAZ-1] code")
+      subject.pretty_card_data.should include "BAZ-1 1"
     end
 
-    it "should not read only part of a card number" do
-    end
+   
 
     it "outputs card worked data in format: FOO-1 number-of-commits first-commit-date last-commit-date length-in-days" do
     end

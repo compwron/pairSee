@@ -2,15 +2,16 @@ class PairSee
   require 'yamler'
   require 'time'
 
-  attr_reader :log_lines, :devs, :dev_pairs
+  attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
   def initialize git_home, config_file, date_string
     @log_lines = LogLines.new git_home, date_string
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
+    @card_prefix = get_card_prefix(config_file)
    end
 
-   def pretty_card_data card_prefix
+   def pretty_card_data
     card_data(card_prefix).map {|card_datum| 
       "#{card_datum.keys.first} #{card_datum.values.first}"
     }
@@ -36,6 +37,11 @@ class PairSee
     }.map { |line|
       line.card_name(card_prefix)
     }.uniq.compact
+   end
+
+   def get_card_prefix config_file
+    config = YAML.load_file(config_file)
+    config['card_prefix']
    end
 
   def active_devs config_file
@@ -157,7 +163,8 @@ class PairSee
     end
 
     def contains_card_name? card_name
-      line.match(card_name)
+      regex = /\[#{card_name}\]/
+      line.match(regex)
     end
 
     def card_name card_prefix
