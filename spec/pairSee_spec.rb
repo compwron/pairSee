@@ -35,6 +35,32 @@ describe PairSee do
   end
 
   describe "see cards worked on" do
+    it "make a list of cards with most commits / longest commit history (rather than displaying all" do
+    end
+
+    it "find out why some cards are displaying zero when run against the big data set. O.o" do
+    end
+
+    it "in order by number of commits, with most at the top (to see what I should look at most closely)" do
+      create_commit("[FOO-1] one")
+      create_commit("[FOO-1] two")
+      create_commit("[FOO-1] three")
+      
+      create_commit("[FOO-2] one ")
+      create_commit("[FOO-2] two ")
+
+      create_commit("[FOO-3] one ")
+      
+      data = subject.card_data("FOO")
+
+      three_commit_card = {"FOO-1" => 3}
+      one_commit_card = {"FOO-3" => 1}
+
+      data.size.should == 3
+      data.first.should == three_commit_card
+      data.last.should == one_commit_card
+    end
+
     it "should not read only part of a card number" do
       create_commit("[FOO-1]")
       create_commit("[FOO-10]")
