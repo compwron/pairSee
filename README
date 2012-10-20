@@ -10,6 +10,7 @@ Options:
        --extras, -e:   See all commits without the name of any dev in them
        --latest, -l:   See dates of most recent commits by pairs
   --recommended, -o:   See active devs who have not paired (and therefore should)
+  		--cards, -d:   See cards and number of commits on each
          --help, -h:   Show this message
 
 to put on path:
@@ -19,5 +20,12 @@ to run tests:
 rspec
 
 Config file: config/config.yml
-contains names, a la
+contains names and card prefix, a la
 names: Person1 Person2 Person3
+card_prefix: FOO
+
+So if your commit log looks like 
+"Bob/Alice [FOO-1] wrote code"
+"Alice [FOO-1] stuff"
+"Sarah|Alice [FOO-2] code and stuff"
+
