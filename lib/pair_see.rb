@@ -16,20 +16,22 @@ class PairSee
 
   def pretty_card_data
     card_data(card_prefix).map { |card|
+      p card
       "#{card.card_name} commits: #{card.number_of_commits}"
     }
   end
 
   def card_data card_prefix
     card_numbers(card_prefix).map { |card_name|
-      Card.new(card_name, commits_on_card(card_name))
+      commits = commits_on_card(card_name)
+      Card.new(card_name, commits.count, commits.first.date, commits.last.date)
     }.sort_by { |card|
       card.number_of_commits
     }.reverse.first(30)
   end
 
   def commits_on_card card_name
-    log_lines.select { |line| line.contains_card_name?(card_name) }.count
+    log_lines.select { |line| line.contains_card_name?(card_name) }
   end
 
   def card_numbers card_prefix

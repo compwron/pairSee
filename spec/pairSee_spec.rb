@@ -49,7 +49,7 @@ describe PairSee do
     it "apparently needs to see card names without brackets" do
       create_commit("[FOO-1] one")
       create_commit("FOO-1 two")
-      subject.card_data("FOO").should == [Card.new("FOO-1", 2)]
+      subject.card_data("FOO").should == [Card.new("FOO-1", 2, current_date, current_date)]
     end
 
     it "in order by number of commits, with most at the top (to see what I should look at most closely)" do
@@ -64,8 +64,8 @@ describe PairSee do
 
       data = subject.card_data("FOO")
 
-      three_commit_card = Card.new("FOO-1", 3)
-      one_commit_card = Card.new("FOO-1", 1)
+      three_commit_card = Card.new("FOO-1", 3, current_date, current_date)
+      one_commit_card = Card.new("FOO-1", 1, current_date, current_date)
 
       data.size.should == 3
       data.first.should == three_commit_card
@@ -79,8 +79,8 @@ describe PairSee do
       create_commit("[FOO-2] commit 3")
       number_of_cards = 2
       card_prefix = "FOO"
-      card_1_data = Card.new("FOO-1", 1)
-      card_2_data = Card.new("FOO-2", 3)
+      card_1_data = Card.new("FOO-1", 1, current_date, current_date)
+      card_2_data = Card.new("FOO-2", 3, current_date, current_date)
       subject.card_data(card_prefix).size.should == number_of_cards
       subject.card_data(card_prefix).should include card_1_data
       subject.card_data(card_prefix).should include card_2_data
@@ -91,8 +91,8 @@ describe PairSee do
       create_commit("[FOO-10]")
       create_commit("[FOO-100]")
       subject.card_data("FOO").count.should == 3
-      only_one_FOO1 = Card.new("FOO-1", 1)
-      only_one_FOO10 = Card.new("FOO-10", 1)
+      only_one_FOO1 = Card.new("FOO-1", 1, current_date, current_date)
+      only_one_FOO10 = Card.new("FOO-10", 1, current_date, current_date)
       subject.card_data("FOO").should include only_one_FOO1
       subject.card_data("FOO").should include only_one_FOO10
     end
