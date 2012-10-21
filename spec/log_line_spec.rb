@@ -16,5 +16,10 @@ describe LogLine do
       LogLine.new("FOO-515 stuff").contains_card_name?("FOO-51").should == false
       LogLine.new("FOO-51 other stuff").contains_card_name?("FOO-51").should == true
     end
+
+    it "should detect multiple-card commit" do
+      LogLine.new("[FOO-1, FOO-2] stuff").contains_card_name?("FOO-1").should == true
+      LogLine.new("[FOO-1, FOO-2] stuff").contains_card_name?("FOO-2").should == true
+    end
   end
 end

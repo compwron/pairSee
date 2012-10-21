@@ -30,7 +30,9 @@ class PairSee
   end
 
   def commits_on_card card_name
-    log_lines.select { |line| line.contains_card_name?(card_name) }
+    commits = log_lines.select { |line| line.contains_card_name?(card_name) }
+    if commits.empty? then raise "Detected no commits for a known commit name #{card_name}" end
+    commits
   end
 
   def card_numbers card_prefix
