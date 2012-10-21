@@ -13,24 +13,11 @@ describe PairSee do
     `cd #{repo} && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
   end
 
-  before do
+  before :each do
     `mkdir #{repo} && git init #{repo}`
-
-    create_commit("Person1/Person2 made foo")
-    create_commit("Person1 Person3 made bar")
-    create_commit("Person3 made baz")
-    create_commit("Person1,Person3 made cat")
-    create_commit("PErson4|person5 thing a thing thing") # testing capitalization typos
-    create_commit("nameless commit")
-    create_commit("Merge remote-tracking branch 'origin/master'")
-    create_commit("Person5: Merge thing and foo")
-    create_commit("Person4 Person6 just a commit by this pair")
-    create_commit("Person4 Person7 most recent commit by this pair")
-    create_commit("Person4 Person6 most recent commit by this pair")
-    create_commit("ActiveDev wrote some code")
   end
 
-  after do
+  after :each do
     `rm -rf #{repo}`
   end
 
@@ -38,6 +25,9 @@ describe PairSee do
     let(:all_commits) { subject.all_commits }
 
     it "contains counts for all pairs which have committed" do
+      create_commit("Person1/Person3 code")
+      create_commit("Person1/Person3 more code")
+      create_commit("Person1/Person2 code")
       all_commits.should include "Person1, Person3: 2"
       all_commits.should include "Person1, Person2: 1"
     end
@@ -47,11 +37,15 @@ describe PairSee do
     end
 
     it "gets all commits which only have person1's name on them" do
+      create_commit("Person3 code")
       all_commits.should_not include "Person1: 0"
       all_commits.should include "Person3: 1"
     end
 
     it "sorts all by count" do
+      create_commit("Person1/Person3 code")
+      create_commit("Person1/Person3 more code")
+      create_commit("Person1/Person2 code") 
       all_commits.last.should end_with ": 2"
       all_commits.first.should end_with ": 1"
     end
@@ -65,29 +59,34 @@ describe PairSee do
     end
 
     it "sees names with capitalization typos" do
+      create_commit("PErson4|person5 thing a thing thing")
       all_commits.should include "Person4, Person5: 1"
     end
 
     it "does not wrongfully exclude commits with 'merge' in the message from the count" do
+      create_commit("Person5: Merge thing and foo")
       all_commits.should include "Person5: 1"
     end
   end
 
   describe "#commits_not_by_known_pair" do
     it "prints a list of commits it did not connect with a name" do
+      create_commit("nameless")
+      create_commit("Person1, Person3: code")
       extras = subject.commits_not_by_known_pair.map(&:to_s)
-      extras[0].should include "nameless" #hack to avoid regex right now
+      extras[0].should include "nameless" 
       extras.should_not include "Person1, Person3: made cat"
-      extras.should_not include "Person1, Person3: 2"
     end
 
     it "does not include merge commits in the list of commits without dev names" do
+      create_commit("Merge remote-tracking branch 'origin/master'")
       subject.commits_not_by_known_pair.should_not include "Merge"
     end
   end
 
   describe "#most_recent_commit_date" do
     it "sees most recent commit by a pair" do
+      create_commit("Person4|Person5 code")
       subject.most_recent_commit_date("Person4", "Person5").should == current_date
       subject.most_recent_commit_date("Person4", "Person1").should be_nil
     end
@@ -95,11 +94,15 @@ describe PairSee do
 
   describe "#all_most_recent_commits" do
     it "gets most recent dates of all pair commits" do
+      create_commit("Person1|Person3 code")
+      create_commit("Person6")
       subject.all_most_recent_commits.should include "Person1, Person3: #{current_date.to_s}"
       subject.all_most_recent_commits.should include "Person1, Person6: not yet"
     end
 
     it "gets most recent dates of all pair commits, sorted temporally" do
+      create_commit("Person1|Person2 code")
+      create_commit("Person3")
       subject.all_most_recent_commits.first.should include "Person1, Person2: #{current_date.to_s}"
       subject.all_most_recent_commits.last.should include "not yet"
     end
@@ -107,6 +110,8 @@ describe PairSee do
 
   describe "#unpaired_in_range" do
     it "recommends pairs based on least recent active dev pair" do
+      create_commit("Person1|Person2 code")
+      create_commit("ActiveDev code")
       subject.unpaired_in_range.should include "Person1, ActiveDev"
       subject.unpaired_in_range.should_not include "Person1, Person2"
     end
@@ -114,7 +119,10 @@ describe PairSee do
 
   describe "#active_devs" do
     it "identifies active devs" do
+      create_commit("Person1")
+      create_commit("ActiveDev")
       active_devs = subject.active_devs(config)
+      
       active_devs.should include "ActiveDev"
       active_devs.should include "Person1"
       active_devs.should_not include "InactiveDev"
@@ -123,6 +131,7 @@ describe PairSee do
 
   describe "#is_active" do
     it "is true when the dev is active" do
+      create_commit("ActiveDev")
       subject.is_active("ActiveDev").should be_true
       subject.is_active("InactiveDev").should be_false
     end
@@ -130,6 +139,8 @@ describe PairSee do
 
   describe "#least_recent_pair" do
     it "sees least recent pairing" do
+      create_commit("Person1, Person2")
+      create_commit("ActiveDev")
       subject.least_recent_pair.should include "Person1, Person2"
       subject.least_recent_pair.should_not include "ActiveDev"
     end
