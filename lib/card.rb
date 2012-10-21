@@ -14,7 +14,7 @@ class Card
   # end
 
   def duration
-    (last_date - first_date).to_i + 1
+    (first_date - last_date).to_i + 1
   end
 
   def == other
