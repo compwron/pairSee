@@ -1,7 +1,12 @@
-example usage 
-bin/pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
-pairsee --extras --root ../../my_code
-pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by all devs who have committed since given date (purpose of this is to exclude people who are no longer committers)
+Usage cases:
+1. See what pairs have commited together most in/frequenctly this month: $ pairsee --after 2012-10-01
+2. See what cards have been in play the longest this month: $ pairsee --cards --after 2012-10-01
+3. See commits without pair names on them this month: $ pairsee --extras --after 2012-10-01
+
+Example usage: 
+$ pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
+$ pairsee --extras --root ../../my_code
+$ pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by all devs who have committed since given date (purpose of this is to exclude people who are no longer committers)
 
 Options:
      --root, -r <s>:   Folder in which .git folder is (default: .)
@@ -10,7 +15,7 @@ Options:
        --extras, -e:   See all commits without the name of any dev in them
        --latest, -l:   See dates of most recent commits by pairs
   --recommended, -o:   See active devs who have not paired (and therefore should)
-  		--cards, -d:   See cards and number of commits on each
+        --cards, -d:   See cards and number of commits on each
          --help, -h:   Show this message
 
 to put on path:
@@ -28,4 +33,8 @@ So if your commit log looks like
 "Bob/Alice [FOO-1] wrote code"
 "Alice [FOO-1] stuff"
 "Sarah|Alice [FOO-2] code and stuff"
+
+Then your config file will look like:
+names: Bob ALice Sarah
+card_prefix: FOO
 
