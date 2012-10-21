@@ -1,5 +1,5 @@
 class Card
-  attr_reader :card_name, :number_of_commits, :first_date, :last_date
+  attr_reader :card_name, :number_of_commits
 
   def initialize card_name, number_of_commits, first_date, last_date
     @card_name = card_name
@@ -7,14 +7,8 @@ class Card
     @first_date, @last_date = first_date, last_date
   end
 
-  # def first_commit_date
-  # end
-
-  # def last_commit_date
-  # end
-
   def duration
-    (first_date - last_date).to_i + 1
+    (@first_date - @last_date).to_i + 1
   end
 
   def == other

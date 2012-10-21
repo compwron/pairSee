@@ -30,9 +30,7 @@ class PairSee
   end
 
   def commits_on_card card_name
-    commits = log_lines.select { |line| line.contains_card_name?(card_name) }
-    if commits.empty? then raise "Detected no commits for a known commit name #{card_name}" end
-    commits
+    log_lines.select { |line| line.contains_card_name?(card_name) }
   end
 
   def card_numbers card_prefix
@@ -47,8 +45,6 @@ class PairSee
     config = YAML.load_file(config_file)
     config['card_prefix']
   end
-
-  #################################################################
 
   def active_devs config_file
     config = YAML.load_file(config_file)
