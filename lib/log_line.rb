@@ -15,7 +15,7 @@ class LogLine
   end
 
   def contains_card_name? card_name
-    regex = /#{card_name}[\]\s,]/
+    regex = /#{card_name}[\]\s,:]/
     matcher = line.match(regex)
     ! matcher.nil?
   end

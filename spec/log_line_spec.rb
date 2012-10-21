@@ -21,5 +21,9 @@ describe LogLine do
       LogLine.new("[FOO-1, FOO-2] stuff").contains_card_name?("FOO-1").should == true
       LogLine.new("[FOO-1, FOO-2] stuff").contains_card_name?("FOO-2").should == true
     end
+
+    it "doesn't mind bracketless with immediate colon" do
+      LogLine.new("FOO-1: stuff").contains_card_name?("FOO-1").should == true
+    end
   end
 end
