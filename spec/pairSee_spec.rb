@@ -128,10 +128,10 @@ describe PairSee do
   end
 
   describe "#commits_on_card" do
-    it "given card name, sees number of commits on a card" do
+    it "given card name, sees commits on a card" do
       create_commit("[FOO-1]")
       card_name = "FOO-1"
-      subject.commits_on_card(card_name).should == 1
+      subject.commits_on_card(card_name).count.should == 1
     end
 
     it "sees multiple commits on a card" do
@@ -139,7 +139,7 @@ describe PairSee do
       create_commit("[FOO-1] more code")
       create_commit("[FOO-2] code for other card")
       card_name = "FOO-1"
-      subject.commits_on_card(card_name).should == 2
+      subject.commits_on_card(card_name).count.should == 2
     end
   end
 
