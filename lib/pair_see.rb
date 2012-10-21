@@ -25,7 +25,7 @@ class PairSee
       commits = commits_on_card(card_name)
       Card.new(card_name, commits.count, commits.first.date, commits.last.date)
     }.sort_by { |card|
-      card.number_of_commits
+      card.duration
     }.reverse.first(30)
   end
 
