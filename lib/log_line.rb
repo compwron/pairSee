@@ -6,8 +6,18 @@ class LogLine
     @line = line
   end
 
-  def authored_by? *people
-    people.all? { |person| /#{person}/i =~ line }
+  def authored_by?(svn_committers, *people)
+    name_in_line = people.all? { |person| /#{person}/i =~ line }
+    if (name_in_line)
+      return true
+    end
+
+    if (!svn_committers.empty?)
+      return people.all? { |person|
+        svn_committers[person] != nil
+      }
+      return false
+    end
   end
 
   def contains_card? card_prefix
@@ -17,7 +27,7 @@ class LogLine
   def contains_card_name? card_name
     regex = /#{card_name}[\]\s,:]/
     matcher = line.match(regex)
-    ! matcher.nil?
+    !matcher.nil?
   end
 
   def card_name card_prefix
@@ -35,7 +45,7 @@ class LogLine
   end
 
   def not_by_pair? devs
-    devs.any? { |dev| authored_by?(dev) || merge_commit? }
+    devs.any? { |dev| authored_by?([], dev) || merge_commit? }
   end
 
   def to_s

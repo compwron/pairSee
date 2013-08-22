@@ -11,7 +11,7 @@ class SvnLogLines
     mappings = {}
     config['committers'].split(",").map {|pairing|
       pair = pairing.split(" ")
-       mappings.merge!({pair.first => pair.last})
+       mappings.merge!({pair.last => pair.first})
     }
      mappings
   end
@@ -26,11 +26,5 @@ class SvnLogLines
     lines
   end
 
-  def authored_by? *people
-    name_in_line = people.all? { |person| /#{person}/i =~ line }
-    if (name_in_line)
-      return true
-    end
-    people.all? {|person| @committers[person] != nil}
-  end
+
 end

@@ -19,11 +19,11 @@ class GitLogLines
   end
 
   def active? dev
-    any? { |log_line| log_line.authored_by?(dev) }
+    any? { |log_line| log_line.authored_by?([], dev) }
   end
 
   def commits_for_pair person1, person2
-    select { |log_line| log_line.authored_by?(person1, person2) }
+    select { |log_line| log_line.authored_by?([], person1, person2) }
   end
 
   def commits_not_by_known_pair devs
@@ -32,7 +32,7 @@ class GitLogLines
 
   def solo_commits devs, dev
     select { |log_line|
-      log_line.authored_by?(dev) && (devs - [dev]).none? { |d| log_line.authored_by?(d) }
+      log_line.authored_by?([], dev) && (devs - [dev]).none? { |d| log_line.authored_by?([], d) }
     }
   end
 end
