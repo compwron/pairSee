@@ -14,7 +14,9 @@ opts = Trollop::options do
 end
 
 def run_command opts
-  pair_see = PairSee.new(opts[:root], opts[:config], opts[:after])
+  log_lines = GitLogLines.new(opts[:root], opts[:after]).lines
+
+  pair_see = PairSee.new(log_lines, opts[:config])
   if opts[:extras]
     pair_see.commits_not_by_known_pair
   elsif opts[:latest]

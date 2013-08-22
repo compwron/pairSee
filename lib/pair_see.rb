@@ -7,8 +7,8 @@ class PairSee
 
   attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
-  def initialize git_home, config_file, date_string
-    @log_lines = GitLogLines.new git_home, date_string
+  def initialize log_lines, config_file
+    @log_lines = log_lines
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
     @card_prefix = get_card_prefix(config_file)

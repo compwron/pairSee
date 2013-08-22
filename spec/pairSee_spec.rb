@@ -4,10 +4,12 @@ describe PairSee do
   let(:current_date) { Date.today }
   let(:never) { Date.parse("1970-1-1") }
   let(:repo) { 'fake_git' }
-  let(:config) { 'spec/spec_config.yml' }
   let(:after_date) { '0-1-1' }
+  let(:log_lines) { GitLogLines.new(repo, after_date)}
+  let(:config) { 'spec/spec_config.yml' }
+  
 
-  subject { PairSee.new repo, config, after_date }
+  subject { PairSee.new log_lines, config }
 
   def create_commit message
     `cd #{repo} && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
