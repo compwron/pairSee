@@ -1,6 +1,6 @@
 require_relative 'log_line'
 
-class LogLines
+class GitLogLines
   include Enumerable
 
   def initialize git_home, date_string

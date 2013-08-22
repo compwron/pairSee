@@ -2,13 +2,13 @@ class PairSee
   require 'yamler'
   require_relative 'combo'
   require_relative 'date_combo'
-  require_relative 'log_lines'
+  require_relative 'git_log_lines'
   require_relative 'card'
 
   attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
   def initialize git_home, config_file, date_string
-    @log_lines = LogLines.new git_home, date_string
+    @log_lines = GitLogLines.new git_home, date_string
     @devs = active_devs(config_file)
     @dev_pairs = devs.combination(2)
     @card_prefix = get_card_prefix(config_file)
