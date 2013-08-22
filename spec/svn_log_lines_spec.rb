@@ -26,7 +26,7 @@ describe SvnLogLines do
     let(:log_location) { 'spec/fixtures/one_commit_without_author.txt' }
 
     it "should see that, in absence of line author, line is authored by the name mapped to commitID1" do
-      #log_lines.lines.first.authored_by?("Alice").should be_true
+      log_lines.lines.first.authored_by?("Alice").should be_true
     end
   end
 

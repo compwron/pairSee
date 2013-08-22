@@ -27,7 +27,10 @@ class SvnLogLines
   end
 
   def authored_by? *people
-    people.all? { |person| /#{person}/i =~ line }
-
+    name_in_line = people.all? { |person| /#{person}/i =~ line }
+    if (name_in_line)
+      return true
+    end
+    people.all? {|person| @committers[person] != nil}
   end
 end
