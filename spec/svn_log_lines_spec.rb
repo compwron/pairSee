@@ -36,4 +36,10 @@ describe SvnLogLines do
     end
   end
 
+  describe "#active?" do
+    it "should know that a dev is active because dev's name is on a log line" do
+      log_lines.active?("Alice")
+    end
+  end
+
 end
