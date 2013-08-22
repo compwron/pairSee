@@ -17,7 +17,7 @@ end
 
 def run_command opts
   if opts[:svn]
-    log_lines = SvnLogLines.new(opts[:svn_logfile], opts[:after]).lines
+    log_lines = SvnLogLines.new(opts[:svn_logfile], opts[:after], opts[:config]).lines
   else
     log_lines = GitLogLines.new(opts[:root], opts[:after]).lines
   end
