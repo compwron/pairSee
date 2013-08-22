@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require_relative "../lib/pair_see"
 require_relative '../lib/combo'
 require_relative '../lib/date_combo'
