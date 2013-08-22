@@ -17,9 +17,11 @@ end
 
 def run_command opts
   if opts[:svn]
-    log_lines = SvnLogLines.new(opts[:svn_logfile], opts[:after], opts[:config]).lines
+    puts "Running in SVN mode"
+    log_lines = SvnLogLines.new(opts[:svn_logfile], opts[:after], opts[:config])
   else
-    log_lines = GitLogLines.new(opts[:root], opts[:after]).lines
+    puts "Running in GIT mode"
+    log_lines = GitLogLines.new(opts[:root], opts[:after])
   end
 
   pair_see = PairSee.new(log_lines, opts[:config])

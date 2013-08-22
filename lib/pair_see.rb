@@ -49,10 +49,15 @@ class PairSee
   def active_devs config_file
     config = YAML.load_file(config_file)
     devs_in_config = config['names'].split(" ")
-    devs_in_config.select { |dev| is_active(dev) }
+    devs_in_config.select { |dev|
+      puts "is active? #{dev} #{is_active(dev)}"
+      is_active(dev)
+    }
   end
 
   def is_active dev
+    puts "ia log lines: #{log_lines}"
+
     log_lines.active? dev
   end
 

@@ -1,6 +1,5 @@
 class SvnLogLines
-  #include Enumerable
-  attr_reader :lines
+  include Enumerable
 
   def initialize(log_location, after_date, config)
     @lines = lines_from(log_location)
@@ -36,4 +35,7 @@ class SvnLogLines
     }
     false
   end
+
+  private
+  attr_reader :lines
 end

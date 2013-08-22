@@ -2,7 +2,7 @@ require_relative 'log_line'
 
 class GitLogLines
   include Enumerable
-  attr_reader :lines
+
 
   def initialize git_home, date_string
     @lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map { |line|
@@ -19,7 +19,11 @@ class GitLogLines
   end
 
   def active? dev
-    any? { |log_line| log_line.authored_by?([], dev) }
+    puts "a"
+    any? { |log_line|
+      puts "authored by: #{log_line.authored_by?([], dev)}"
+      log_line.authored_by?([], dev)
+    }
   end
 
   def commits_for_pair person1, person2
@@ -35,4 +39,7 @@ class GitLogLines
       log_line.authored_by?([], dev) && (devs - [dev]).none? { |d| log_line.authored_by?([], d) }
     }
   end
+
+  private
+  attr_reader :lines
 end
