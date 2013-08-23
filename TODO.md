@@ -12,7 +12,6 @@ Svn data is being read in from file to prevent errors caused by not being able t
  desired behavior: if there is no name in the commit, use the committerID as the identity. If there are one or more names in the commit message, prefer to use those. 
 
 
- fix --after for SVN mode
  fix --extras for SVN mode (should return no commits if all commits have an ID - which I think they do)
  fix --latest for SVN mode (date formatting issue)
  fox --cards for SVN moce (card separator is different - parameterize it?)
