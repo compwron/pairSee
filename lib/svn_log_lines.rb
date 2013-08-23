@@ -46,6 +46,22 @@ class SvnLogLines
     lines.each &block
   end
 
+  def commits_for_pair person1, person2
+    select { |log_line| log_line.authored_by?([], person1, person2) }
+  end
+
+  def solo_commits devs, dev
+    select { |log_line|
+      log_line.authored_by?(committer_mappings(@config), dev) && (devs - [dev]).none? { |d|
+        log_line.authored_by?(committer_mappings(@config), d)
+      }
+    }
+  end
+
+  def to_s
+    @lines.map { |line| line.to_s }
+  end
+
   private
   attr_reader :lines
 end
