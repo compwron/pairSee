@@ -4,9 +4,15 @@ class SvnLogLines
   include Enumerable
 
   def initialize(log_location, after_date, config)
-    @lines = lines_from(log_location)
+    @lines = except_lines_after(lines_from(log_location), after_date)
     @config = config
     @committers = committer_mappings(config)
+  end
+
+  def except_lines_after(lines, after_date)
+    lines.reject{|line|
+      line.date < Date.parse(after_date)
+    }
   end
 
   def committer_mappings(config)
@@ -23,7 +29,7 @@ class SvnLogLines
     lines = []
     File.open(log_location) do |infile|
       while (line = infile.gets)
-        lines << LogLine.new(line)
+        lines << LogLine.new(line) unless line.strip.empty?
       end
     end
     lines

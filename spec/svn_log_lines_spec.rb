@@ -66,4 +66,14 @@ describe SvnLogLines do
       log_lines.solo_commits(["Alice", "Bob"], "Alice").first.authored_by?("Alice").should be_true
     end
   end
+
+  describe "#after" do
+    d = Date.today + 1
+    day_after_tomorrow = "#{d.year}-#{d.month}-#{d.day}"
+
+    let(:after_date) { day_after_tomorrow }
+    it "should only cound lines that were added after the passed-in date" do
+       log_lines.size.should == 0
+    end
+  end
 end
