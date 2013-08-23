@@ -44,11 +44,14 @@ class LogLine
   end
 
   def date
-    Date.parse(line.split(" ")[0])
+    regex = /(\d{4}-\d{2}-\d{2})/
+    matcher = line.match(regex)
+    part_to_parse = matcher.nil? ? "" : (line.match regex)[1]
+    Date.parse(part_to_parse)
   end
 
-  def not_by_pair? devs
-    devs.any? { |dev| authored_by?([], dev) || merge_commit? }
+  def not_by_pair? devs, svn_committers=[]
+    devs.any? { |dev| authored_by?(svn_committers, dev) || merge_commit? }
   end
 
   def to_s

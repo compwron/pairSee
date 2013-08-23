@@ -66,5 +66,4 @@ describe SvnLogLines do
       log_lines.solo_commits(["Alice", "Bob"], "Alice").first.authored_by?("Alice").should be_true
     end
   end
-
 end

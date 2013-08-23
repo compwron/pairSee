@@ -26,4 +26,22 @@ describe LogLine do
       LogLine.new("FOO-1: stuff").contains_card_name?("FOO-1").should == true
     end
   end
+
+  describe "#date" do
+    it "should recognize date in GIT format line" do
+      line = "2012-10-21 10:54:47 -0500 message"
+      date = LogLine.new(line).date
+      date.year.should == 2012
+      date.month.should == 10
+      date.day.should == 21
+    end
+
+    it "should recognize date in SVN format line" do
+      line = " r1196 | committerID | 2013-08-20 18:13:44 -0500 (Tue, 20 Aug 2013) | 2 lines  [cardNumber] Alice and Bob -  commit message"
+      date = LogLine.new(line).date
+      date.year.should == 2013
+      date.month.should == 8
+      date.day.should == 20
+    end
+  end
 end

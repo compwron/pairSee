@@ -62,6 +62,10 @@ class SvnLogLines
     @lines.map { |line| line.to_s }
   end
 
+  def commits_not_by_known_pair devs
+    reject { |log_line| log_line.not_by_pair? devs, committer_mappings(@config) }
+  end
+
   private
   attr_reader :lines
 end
