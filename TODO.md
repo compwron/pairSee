@@ -11,7 +11,4 @@ Svn data is being read in from file to prevent errors caused by not being able t
 
  desired behavior: if there is no name in the commit, use the committerID as the identity. If there are one or more names in the commit message, prefer to use those. 
 
-
- fix --latest for SVN mode (date formatting issue)
- fox --cards for SVN moce (card separator is different - parameterize it?)
- fix --recommended for SVN moce (same date issue as --latest)
+ fix --cards for SVN moce (card separator is different - parameterize it?)
