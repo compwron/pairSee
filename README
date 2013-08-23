@@ -38,3 +38,9 @@ Then your config file will look like:
 names: Bob ALice Sarah
 card_prefix: FOO
 
+
+Svn data is being read in from file to prevent errors caused by not being able to access the server (because svn log requires that the server be accessible)
+Svn log is assumed to be generated with this format: `svn log | perl -l40pe 's/^-+/\n/'`
+
+
+
