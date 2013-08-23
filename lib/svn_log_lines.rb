@@ -1,3 +1,5 @@
+require_relative 'log_line'
+
 class SvnLogLines
   include Enumerable
 
@@ -34,6 +36,14 @@ class SvnLogLines
       end
     }
     false
+  end
+
+  def size
+    @lines.size
+  end
+
+  def each &block
+    lines.each &block
   end
 
   private

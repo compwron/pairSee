@@ -19,9 +19,7 @@ class GitLogLines
   end
 
   def active? dev
-    puts "a"
     any? { |log_line|
-      puts "authored by: #{log_line.authored_by?([], dev)}"
       log_line.authored_by?([], dev)
     }
   end

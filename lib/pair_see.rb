@@ -3,6 +3,7 @@ class PairSee
   require_relative 'combo'
   require_relative 'date_combo'
   require_relative 'git_log_lines'
+  require_relative 'svn_log_lines'
   require_relative 'card'
 
   attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
@@ -50,14 +51,11 @@ class PairSee
     config = YAML.load_file(config_file)
     devs_in_config = config['names'].split(" ")
     devs_in_config.select { |dev|
-      puts "is active? #{dev} #{is_active(dev)}"
       is_active(dev)
     }
   end
 
   def is_active dev
-    puts "ia log lines: #{log_lines}"
-
     log_lines.active? dev
   end
 
