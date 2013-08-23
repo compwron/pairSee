@@ -26,7 +26,7 @@ describe PairSee do
     it "apparently needs to see card names without brackets" do
       create_commit("[FOO-1] one")
       create_commit("FOO-1 two")
-      subject.card_data("FOO").should == [Card.new("FOO-1", 2, current_date, current_date)]
+      subject.card_data("FOO-").should == [Card.new("FOO-1", 2, current_date, current_date)]
     end
 
     it "in order by duration" do
@@ -39,7 +39,7 @@ describe PairSee do
 
       create_commit("[FOO-3] one ")
 
-      data = subject.card_data("FOO")
+      data = subject.card_data("FOO-")
 
       three_commit_card = Card.new("FOO-1", 3, after_date, current_date)
       one_commit_card = Card.new("FOO-1", 1, current_date, current_date)
@@ -55,7 +55,7 @@ describe PairSee do
       create_commit("[FOO-2] commit 2")
       create_commit("[FOO-2] commit 3")
       number_of_cards = 2
-      card_prefix = "FOO"
+      card_prefix = "FOO-"
       card_1_data = Card.new("FOO-1", 1, current_date, current_date)
       card_2_data = Card.new("FOO-2", 3, current_date, current_date)
       subject.card_data(card_prefix).size.should == number_of_cards
@@ -67,11 +67,11 @@ describe PairSee do
       create_commit("[FOO-1]")
       create_commit("[FOO-10]")
       create_commit("[FOO-100]")
-      subject.card_data("FOO").count.should == 3
+      subject.card_data("FOO-").count.should == 3
       only_one_FOO1 = Card.new("FOO-1", 1, current_date, current_date)
       only_one_FOO10 = Card.new("FOO-10", 1, current_date, current_date)
-      subject.card_data("FOO").should include only_one_FOO1
-      subject.card_data("FOO").should include only_one_FOO10
+      subject.card_data("FOO-").should include only_one_FOO1
+      subject.card_data("FOO-").should include only_one_FOO10
     end
 
     it "does not break on a commit without a card mentioned" do
@@ -83,12 +83,12 @@ describe PairSee do
 
   describe "#get_card_prefix" do
     it "should see card prefix" do
-      subject.get_card_prefix(config).should == "BAZ"
+      subject.get_card_prefix(config).should == "BAZ-"
     end
   end
 
   describe "#card_numbers" do
-    card_prefix = "FOO"
+    card_prefix = "FOO-"
 
     it "sees which cards have been worked" do
       create_commit("[FOO-1]")

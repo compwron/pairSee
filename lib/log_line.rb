@@ -28,13 +28,17 @@ class LogLine
   end
 
   def contains_card_name? card_name
-    regex = /#{card_name}[\]\s,:]/
-    matcher = line.match(regex)
-    !matcher.nil?
+    git_regex = /#{card_name}[\]\s,:]/
+    git_matcher = line.match(git_regex)
+
+    svn_regex = /\[#{card_name}\]/
+    svn_matcher = line.match(svn_regex)
+
+    !git_matcher.nil? || !svn_matcher.nil?
   end
 
   def card_name card_prefix
-    regex = /(#{card_prefix}-\d+)/
+    regex = /(#{card_prefix}\d+)/
     matcher = line.match(regex)
     matcher.nil? ? nil : (line.match regex)[1]
   end
