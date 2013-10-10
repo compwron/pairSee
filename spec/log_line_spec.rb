@@ -30,6 +30,11 @@ describe LogLine do
       line = " r1196 | committerID | 2013-08-20 18:13:44 -0500 (Tue, 20 Aug 2013) | 2 lines  [FOO9001] Alice and Bob -  commit message"
       LogLine.new(line).contains_card_name?("FOO9001").should == true
     end
+
+    it "detects containment of card name when there is no space between card number and bracket" do
+      line = "FOO-100[bar]"
+       LogLine.new(line).contains_card_name?("FOO-100").should == true
+    end
   end
 
   describe "#card_name(prefix)" do

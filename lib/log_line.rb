@@ -28,7 +28,7 @@ class LogLine
   end
 
   def contains_card_name? card_name
-    git_regex = /#{card_name}[\]\s,:]/
+    git_regex = /#{card_name}[\]\s\[,:]/
     git_matcher = line.match(git_regex)
 
     svn_regex = /\[#{card_name}\]/
