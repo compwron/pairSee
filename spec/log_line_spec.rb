@@ -32,6 +32,13 @@ describe LogLine do
     end
   end
 
+  describe "#card_name(prefix)" do
+    it "detects card name when there is no space between card number and bracket" do
+      line = "FOO-100[bar]"
+       LogLine.new(line).card_name("FOO-").should == "FOO-100"
+    end
+  end
+
   describe "#date" do
     it "should recognize date in GIT format line" do
       line = "2012-10-21 10:54:47 -0500 message"

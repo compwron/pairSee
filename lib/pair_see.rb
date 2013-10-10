@@ -17,7 +17,7 @@ class PairSee
 
   def pretty_card_data
     card_data(card_prefix).map { |card|
-      "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days "
+      "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days " unless card.nil?
     }
   end
 
