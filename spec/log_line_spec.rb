@@ -61,4 +61,11 @@ describe LogLine do
       date.day.should == 20
     end
   end
+
+  describe "#authored_by?" do
+    it "should not falsely see committer in commit message" do
+      line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
+      LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
+    end
+  end
 end

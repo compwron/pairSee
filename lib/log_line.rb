@@ -7,11 +7,7 @@ class LogLine
   end
 
   def authored_by?(svn_committers, *people)
-    if (git_authored_by?(people))
-      return true
-    end
-
-    svn_authored_by?(svn_committers, people)
+    return git_authored_by?(people) ? true : svn_authored_by?(svn_committers, people)
   end
 
   def svn_authored_by?(svn_committers, people)
