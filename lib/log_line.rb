@@ -7,20 +7,28 @@ class LogLine
   end
 
   def authored_by?(svn_committers, *people)
-    name_in_line = people.all? { |person|
-      /#{person}/i =~ line
-    }
-    if (name_in_line)
+    if (git_authored_by?(people))
       return true
     end
 
+    svn_authored_by?(svn_committers, people)
+  end
+
+  def svn_authored_by?(svn_committers, people)
+    authored_by = false
     if (!svn_committers.empty?)
-      return people.all? { |person|
+      authored_by = people.all? { |person|
         id = svn_committers[person]
         id != nil && !(/#{id}/i =~ line).nil?
       }
     end
-    return false
+    return authored_by
+  end
+
+  def git_authored_by?(people)
+    return name_in_line = people.all? { |person|
+      /#{person}/i =~ line
+    }
   end
 
   def contains_card? card_prefix
