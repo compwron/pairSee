@@ -67,5 +67,10 @@ describe LogLine do
       line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
       LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
     end
+
+    #it "should not falsely see committer in commit message" do
+    #   line = "2013-11-13 12:14:47 -0800 [Person2] BAZ-2"
+    #   LogLine.new(line).authored_by?([], "Person1", "Person2").should be_false
+    #end
   end
 end

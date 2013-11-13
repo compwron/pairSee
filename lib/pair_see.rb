@@ -25,6 +25,7 @@ class PairSee
 
   def cards_dev_worked_on log_lines, dev
     log_lines.select { |log_line|
+      puts "#{log_line.authored_by?(dev)} #{dev} #{log_line}"
       log_line.authored_by?(dev)
     }.map { |log_line|
       log_line.card_number(@card_prefix)

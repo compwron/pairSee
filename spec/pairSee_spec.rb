@@ -166,8 +166,8 @@ describe PairSee do
     end
 
     it "sees multiple cards for multiple devs" do
-      create_commit("Person1 Person2 BAZ-1")
-      create_commit("Person2 BAZ-2")
+      create_commit("[Person1, Person2] BAZ-1")
+      create_commit("[Person2] BAZ-2")
       expected = {"Person1" => ["1"], "Person2" => ["2", "1"]}
       subject.cards_per_person.should == expected
     end
