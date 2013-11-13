@@ -11,6 +11,7 @@ opts = Trollop::options do
   opt :latest, "See dates of most recent commits by pairs", :default => false
   opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
   opt :cards, "See cards and number of commits on each", :default => false
+  opt :cards_per_person, "See cards for each dev", :default => false
   opt :svn, "Run in svn mode?", :default => false
   opt :svn_logfile, "Path to svn logfile - logfile must be in format svn log | perl -l40pe 's/^-+/\n/'", :default => "#{__FILE__}/../../input/svn_log.txt"
 end
@@ -33,6 +34,8 @@ def run_command opts
     pair_see.recommended_pairings
   elsif opts[:cards]
     pair_see.pretty_card_data
+  elsif opts[:cards_per_person]
+    pair_see.cards_per_person
   else
     pair_see.all_commits
   end

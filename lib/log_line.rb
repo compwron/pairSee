@@ -47,6 +47,11 @@ class LogLine
     matcher.nil? ? nil : (line.match regex)[1]
   end
 
+  def card_number card_prefix
+    card_num = card_name(card_prefix)
+    card_num ? card_num.gsub(card_prefix, "") : nil
+  end
+
   def merge_commit?
     line.match("Merge remote-tracking branch") || line.match("Merge branch")
   end

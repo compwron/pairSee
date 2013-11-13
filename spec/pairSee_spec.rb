@@ -5,9 +5,9 @@ describe PairSee do
   let(:never) { Date.parse("1970-1-1") }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { GitLogLines.new(repo, after_date)}
+  let(:log_lines) { GitLogLines.new(repo, after_date) }
   let(:config) { 'spec/spec_config.yml' }
-  
+
 
   subject { PairSee.new log_lines, config }
 
@@ -47,7 +47,7 @@ describe PairSee do
     it "sorts all by count" do
       create_commit("Person1/Person3 code")
       create_commit("Person1/Person3 more code")
-      create_commit("Person1/Person2 code") 
+      create_commit("Person1/Person2 code")
       all_commits.last.should end_with ": 2"
       all_commits.first.should end_with ": 1"
     end
@@ -76,7 +76,7 @@ describe PairSee do
       create_commit("nameless")
       create_commit("Person1, Person3: code")
       extras = subject.commits_not_by_known_pair.map(&:to_s)
-      extras[0].should include "nameless" 
+      extras[0].should include "nameless"
       extras.should_not include "Person1, Person3: made cat"
     end
 
@@ -124,7 +124,7 @@ describe PairSee do
       create_commit("Person1")
       create_commit("ActiveDev")
       active_devs = subject.active_devs(config)
-      
+
       active_devs.should include "ActiveDev"
       active_devs.should include "Person1"
       active_devs.should_not include "InactiveDev"
@@ -145,6 +145,24 @@ describe PairSee do
       create_commit("ActiveDev")
       subject.least_recent_pair.should include "Person1, Person2"
       subject.least_recent_pair.should_not include "ActiveDev"
+    end
+  end
+
+  describe "#cards_per_person" do
+    # card_prefix = "BAZ-"
+    # devs = ["Dev1", "Dev2"]
+
+    it "sees that dev has no cards committed on" do
+      create_commit("Person1 nocard")
+      # log_lines = 
+      expected = {"Person1" => []}
+      subject.cards_per_person.should == expected
+    end
+
+    it "sees that dev has committed on card" do
+      create_commit("Person1 BAZ-1")
+      expected = {"Person1" => ["1"]}
+      subject.cards_per_person.should == expected
     end
   end
 end

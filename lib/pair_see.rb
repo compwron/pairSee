@@ -15,6 +15,22 @@ class PairSee
     @card_prefix = get_card_prefix(config_file)
   end
 
+  def cards_per_person
+    @devs.map { |dev|
+      {dev => cards_dev_worked_on(log_lines, dev)}
+    }.inject({}) { |result, element|
+      result.merge(element)
+    }
+  end
+
+  def cards_dev_worked_on log_lines, dev
+    log_lines.select { |log_line|
+      log_line.authored_by?(dev)
+    }.map { |log_line|
+      log_line.card_number(@card_prefix)
+    }.compact
+  end
+
   def pretty_card_data
     card_data(card_prefix).map { |card|
       "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days " unless card.nil?
