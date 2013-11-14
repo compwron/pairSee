@@ -18,11 +18,7 @@ class PairSee
   def cards_per_person
     @devs.map { |dev|
       {dev => cards_dev_worked_on(log_lines, dev)}
-    }.inject({}) { |result, element|
-      result.merge(element)
-    }.map { |dev_name, cards_worked|
-      {dev_name => cards_worked.uniq}
-    }.inject({}) { |result, element|
+    }.uniq.inject({}) { |result, element|
       result.merge(element)
     }
   end
@@ -35,7 +31,7 @@ class PairSee
         cards_worked << log_line.card_number(@card_prefix)
       end
     }
-    cards_worked
+    cards_worked.compact
   end
 
   def pretty_card_data

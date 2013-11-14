@@ -152,33 +152,31 @@ describe PairSee do
     card_prefix = "BAZ-"
     devs = ["Dev1", "Dev2"]
 
-    # it "sees that dev has no cards committed on" do
-    #   create_commit("Person1 nocard")
-    #   expected = {"Person1" => []}
-    #   subject.cards_per_person.should == expected
-    # end
+    it "sees that dev has no cards committed on" do
+      create_commit("Person1 nocard")
+      expected = {"Person1" => []}
+      subject.cards_per_person.should == expected
+    end
 
-    # it "sees that dev has committed on card" do
-    #   create_commit("Person1 BAZ-1")
-    #   expected = {"Person1" => ["1"]}
-    #   subject.cards_per_person.should == expected
-    # end
+    it "sees that dev has committed on card" do
+      create_commit("Person1 BAZ-1")
+      expected = {"Person1" => ["1"]}
+      subject.cards_per_person.should == expected
+    end
 
     it "sees multiple cards for multiple devs" do
       create_commit("[Person1, Person2] BAZ-100")
       create_commit("[Person1] BAZ-200")
       expected = {"Person1" => ["100", "200"], "Person2" => ["100"]}
 
-# this is false:
-      # Person2 authored card 200 in line 2013-11-13 20:38:24 -0800 [Person1] BAZ-200
       subject.cards_per_person.should == expected
     end
 
-    # it "reports multiple commits by a person on a card only once" do
-    #   create_commit("Person1 Person2 BAZ-1")
-    #   create_commit("Person2 BAZ-1")
-    #   expected = {"Person1" => ["1"], "Person2" => ["1"]}
-    #   subject.cards_per_person.should == expected
-    # end
+    it "reports multiple commits by a person on a card only once" do
+      create_commit("Person1 Person2 BAZ-1")
+      create_commit("Person2 BAZ-1")
+      expected = {"Person1" => ["1"], "Person2" => ["1"]}
+      subject.cards_per_person.should == expected
+    end
   end
 end
