@@ -24,6 +24,8 @@ class PairSee
        {dev_name => cards_worked.uniq}
     }.inject({}) { |result, element|
       result.merge(element)
+    }.map {|dev, cards|
+      "#{dev}: #{cards.sort.join(", ")}"
     }
   end
 
