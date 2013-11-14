@@ -149,8 +149,6 @@ describe PairSee do
   end
 
   describe "#cards_per_person" do
-    card_prefix = "BAZ-"
-    devs = ["Dev1", "Dev2"]
 
     it "sees that dev has no cards committed on" do
       create_commit("Person1 nocard")
