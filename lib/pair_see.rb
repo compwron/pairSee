@@ -20,6 +20,10 @@ class PairSee
       {dev => cards_dev_worked_on(log_lines, dev)}
     }.inject({}) { |result, element|
       result.merge(element)
+    }.map { |dev_name, cards_worked|
+      {dev_name => cards_worked.uniq}
+    }.inject({}) { |result, element|
+      result.merge(element)
     }
   end
 

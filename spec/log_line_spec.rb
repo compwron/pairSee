@@ -63,15 +63,15 @@ describe LogLine do
   end
 
   describe "#authored_by?" do
-    # it "should not falsely see committer in commit message" do
-    #   line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
-    #   LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
-    # end
+    it "should not falsely see committer in commit message" do
+      line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
+      LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
+    end
 
-    # it "should not falsely see committer in commit message (bug in cards_by_person)" do
-    #   line = "2013-11-13 12:14:47 -0800 [Person2] BAZ-2"
-    #   LogLine.new(line).authored_by?([], "Person1", "Person2").should be_false
-    # end
+    it "should not falsely see committer in commit message (bug in cards_by_person)" do
+      line = "2013-11-13 12:14:47 -0800 [Person2] BAZ-2"
+      LogLine.new(line).authored_by?([], "Person1", "Person2").should be_false
+    end
 
     it "should not return true when there are no svn committers and no git committers" do
       line = "stuff"
@@ -89,16 +89,16 @@ describe LogLine do
       # end
     end
 
-    # describe "#git_authored_by?" do
-    #   it "should detect person in line" do
-    #     line = "[Person1] stuff"
-    #     LogLine.new(line).git_authored_by?(["Person1"]).should be_true
-    #   end
+    describe "#git_authored_by?" do
+      it "should detect person in line" do
+        line = "[Person1] stuff"
+        LogLine.new(line).git_authored_by?(["Person1"]).should be_true
+      end
 
-    #   it "should not detect person in empty line" do
-    #     line = "stuff"
-    #     LogLine.new(line).git_authored_by?(["Person1"]).should be_false
-    #   end
-    # end
+      it "should not detect person in empty line" do
+        line = "stuff"
+        LogLine.new(line).git_authored_by?(["Person1"]).should be_false
+      end
+    end
   end
 end
