@@ -18,7 +18,11 @@ class PairSee
   def cards_per_person
     @devs.map { |dev|
       {dev => cards_dev_worked_on(log_lines, dev)}
-    }.uniq.inject({}) { |result, element|
+    }.inject({}) { |result, element|
+       result.merge(element)
+    }.map { |dev_name, cards_worked|
+       {dev_name => cards_worked.uniq}
+    }.inject({}) { |result, element|
       result.merge(element)
     }
   end
