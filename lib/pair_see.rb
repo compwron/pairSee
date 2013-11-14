@@ -28,12 +28,14 @@ class PairSee
   end
 
   def cards_dev_worked_on log_lines, dev
-    log_lines.select { |log_line|
-      log_line.authored_by?(dev)
-      # }
-    }.map { |log_line|
-      log_line.card_number(@card_prefix)
-    }.compact
+    cards_worked = []
+    log_lines.each {|log_line|
+      if (log_line.authored_by?(dev)) then
+        puts "#{dev} authored card #{log_line.card_number(@card_prefix)} in line #{log_line}"
+        cards_worked << log_line.card_number(@card_prefix)
+      end
+    }
+    cards_worked
   end
 
   def pretty_card_data

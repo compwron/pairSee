@@ -23,7 +23,7 @@ class LogLine
 
   def git_authored_by?(people)
     return people.empty? ? false : people.all? { |person|
-      /(\W|$)#{person}(\W|)/i =~ line
+      /(^|\s+|\W)#{person}(\s+|$|\W)/ =~ line
     }
   end
 

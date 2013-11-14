@@ -78,6 +78,16 @@ describe LogLine do
       LogLine.new(line).authored_by?([]).should be_false
     end
 
+    it "should not wrongly detect committer between Person1 and Person2" do
+      line = "2013-11-13 20:38:24 -0800 [Person1] BAZ-200"
+       LogLine.new(line).authored_by?([], ["Person2"]).should be_false
+    end
+
+    it "should not wrongly detect committer between James and Arnie" do
+      line = "2013-11-13 20:38:24 -0800 [James] BAZ-200"
+       LogLine.new(line).authored_by?([], ["Arnie"]).should be_false
+    end
+
     describe "#svn_authored_by?" do
       # it "should detect person in line" do
       #   line = "[Person1] did stuff"
