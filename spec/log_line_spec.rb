@@ -33,14 +33,14 @@ describe LogLine do
 
     it "detects containment of card name when there is no space between card number and bracket" do
       line = "FOO-100[bar]"
-       LogLine.new(line).contains_card_name?("FOO-100").should == true
+      LogLine.new(line).contains_card_name?("FOO-100").should == true
     end
   end
 
   describe "#card_name(prefix)" do
     it "detects card name when there is no space between card number and bracket" do
       line = "FOO-100[bar]"
-       LogLine.new(line).card_name("FOO-").should == "FOO-100"
+      LogLine.new(line).card_name("FOO-").should == "FOO-100"
     end
   end
 
@@ -63,14 +63,42 @@ describe LogLine do
   end
 
   describe "#authored_by?" do
-    it "should not falsely see committer in commit message" do
-      line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
-      LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
-    end
+    # it "should not falsely see committer in commit message" do
+    #   line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
+    #   LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
+    # end
 
-    #it "should not falsely see committer in commit message" do
+    # it "should not falsely see committer in commit message (bug in cards_by_person)" do
     #   line = "2013-11-13 12:14:47 -0800 [Person2] BAZ-2"
     #   LogLine.new(line).authored_by?([], "Person1", "Person2").should be_false
-    #end
+    # end
+
+    it "should not return true when there are no svn committers and no git committers" do
+      line = "stuff"
+      LogLine.new(line).authored_by?([]).should be_false
+    end
+
+    describe "#svn_authored_by?" do
+      # it "should detect person in line" do
+      #   line = "[Person1] did stuff"
+      #   svn_committers = ["Person1"]
+      #   LogLine.new(line).svn_authored_by?(svn_committers, ["Person1"]).should be_true
+      # end
+
+      # it "should not detect person in line when there are no committers" do
+      # end
+    end
+
+    # describe "#git_authored_by?" do
+    #   it "should detect person in line" do
+    #     line = "[Person1] stuff"
+    #     LogLine.new(line).git_authored_by?(["Person1"]).should be_true
+    #   end
+
+    #   it "should not detect person in empty line" do
+    #     line = "stuff"
+    #     LogLine.new(line).git_authored_by?(["Person1"]).should be_false
+    #   end
+    # end
   end
 end

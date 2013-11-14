@@ -7,7 +7,7 @@ class LogLine
   end
 
   def authored_by?(svn_committers, *people)
-    return git_authored_by?(people) ? true : svn_authored_by?(svn_committers, people)   # bug is here
+    return svn_committers.empty? ? git_authored_by?(people) : svn_authored_by?(svn_committers, people)
   end
 
   def svn_authored_by?(svn_committers, people)
@@ -22,7 +22,7 @@ class LogLine
   end
 
   def git_authored_by?(people)
-    return people.all? { |person|
+    return people.empty? ? false : people.all? { |person|
       /(\W|$)#{person}(\W|)/i =~ line
     }
   end

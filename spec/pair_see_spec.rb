@@ -149,12 +149,11 @@ describe PairSee do
   end
 
   describe "#cards_per_person" do
-    # card_prefix = "BAZ-"
-    # devs = ["Dev1", "Dev2"]
+    card_prefix = "BAZ-"
+    devs = ["Dev1", "Dev2"]
 
     it "sees that dev has no cards committed on" do
       create_commit("Person1 nocard")
-      # log_lines = 
       expected = {"Person1" => []}
       subject.cards_per_person.should == expected
     end
@@ -172,11 +171,11 @@ describe PairSee do
       subject.cards_per_person.should == expected
     end
 
-    #it "reports multiple commits by a person on a card only once" do
-    #  create_commit("Person1 Person2 BAZ-1")
-    #  create_commit("Person2 BAZ-1")
-    #  expected = {"Person1" => ["1"], "Person2" => ["1"]}
-    #  subject.cards_per_person.should == expected
-    #end
+    it "reports multiple commits by a person on a card only once" do
+      create_commit("Person1 Person2 BAZ-1")
+      create_commit("Person2 BAZ-1")
+      expected = {"Person1" => ["1"], "Person2" => ["1"]}
+      subject.cards_per_person.should == expected
+    end
   end
 end
