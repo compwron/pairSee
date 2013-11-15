@@ -25,7 +25,7 @@ class PairSee
     }.inject({}) { |result, element|
       result.merge(element)
     }.map {|dev, cards|
-      "#{dev}: #{cards.sort.join(", ")}"
+      "#{dev}: [#{cards.size} cards] #{cards.sort.join(", ")}"
     }
   end
 
