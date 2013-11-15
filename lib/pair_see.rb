@@ -3,7 +3,6 @@ class PairSee
   require_relative 'combo'
   require_relative 'date_combo'
   require_relative 'git_log_lines'
-  require_relative 'svn_log_lines'
   require_relative 'card'
 
   attr_reader :log_lines, :devs, :dev_pairs, :card_prefix

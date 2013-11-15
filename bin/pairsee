@@ -12,18 +12,10 @@ opts = Trollop::options do
   opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
   opt :cards, "See cards and number of commits on each", :default => false
   opt :cards_per_person, "See cards for each dev", :default => false
-  opt :svn, "Run in svn mode?", :default => false
-  opt :svn_logfile, "Path to svn logfile - logfile must be in format svn log | perl -l40pe 's/^-+/\n/'", :default => "#{__FILE__}/../../input/svn_log.txt"
 end
 
 def run_command opts
-  if opts[:svn]
-    puts "Running in SVN mode"
-    log_lines = SvnLogLines.new(opts[:svn_logfile], opts[:after], opts[:config])
-  else
-    puts "Running in GIT mode"
-    log_lines = GitLogLines.new(opts[:root], opts[:after])
-  end
+  log_lines = GitLogLines.new(opts[:root], opts[:after])
 
   pair_see = PairSee.new(log_lines, opts[:config])
   if opts[:extras]
