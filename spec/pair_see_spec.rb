@@ -164,22 +164,20 @@ describe PairSee do
       create_commit("[Person1, Person2] BAZ-100")
       create_commit("[Person1] BAZ-200")
 
-      subject.cards_per_person.should == ["Person1: [2 cards] 100, 200","Person2: [1 cards] 200"]
+      subject.cards_per_person.should == ["Person1: [2 cards] 100, 200","Person2: [1 cards] 100"]
     end
 
     it "should not think that dev who did not commit on card committed on card just beause dev is in the history" do
       create_commit("[Person2]")
       create_commit("[Person1] BAZ-200")
-      expected = {"Person1" => ["200"], "Person2" => []}
 
-      subject.cards_per_person.should == expected
+      subject.cards_per_person.should == ["Person1: [1 cards] 200", "Person2: [0 cards] "]
     end
 
     it "reports multiple commits by a person on a card only once" do
       create_commit("Person1 Person2 BAZ-1")
       create_commit("Person2 BAZ-1")
-      expected = {"Person1" => ["1"], "Person2" => ["1"]}
-      subject.cards_per_person.should == expected
+      subject.cards_per_person.should == ["Person1: [1 cards] 1", "Person2: [1 cards] 1"]
     end
   end
 end
