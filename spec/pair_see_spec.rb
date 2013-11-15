@@ -152,23 +152,20 @@ describe PairSee do
 
     it "sees that dev has no cards committed on" do
       create_commit("Person1 nocard")
-      expected = {"Person1" => []}
-      subject.cards_per_person.should == expected
+      subject.cards_per_person.should == ["Person1: [0 cards] "]
     end
 
     it "sees that dev has committed on card" do
       create_commit("Person1 BAZ-1")
-      expected = {"Person1" => ["1"]}
-      subject.cards_per_person.should == expected
+      subject.cards_per_person.should == ["Person1: [1 cards] 1"]
     end
 
-    # it "sees multiple cards for multiple devs" do
-    #   create_commit("[Person1, Person2] BAZ-100")
-    #   create_commit("[Person1] BAZ-200")
-    #   expected = {"Person1" => ["100", "200"], "Person2" => ["100"]}
+    it "sees multiple cards for multiple devs" do
+      create_commit("[Person1, Person2] BAZ-100")
+      create_commit("[Person1] BAZ-200")
 
-    #   subject.cards_per_person.should == expected
-    # end
+      subject.cards_per_person.should == ["Person1: [2 cards] 100, 200","Person2: [1 cards] 200"]
+    end
 
     it "should not think that dev who did not commit on card committed on card just beause dev is in the history" do
       create_commit("[Person2]")
