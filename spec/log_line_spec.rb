@@ -26,11 +26,6 @@ describe LogLine do
       LogLine.new("FOO-1: stuff").contains_card_name?("FOO-1").should == true
     end
 
-    it "detects SVN-style card" do
-      line = " r1196 | committerID | 2013-08-20 18:13:44 -0500 (Tue, 20 Aug 2013) | 2 lines  [FOO9001] Alice and Bob -  commit message"
-      LogLine.new(line).contains_card_name?("FOO9001").should == true
-    end
-
     it "detects containment of card name when there is no space between card number and bracket" do
       line = "FOO-100[bar]"
       LogLine.new(line).contains_card_name?("FOO-100").should == true
@@ -52,59 +47,47 @@ describe LogLine do
       date.month.should == 10
       date.day.should == 21
     end
-
-    it "should recognize date in SVN format line" do
-      line = " r1196 | committerID | 2013-08-20 18:13:44 -0500 (Tue, 20 Aug 2013) | 2 lines  [cardNumber] Alice and Bob -  commit message"
-      date = LogLine.new(line).date
-      date.year.should == 2013
-      date.month.should == 8
-      date.day.should == 20
-    end
   end
 
   describe "#authored_by?" do
     it "should not falsely see committer in commit message" do
       line = "FOO-000 [Committer1, Committer2] commitmessageCommitter3foo"
-      LogLine.new(line).authored_by?([], "Committer3", "Committer2").should be_false
+      LogLine.new(line).authored_by?("Committer3", "Committer2").should be_false
     end
 
-    it "should not return true when there are no svn committers and no git committers" do
+    it "should not return true when there are no committers" do
       line = "stuff"
-      LogLine.new(line).authored_by?([]).should be_false
+      LogLine.new(line).authored_by?().should be_false
     end
 
     it "should not wrongly detect committer between Person1 and Person2" do
       line = "2013-11-13 20:38:24 -0800 [Person1] BAZ-200"
-       LogLine.new(line).authored_by?([], ["Person2"]).should be_false
+      LogLine.new(line).authored_by?("Person2").should be_false
     end
 
     it "should not wrongly detect committer between James and Arnie" do
       line = "2013-11-13 20:38:24 -0800 [James] BAZ-200"
-       LogLine.new(line).authored_by?([], ["Arnie"]).should be_false
+      LogLine.new(line).authored_by?("Arnie").should be_false
     end
 
-     it "argh" do
-        line = "2013-11-13 22:35:37 -0800 [Person2]"
-        LogLine.new(line).authored_by?([], ["Person1"]).should be_false
+    it "argh" do
+      line = "2013-11-13 22:35:37 -0800 [Person2]"
+      LogLine.new(line).authored_by?("Person1").should be_false
     end
 
-    describe "#git_authored_by?" do
-      it "should detect person in line" do
-        line = "[Person1] stuff"
-        LogLine.new(line).git_authored_by?(["Person1"]).should be_true
-      end
+    it "should detect person in line" do
+      line = "[Person1] stuff"
+      LogLine.new(line).authored_by?("Person1").should be_true
+    end
 
-      it "should not detect person in empty line" do
-        line = "stuff"
-        LogLine.new(line).git_authored_by?(["Person1"]).should be_false
-      end
+    it "should not detect person in empty line" do
+      line = "stuff"
+      LogLine.new(line).authored_by?("Person1").should be_false
+    end
 
-      it "should not detect other committer in line" do
-        line = "Person1 stuff"
-        LogLine.new(line).git_authored_by?(["Person2"]).should be_false
-      end
-
-
+    it "should not detect other committer in line" do
+      line = "Person1 stuff"
+      LogLine.new(line).authored_by?("Person2").should be_false
     end
   end
 end
