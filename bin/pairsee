@@ -15,7 +15,7 @@ opts = Trollop::options do
 end
 
 def run_command opts
-  log_lines = GitLogLines.new(opts[:root], opts[:after])
+  log_lines = LogLines.new(opts[:root], opts[:after])
 
   pair_see = PairSee.new(log_lines, opts[:config])
   if opts[:extras]

@@ -1,6 +1,6 @@
 require_relative 'log_line'
 
-class GitLogLines
+class LogLines
   include Enumerable
 
 

@@ -5,7 +5,7 @@ describe PairSee do
   let(:never) { Date.parse("1970-1-1") }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { GitLogLines.new(repo, after_date) }
+  let(:log_lines) { LogLines.new(repo, after_date) }
   let(:config) { 'spec/spec_config.yml' }
 
 
