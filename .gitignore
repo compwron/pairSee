@@ -1,3 +1,4 @@
 config/config.yml
 .idea
 coverage/
+.bundle
