@@ -1,19 +1,19 @@
 class DateCombo
   attr_reader :date, :devs
 
-  def initialize date, *devs
+  def initialize(date, *devs)
     @date, @devs = date, devs
   end
 
   def to_s
     if date.nil?
-      "#{devs.join ", "}: not yet"
+      "#{devs.join ', '}: not yet"
     else
-      "#{devs.join ", "}: #{date.to_s}"
+      "#{devs.join ', '}: #{date}"
     end
   end
 
-  def <=> other
+  def <=>(other)
     if date && other.date
       date <=> other.date
     elsif date

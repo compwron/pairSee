@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/pair_see"
+require_relative '../lib/pair_see'
 require 'trollop'
 
-opts = Trollop::options do
-  opt :root, "Folder in which .git folder is", :default => "."
-  opt :config, "location of config file, example: ../../config/config.yml", :default => "#{__FILE__}/../../config/config.yml"
-  opt :after, "Date since which you want to get commits, in yyyy-mm-dd format", :default => "0-1-1"
-  opt :extras, "See all commits without the name of any dev in them", :default => false
-  opt :latest, "See dates of most recent commits by pairs", :default => false
-  opt :recommended, "See active devs who have not paired (and therefore should)", :default => false
-  opt :cards, "See cards and number of commits on each", :default => false
-  opt :cards_per_person, "See cards for each dev", :default => false
+opts = Trollop.options do
+  opt :root, 'Folder in which .git folder is', default: '.'
+  opt :config, 'location of config file, example: ../../config/config.yml', default: "#{__FILE__}/../../config/config.yml"
+  opt :after, 'Date since which you want to get commits, in yyyy-mm-dd format', default: '0-1-1'
+  opt :extras, 'See all commits without the name of any dev in them', default: false
+  opt :latest, 'See dates of most recent commits by pairs', default: false
+  opt :recommended, 'See active devs who have not paired (and therefore should)', default: false
+  opt :cards, 'See cards and number of commits on each', default: false
+  opt :cards_per_person, 'See cards for each dev', default: false
 end
 
-def run_command opts
+def run_command(opts)
   log_lines = LogLines.new(opts[:root], opts[:after])
 
   pair_see = PairSee.new(log_lines, opts[:config])
