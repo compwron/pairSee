@@ -1,13 +1,23 @@
+# PairSee
+[![Code Climate](https://codeclimate.com/github/compwron/pairsee/badges/gpa.svg)](https://codeclimate.com/github/compwron/pairsee)
+[![Test Coverage](https://codeclimate.com/github/compwron/pairsee/badges/coverage.svg)](https://codeclimate.com/github/compwron/pairsee)
+[![Build Status](https://travis-ci.org/compwron/pairsee.svg)](https://travis-ci.org/compwron/pairsee)
+[![Dependency Status](https://gemnasium.com/compwron/pairsee.png)](https://gemnasium.com/compwron/pairsee)
+
+
 Usage cases:
 1. See commit count for all devs and solo devs (in order by # of commits): $ pairsee --after 2012-10-01
 2. See what cards have been in play and for how long since given date: $ pairsee --cards --after 2012-10-01
 3. See all devs and what cards they have worked on since given date: $ pairsee --after 2013-11-01 -s
 
 Example usage: 
+```
 $ pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
 $ pairsee --extras --root ../../my_code
 $ pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by all devs who have committed since given date (purpose of this is to exclude people who are no longer committers)
+```
 
+```
 Options:
           --root, -r <s>:   Folder in which .git folder is (default: .)
         --config, -c <s>:   location of config file, example: ../../config/config.yml (default: bin/pairsee/../../config/config.yml)
@@ -18,18 +28,27 @@ Options:
              --cards, -d:   See cards and number of commits on each
   --cards-per-person, -s:   See cards for each dev
               --help, -h:   Show this message
+```
 
 to put on path:
+```
 cd pairSee
-ln -s `pwd`/bin/pairsee ~/bin
+ln -s `pwd`/bin/pairsee ~/bin/pairsee
+```
 
-to run tests:
+Run tests:
+```
 rspec
+# or
+rake_commit
+```
 
-Config file: config/config.yml
+Config file: `config/config.yml`
 contains names and card prefix, a la
+```
 names: Person1 Person2 Person3
 card_prefix: FOO-
+```
 
 So if your commit log looks like 
 "Bob/Alice [FOO-1] wrote code"
@@ -37,10 +56,9 @@ So if your commit log looks like
 "Sarah|Alice [FOO-2] code and stuff"
 
 Then your config file will look like:
+```
 names: Bob Alice Sarah
 card_prefix: FOO-
+```
 
-To use metrics with SVN, check out SVN codebase with command like:
-git svn clone http://svn.example.com/project
-
-
+To use metrics with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
