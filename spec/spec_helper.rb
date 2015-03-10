@@ -1,6 +1,9 @@
 require 'simplecov'
 SimpleCov.start
 
+`git config --global user.email "pairsee@example.com"`
+`git config --global user.name "pairsee"`
+
 require_relative '../lib/pair_see'
 require_relative '../lib/combo'
 require_relative '../lib/date_combo'
