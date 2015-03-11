@@ -29,44 +29,44 @@ describe PairSee do
       create_commit('Person1/Person3 code')
       create_commit('Person1/Person3 more code')
       create_commit('Person1/Person2 code')
-      all_commits.should include 'Person1, Person3: 2'
-      all_commits.should include 'Person1, Person2: 1'
+      expect(all_commits).to include 'Person1, Person3: 2'
+      expect(all_commits).to include 'Person1, Person2: 1'
     end
 
     it "doesn't list counts for pairs who have no commits" do
-      all_commits.should_not include 'Person2, Person3: 0'
+      expect(all_commits).not_to include 'Person2, Person3: 0'
     end
 
     it "gets all commits which only have person1's name on them" do
       create_commit('Person3 code')
-      all_commits.should_not include 'Person1: 0'
-      all_commits.should include 'Person3: 1'
+      expect(all_commits).not_to include 'Person1: 0'
+      expect(all_commits).to include 'Person3: 1'
     end
 
     it 'sorts all by count' do
       create_commit('Person1/Person3 code')
       create_commit('Person1/Person3 more code')
       create_commit('Person1/Person2 code')
-      all_commits.last.should end_with ': 2'
-      all_commits.first.should end_with ': 1'
+      expect(all_commits.last).to end_with ': 2'
+      expect(all_commits.first).to end_with ': 1'
     end
 
     context 'with an after date in the future' do
       let(:after_date) { '2013-01-01' }
 
       it 'can see all commits since a passed-in date' do
-        all_commits.should have(0).commits
+        expect(all_commits.size).to eq(0)
       end
     end
 
     it 'sees names with capitalization typos' do
       create_commit('PErson4|person5 thing a thing thing')
-      all_commits.should include 'Person4, Person5: 1'
+      expect(all_commits).to include 'Person4, Person5: 1'
     end
 
     it "does not wrongfully exclude commits with 'merge' in the message from the count" do
       create_commit('Person5: Merge thing and foo')
-      all_commits.should include 'Person5: 1'
+      expect(all_commits).to include 'Person5: 1'
     end
   end
 
@@ -75,21 +75,21 @@ describe PairSee do
       create_commit('nameless')
       create_commit('Person1, Person3: code')
       extras = subject.commits_not_by_known_pair.map(&:to_s)
-      extras[0].should include 'nameless'
-      extras.should_not include 'Person1, Person3: made cat'
+      expect(extras[0]).to include 'nameless'
+      expect(extras).not_to include 'Person1, Person3: made cat'
     end
 
     it 'does not include merge commits in the list of commits without dev names' do
       create_commit("Merge remote-tracking branch 'origin/master'")
-      subject.commits_not_by_known_pair.should_not include 'Merge'
+      expect(subject.commits_not_by_known_pair).not_to include 'Merge'
     end
   end
 
   describe '#most_recent_commit_date' do
     it 'sees most recent commit by a pair' do
       create_commit('Person4|Person5 code')
-      subject.most_recent_commit_date('Person4', 'Person5').should == current_date
-      subject.most_recent_commit_date('Person4', 'Person1').should be_nil
+      expect(subject.most_recent_commit_date('Person4', 'Person5')).to eq(current_date)
+      expect(subject.most_recent_commit_date('Person4', 'Person1')).to be_nil
     end
   end
 
@@ -97,15 +97,15 @@ describe PairSee do
     it 'gets most recent dates of all pair commits' do
       create_commit('Person1|Person3 code')
       create_commit('Person6')
-      subject.all_most_recent_commits.should include "Person1, Person3: #{current_date}"
-      subject.all_most_recent_commits.should include 'Person1, Person6: not yet'
+      expect(subject.all_most_recent_commits).to include "Person1, Person3: #{current_date}"
+      expect(subject.all_most_recent_commits).to include 'Person1, Person6: not yet'
     end
 
     it 'gets most recent dates of all pair commits, sorted temporally' do
       create_commit('Person1|Person2 code')
       create_commit('Person3')
-      subject.all_most_recent_commits.first.should include "Person1, Person2: #{current_date}"
-      subject.all_most_recent_commits.last.should include 'not yet'
+      expect(subject.all_most_recent_commits.first).to include "Person1, Person2: #{current_date}"
+      expect(subject.all_most_recent_commits.last).to include 'not yet'
     end
   end
 
@@ -113,8 +113,8 @@ describe PairSee do
     it 'recommends pairs based on least recent active dev pair' do
       create_commit('Person1|Person2 code')
       create_commit('ActiveDev code')
-      subject.unpaired_in_range.should include 'Person1, ActiveDev'
-      subject.unpaired_in_range.should_not include 'Person1, Person2'
+      expect(subject.unpaired_in_range).to include 'Person1, ActiveDev'
+      expect(subject.unpaired_in_range).not_to include 'Person1, Person2'
     end
   end
 
@@ -124,17 +124,17 @@ describe PairSee do
       create_commit('ActiveDev')
       active_devs = subject.active_devs(config)
 
-      active_devs.should include 'ActiveDev'
-      active_devs.should include 'Person1'
-      active_devs.should_not include 'InactiveDev'
+      expect(active_devs).to include 'ActiveDev'
+      expect(active_devs).to include 'Person1'
+      expect(active_devs).not_to include 'InactiveDev'
     end
   end
 
   describe '#is_active' do
     it 'is true when the dev is active' do
       create_commit('ActiveDev')
-      subject.is_active('ActiveDev').should be_true
-      subject.is_active('InactiveDev').should be_false
+      expect(subject.is_active('ActiveDev')).to be_truthy
+      expect(subject.is_active('InactiveDev')).to be_falsey
     end
   end
 
@@ -142,40 +142,40 @@ describe PairSee do
     it 'sees least recent pairing' do
       create_commit('Person1, Person2')
       create_commit('ActiveDev')
-      subject.least_recent_pair.should include 'Person1, Person2'
-      subject.least_recent_pair.should_not include 'ActiveDev'
+      expect(subject.least_recent_pair).to include 'Person1, Person2'
+      expect(subject.least_recent_pair).not_to include 'ActiveDev'
     end
   end
 
   describe '#cards_per_person' do
     it 'sees that dev has no cards committed on' do
       create_commit('Person1 nocard')
-      subject.cards_per_person.should == ['Person1: [0 cards] ']
+      expect(subject.cards_per_person).to eq(['Person1: [0 cards] '])
     end
 
     it 'sees that dev has committed on card' do
       create_commit('Person1 BAZ-1')
-      subject.cards_per_person.should == ['Person1: [1 cards] 1']
+      expect(subject.cards_per_person).to eq(['Person1: [1 cards] 1'])
     end
 
     it 'sees multiple cards for multiple devs' do
       create_commit('[Person1, Person2] BAZ-100')
       create_commit('[Person1] BAZ-200')
 
-      subject.cards_per_person.should == ['Person1: [2 cards] 100, 200', 'Person2: [1 cards] 100']
+      expect(subject.cards_per_person).to eq(['Person1: [2 cards] 100, 200', 'Person2: [1 cards] 100'])
     end
 
     it 'should not think that dev who did not commit on card committed on card just beause dev is in the history' do
       create_commit('[Person2]')
       create_commit('[Person1] BAZ-200')
 
-      subject.cards_per_person.should == ['Person1: [1 cards] 200', 'Person2: [0 cards] ']
+      expect(subject.cards_per_person).to eq(['Person1: [1 cards] 200', 'Person2: [0 cards] '])
     end
 
     it 'reports multiple commits by a person on a card only once' do
       create_commit('Person1 Person2 BAZ-1')
       create_commit('Person2 BAZ-1')
-      subject.cards_per_person.should == ['Person1: [1 cards] 1', 'Person2: [1 cards] 1']
+      expect(subject.cards_per_person).to eq(['Person1: [1 cards] 1', 'Person2: [1 cards] 1'])
     end
   end
 end
