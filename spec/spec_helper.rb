@@ -1,8 +1,8 @@
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
-`git config --global user.email "pairsee@example.com"`
-`git config --global user.name "pairsee"`
+`git config --local user.email "compiledwrong+github@gmail.com"`
+`git config --local user.name "compiledwrong"`
 
 require_relative '../lib/pair_see'
 require_relative '../lib/combo'
