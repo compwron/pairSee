@@ -6,4 +6,4 @@ RSpec::Core::RakeTask.new(:rspec) do |spec|
   spec.rspec_opts = ['--backtrace']
 end
 
-require 'bundler/gem_tasks'
+# require 'bundler/gem_tasks'
