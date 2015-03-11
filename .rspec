@@ -1,2 +1,2 @@
-#--format doc
+--color
 --require 'spec_helper.rb'
