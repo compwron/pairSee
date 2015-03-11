@@ -6,9 +6,9 @@
 
 
 Usage cases:
-1. See commit count for all devs and solo devs (in order by # of commits): $ pairsee --after 2012-10-01
-2. See what cards have been in play and for how long since given date: $ pairsee --cards --after 2012-10-01
-3. See all devs and what cards they have worked on since given date: $ pairsee --after 2013-11-01 -s
+* See commit count for all devs and solo devs (in order by # of commits): $ pairsee --after 2012-10-01
+* See what cards have been in play and for how long since given date: $ pairsee --cards --after 2012-10-01
+* See all devs and what cards they have worked on since given date: $ pairsee --after 2013-11-01 -s
 
 Example usage: 
 ```
@@ -51,9 +51,11 @@ card_prefix: FOO-
 ```
 
 So if your commit log looks like 
+```
 "Bob/Alice [FOO-1] wrote code"
 "Alice [FOO-1] stuff"
 "Sarah|Alice [FOO-2] code and stuff"
+```
 
 Then your config file will look like:
 ```
@@ -61,4 +63,4 @@ names: Bob Alice Sarah
 card_prefix: FOO-
 ```
 
-To use metrics with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
+To use PairSee with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
