@@ -13,6 +13,6 @@ end
 
 desc 'do simple rubocop fixes'
 task :rubocop do
-  out = `rubocop -a`
-  p out
+  puts 'running rubocop'
+  `rubocop -a`
 end
