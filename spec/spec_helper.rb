@@ -1,6 +1,9 @@
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
+require 'git'
+require 'fileutils'
+
 Dir[File.expand_path('../../lib/*.rb', __FILE__)].each do |file|
   require file
 end

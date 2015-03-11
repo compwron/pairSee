@@ -4,20 +4,22 @@ describe PairSee do
   let(:after_date) { '0-1-1' }
   let(:log_lines) { LogLines.new(repo, after_date) }
   let(:config) { 'spec/spec_config.yml' }
+  let(:g) { Git.init(repo) }
 
   subject { PairSee.new log_lines, config }
 
   def create_commit(message)
-    `cd #{repo} && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
+    File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
+    g.add
+    g.commit(message)
   end
 
   before do
-    `mkdir #{repo} && git init #{repo}`
-    create_commit("init repo before tests in order to prevent 'fatal: bad default revision 'HEAD''")
+    g # must create repo before putting a file in it; 'let' is lazy
   end
 
   after do
-    `rm -rf #{repo}`
+    FileUtils.rm_r(repo)
   end
 
   describe '#card_data' do
@@ -81,6 +83,7 @@ describe PairSee do
 
   describe '#get_card_prefix' do
     it 'should see card prefix' do
+      create_commit('setup')
       expect(subject.get_card_prefix(config)).to eq('BAZ-')
     end
   end

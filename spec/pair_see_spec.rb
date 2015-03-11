@@ -5,19 +5,30 @@ describe PairSee do
   let(:after_date) { '0-1-1' }
   let(:log_lines) { LogLines.new(repo, after_date) }
   let(:config) { 'spec/spec_config.yml' }
+  let(:g) { Git.init(repo) }
 
   subject { PairSee.new log_lines, config }
 
   def create_commit(message)
-    `cd #{repo} && echo bar >> foo.txt && git add . && git commit -m "#{message}"`
+    File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
+    g.add
+    g.commit(message)
   end
 
-  before :each do
-    `mkdir #{repo} && git init #{repo}`
+  # before :each do
+  #   `mkdir #{repo} && git init #{repo}`
+  # end
+
+  # after :each do
+  #   `rm -rf #{repo}`
+  # end
+
+  before do
+    g # must create repo before putting a file in it; 'let' is lazy
   end
 
-  after :each do
-    `rm -rf #{repo}`
+  after do
+    FileUtils.rm_r(repo)
   end
 
   describe '#all_commits' do
@@ -32,6 +43,7 @@ describe PairSee do
     end
 
     it "doesn't list counts for pairs who have no commits" do
+      create_commit('no pair')
       expect(all_commits).not_to include 'Person2, Person3: 0'
     end
 
@@ -50,9 +62,9 @@ describe PairSee do
     end
 
     context 'with an after date in the future' do
-      let(:after_date) { '2013-01-01' }
-
+      let(:after_date) { '9999-01-01' }
       it 'can see all commits since a passed-in date' do
+        create_commit('a commit before the future after-date')
         expect(all_commits.size).to eq(0)
       end
     end
