@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 describe PairSee do
   let(:current_date) { Date.today }
   let(:repo) { 'fake_git' }

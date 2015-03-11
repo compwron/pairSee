@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 describe LogLine do
   describe '#contains_card_name?' do
     it 'should see that FOO-51 is card name' do

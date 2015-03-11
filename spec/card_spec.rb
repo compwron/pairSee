@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 describe Card do
   first_commit_date = Date.new(2012, 1, 1)
   last_commit_date = first_commit_date + 2
