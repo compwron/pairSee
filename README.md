@@ -1,8 +1,8 @@
 # PairSee
-[![Code Climate](https://codeclimate.com/github/compwron/pairsee/badges/gpa.svg)](https://codeclimate.com/github/compwron/pairsee)
-[![Test Coverage](https://codeclimate.com/github/compwron/pairsee/badges/coverage.svg)](https://codeclimate.com/github/compwron/pairsee)
-[![Build Status](https://travis-ci.org/compwron/pairsee.svg)](https://travis-ci.org/compwron/pairsee)
-[![Dependency Status](https://gemnasium.com/compwron/pairsee.png)](https://gemnasium.com/compwron/pairsee)
+[![Code Climate](https://codeclimate.com/github/compwron/pairSee/badges/gpa.svg)](https://codeclimate.com/github/compwron/pairSee)
+[![Test Coverage](https://codeclimate.com/github/compwron/pairSee/badges/coverage.svg)](https://codeclimate.com/github/compwron/pairSee)
+[![Build Status](https://travis-ci.org/compwron/pairSee.svg)](https://travis-ci.org/compwron/pairSee)
+[![Dependency Status](https://gemnasium.com/compwron/pairSee.png)](https://gemnasium.com/compwron/pairSee)
 
 
 Usage cases:
