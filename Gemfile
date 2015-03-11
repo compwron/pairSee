@@ -5,7 +5,7 @@ gem 'trollop'
 
 group :test, :development do
   gem 'rspec'
-  gem 'simplecov'
   gem 'rubocop'
   gem 'rake_commit'
+  gem 'codeclimate-test-reporter'
 end

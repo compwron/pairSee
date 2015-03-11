@@ -1,5 +1,5 @@
-require 'simplecov'
-SimpleCov.start
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 `git config --global user.email "pairsee@example.com"`
 `git config --global user.name "pairsee"`
