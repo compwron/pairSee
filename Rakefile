@@ -1,9 +1,18 @@
-task :default => :rspec
+# require 'bundler/gem_tasks'
 
-require "rspec/core/rake_task"
+task default: [] do
+  Rake::Task[:rubocop].invoke
+  Rake::Task[:rspec].invoke
+end
+
+require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:rspec) do |spec|
   spec.pattern = 'spec/*_spec.rb'
   spec.rspec_opts = ['--backtrace']
 end
 
-# require 'bundler/gem_tasks'
+desc 'do simple rubocop fixes'
+task :rubocop do
+  out = `rubocop -a`
+  p out
+end
