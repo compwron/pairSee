@@ -4,6 +4,8 @@
 [![Test Coverage](https://codeclimate.com/github/compwron/pairSee/badges/coverage.svg)](https://codeclimate.com/github/compwron/pairSee)
 [![Build Status](https://travis-ci.org/compwron/pairSee.svg)](https://travis-ci.org/compwron/pairSee)
 [![Dependency Status](https://gemnasium.com/compwron/pairSee.png)](https://gemnasium.com/compwron/pairSee)
+[![Gem Version](https://img.shields.io/gem/v/pair_see.svg)](https://rubygems.org/gems/pair_see)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 
 Usage cases:

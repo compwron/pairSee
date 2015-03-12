@@ -14,6 +14,12 @@ module PairSee
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
     end
+# seer.commits_not_by_known_pair
+# seer.all_most_recent_commits
+# seer.recommended_pairings
+# seer.pretty_card_data
+# seer.cards_per_person
+# seer.all_commits
 
     def _active(devs)
       devs.select do |dev|
