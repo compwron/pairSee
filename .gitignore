@@ -1,4 +1,11 @@
 config/config.yml
-.idea
-coverage/
-.bundle
+/.idea
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/

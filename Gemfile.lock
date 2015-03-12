@@ -1,3 +1,11 @@
+PATH
+  remote: .
+  specs:
+    pairSee (0.1.0)
+      git
+      trollop
+      yamler
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -48,11 +56,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler
   codeclimate-test-reporter
-  git
+  pairSee!
   rake
   rake_commit
   rspec
   rubocop
-  trollop
-  yamler

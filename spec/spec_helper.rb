@@ -3,10 +3,12 @@ CodeClimate::TestReporter.start
 
 require 'git'
 require 'fileutils'
+require 'pairSee'
 
-Dir[File.expand_path('../../lib/*.rb', __FILE__)].each do |file|
-  require file
-end
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+# Dir[File.expand_path('../../lib/*.rb', __FILE__)].each do |file|
+#   require file
+# end
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
