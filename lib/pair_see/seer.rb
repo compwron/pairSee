@@ -1,4 +1,4 @@
-class PairSee
+class Seer
   require 'yamler'
   require_relative 'combo'
   require_relative 'date_combo'

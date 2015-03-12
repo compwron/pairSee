@@ -1,1 +1,1 @@
-require "pair_see/version"
+require_relative "pair_see/version.rb"

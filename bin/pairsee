@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/pair_see'
+require_relative '../lib/pair_see/seer'
 require 'trollop'
 
 opts = Trollop.options do
@@ -17,7 +17,7 @@ end
 def run_command(opts)
   log_lines = LogLines.new(opts[:root], opts[:after])
 
-  pair_see = PairSee.new(log_lines, opts[:config])
+  pair_see = Seer.new(log_lines, opts[:config])
   if opts[:extras]
     pair_see.commits_not_by_known_pair
   elsif opts[:latest]
