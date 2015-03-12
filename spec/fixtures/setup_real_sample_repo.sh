@@ -17,4 +17,4 @@ pairsee -r spec/fixtures/example_usage_of_pairsee -c config/sample_config.yml -e
 pairsee -r spec/fixtures/example_usage_of_pairsee -c config/sample_config.yml -l
 pairsee -r spec/fixtures/example_usage_of_pairsee -c config/sample_config.yml -d
 pairsee -r spec/fixtures/example_usage_of_pairsee -c config/sample_config.yml -s
-# rm -rf spec/fixtures/example_usage_of_pairsee # comment this out in order to leave sample repo in place for later examination
+rm -rf spec/fixtures/example_usage_of_pairsee # comment this out in order to leave sample repo in place for later examination
