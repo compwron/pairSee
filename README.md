@@ -65,13 +65,22 @@ card_prefix: FOO-
 ```
 
 To use PairSee with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
+=======
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pair_see`. To experiment with that code, run `bin/console` for an interactive prompt.
+
+TODO: Delete this and the text above, and describe your gem
+>>>>>>> gem framework rename
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
+<<<<<<< HEAD
 gem 'pairSee'
+=======
+gem 'pair_see'
+>>>>>>> gem framework rename
 ```
 
 And then execute:
@@ -80,7 +89,11 @@ And then execute:
 
 Or install it yourself as:
 
+<<<<<<< HEAD
     $ gem install pairSee
+=======
+    $ gem install pair_see
+>>>>>>> gem framework rename
 
 ## Usage
 

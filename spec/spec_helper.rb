@@ -3,7 +3,7 @@ CodeClimate::TestReporter.start
 
 require 'git'
 require 'fileutils'
-require 'pairSee'
+require 'pair_see'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 # Dir[File.expand_path('../../lib/*.rb', __FILE__)].each do |file|
@@ -28,3 +28,4 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 end
+
