@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pair_see (0.1.0)
+    pair_see (0.1.2)
       git (~> 1.2)
       trollop (~> 2.0)
       yamler (~> 0.1)
@@ -60,6 +60,6 @@ DEPENDENCIES
   codeclimate-test-reporter (~> 0.4.7)
   pair_see!
   rake (~> 10.4)
-  rake_commit (~> 1.1.0)
+  rake_commit (~> 1.1)
   rspec (~> 3.2)
   rubocop (~> 0.29)
