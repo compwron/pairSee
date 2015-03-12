@@ -1,4 +1,5 @@
 # intended to be run from pairSee root dir
+ln -s `pwd`/bin/pairsee ~/bin/pairsee
 rm -rf spec/fixtures/example_usage_of_pairsee
 mkdir spec/fixtures/example_usage_of_pairsee
 cd spec/fixtures/example_usage_of_pairsee

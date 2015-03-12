@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pairSee (0.1.0)
+    pair_see (0.1.0)
       git
       trollop
       yamler
@@ -58,7 +58,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   codeclimate-test-reporter
-  pairSee!
+  pair_see!
   rake
   rake_commit
   rspec
