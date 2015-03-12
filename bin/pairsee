@@ -15,22 +15,30 @@ opts = Trollop.options do
 end
 
 def run_command(opts)
-  log_lines = PairSee::LogLines.new(opts[:root], opts[:after])
+  config = YAML.load_file(config_file)
+  options = {
+      names: config['names'].split(' '),
+      card_prefix: config['card_prefix'],
+      after_date: opts[:after],
+      repo_location: opts[:root],
+  }
 
-  pair_see = PairSee::Seer.new(log_lines, opts[:config])
+  seer = PairSee::Seer.new(options)
   if opts[:extras]
-    pair_see.commits_not_by_known_pair
+    seer.commits_not_by_known_pair
   elsif opts[:latest]
-    pair_see.all_most_recent_commits
+    seer.all_most_recent_commits
   elsif opts[:recommended]
-    pair_see.recommended_pairings
+    seer.recommended_pairings
   elsif opts[:cards]
-    pair_see.pretty_card_data
+    seer.pretty_card_data
   elsif opts[:cards_per_person]
-    pair_see.cards_per_person
+    seer.cards_per_person
   else
-    pair_see.all_commits
+    seer.all_commits
   end
 end
 
 puts run_command(opts).join("\n")
+
+
