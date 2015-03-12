@@ -15,14 +15,6 @@ describe PairSee do
     g.commit(message)
   end
 
-  # before :each do
-  #   `mkdir #{repo} && git init #{repo}`
-  # end
-
-  # after :each do
-  #   `rm -rf #{repo}`
-  # end
-
   before do
     g # must create repo before putting a file in it; 'let' is lazy
   end

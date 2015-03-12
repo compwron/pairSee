@@ -1,11 +1,17 @@
 require_relative 'log_line'
+require 'git'
 
 class LogLines
   include Enumerable
 
   def initialize(git_home, date_string)
-    @lines = `git --git-dir=#{git_home}/.git log --pretty=format:'%ai %s' --since=#{date_string}`.split("\n").map do |line|
-      LogLine.new line
+    @lines = _lines_from(git_home, date_string)
+  end
+
+  def _lines_from(git_home, date_string)
+    g = Git.open(git_home)
+    g.log.since(date_string).map do |l|
+      LogLine.new("#{l.date} #{l.message}")
     end
   end
 
