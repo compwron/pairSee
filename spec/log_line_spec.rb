@@ -2,7 +2,7 @@ describe PairSee::LogLine do
   def _new_logline(msg)
     PairSee::LogLine.new(msg)
   end
-  
+
   describe '#contains_card_name?' do
     it 'should see that FOO-51 is card name' do
       card_name = 'FOO-51'
