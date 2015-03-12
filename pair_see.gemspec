@@ -4,34 +4,28 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pair_see/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "pair_see"
+  spec.name          = 'pair_see'
   spec.version       = PairSee::VERSION
-  spec.authors       = ["compwron"]
-  spec.email         = ["compiledwrong@gmail.com"]
+  spec.authors       = ['compwron']
+  spec.email         = ['compiledwrong@gmail.com']
 
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
-  end
-
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
+  spec.summary       = 'See metrics about pair programming from the commandline'
+  spec.homepage      = 'https://github.com/compwron/pairsee'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
+  spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
-                                                                
-spec.add_dependency 'yamler'                                  
-spec.add_dependency 'trollop'                                 
-spec.add_dependency 'git'                                     
-                                                              
-spec.add_development_dependency "bundler"                     
-spec.add_development_dependency "rake"                        
-spec.add_development_dependency 'rspec'                       
-spec.add_development_dependency 'rubocop'                     
-spec.add_development_dependency 'rake_commit'                 
-spec.add_development_dependency 'codeclimate-test-reporter'   
+  spec.add_dependency 'yamler'
+  spec.add_dependency 'trollop'
+  spec.add_dependency 'git'
+
+  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rake_commit'
+  spec.add_development_dependency 'codeclimate-test-reporter'
 end
