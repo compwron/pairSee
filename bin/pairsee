@@ -15,7 +15,7 @@ opts = Trollop.options do
 end
 
 def run_command(opts)
-  config = YAML.load_file(config_file)
+  config = YAML.load_file(opts[:config])
   options = {
     names: config['names'].split(' '),
     card_prefix: config['card_prefix'],

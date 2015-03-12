@@ -152,8 +152,8 @@ describe PairSee::Seer do
   describe '#is_active' do
     it 'is true when the dev is active' do
       create_commit('ActiveDev')
-      expect(subject.is_active('ActiveDev')).to be_truthy
-      expect(subject.is_active('InactiveDev')).to be_falsey
+      expect(subject._is_active?('ActiveDev')).to be_truthy
+      expect(subject._is_active?('InactiveDev')).to be_falsey
     end
   end
 

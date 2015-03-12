@@ -13,17 +13,11 @@ module PairSee
       @devs = _active(options[:names])
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
-
-
-      # @log_lines = log_lines
-      # @devs = active_devs(config_file)
-      # @dev_pairs = devs.combination(2)
-      # @card_prefix = get_card_prefix(config_file)
     end
 
     def _active(devs)
       devs.select do |dev|
-        is_active(dev)
+        _is_active?(dev)
       end
     end
 
@@ -87,11 +81,11 @@ module PairSee
       config = YAML.load_file(config_file)
       devs_in_config = config['names'].split(' ')
       devs_in_config.select do |dev|
-        is_active(dev)
+        _is_active?(dev)
       end
     end
 
-    def is_active(dev)
+    def _is_active?(dev)
       log_lines.active? dev
     end
 
