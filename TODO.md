@@ -1,3 +1,5 @@
+- Rakefile / rake_commit 
+- Reduce number of git/filesystem interactions in spec
 - aggregate stats across multiple git repos
 - label for "BAD" to most-solo-commits view
 - Graph over time of cards worked on and duration
