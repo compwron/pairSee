@@ -10,3 +10,4 @@ config/config.yml
 /spec/reports/
 /tmp/
 .DS_Store
+pair_see*.gem

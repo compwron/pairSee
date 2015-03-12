@@ -1,4 +1,5 @@
-class Seer
+module PairSee
+  class Seer
   require 'yamler'
   require_relative 'combo'
   require_relative 'date_combo'
@@ -131,4 +132,5 @@ class Seer
       "#{person1}, #{person2}"
     end
   end
+end
 end

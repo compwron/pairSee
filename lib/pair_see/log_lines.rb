@@ -1,7 +1,8 @@
-require_relative 'log_line'
+module PairSee
+class LogLines
+  require_relative 'log_line'
 require 'git'
 
-class LogLines
   include Enumerable
 
   def initialize(git_home, date_string)
@@ -46,4 +47,5 @@ class LogLines
   private
 
   attr_reader :lines
+end
 end

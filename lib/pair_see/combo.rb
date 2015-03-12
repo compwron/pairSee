@@ -1,4 +1,5 @@
-class Combo
+module PairSee
+  class Combo
   attr_reader :count, :devs
 
   def initialize(count, *devs)
@@ -12,4 +13,5 @@ class Combo
   def empty?
     count == 0
   end
+end
 end

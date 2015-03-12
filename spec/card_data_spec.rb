@@ -1,12 +1,12 @@
-describe Seer do
+describe PairSee::Seer do
   let(:current_date) { Date.today }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { LogLines.new(repo, after_date) }
+  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
 
-  subject { Seer.new log_lines, config }
+  subject { PairSee::Seer.new log_lines, config }
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
@@ -26,7 +26,7 @@ describe Seer do
     it 'apparently needs to see card names without brackets' do
       create_commit('[FOO-1] one')
       create_commit('FOO-1 two')
-      expect(subject.card_data('FOO-')).to eq([Card.new('FOO-1', 2, current_date, current_date)])
+      expect(subject.card_data('FOO-')).to eq([PairSee::Card.new('FOO-1', 2, current_date, current_date)])
     end
 
     it 'in order by duration' do
@@ -41,8 +41,8 @@ describe Seer do
 
       data = subject.card_data('FOO-')
 
-      three_commit_card = Card.new('FOO-1', 3, after_date, current_date)
-      one_commit_card = Card.new('FOO-1', 1, current_date, current_date)
+      three_commit_card = PairSee::Card.new('FOO-1', 3, after_date, current_date)
+      one_commit_card = PairSee::Card.new('FOO-1', 1, current_date, current_date)
 
       expect(data.size).to eq(3)
       expect(data.first).to eq(three_commit_card)
@@ -56,8 +56,8 @@ describe Seer do
       create_commit('[FOO-2] commit 3')
       number_of_cards = 2
       card_prefix = 'FOO-'
-      card_1_data = Card.new('FOO-1', 1, current_date, current_date)
-      card_2_data = Card.new('FOO-2', 3, current_date, current_date)
+      card_1_data = PairSee::Card.new('FOO-1', 1, current_date, current_date)
+      card_2_data = PairSee::Card.new('FOO-2', 3, current_date, current_date)
       expect(subject.card_data(card_prefix).size).to eq(number_of_cards)
       expect(subject.card_data(card_prefix)).to include card_1_data
       expect(subject.card_data(card_prefix)).to include card_2_data
@@ -68,8 +68,8 @@ describe Seer do
       create_commit('[FOO-10]')
       create_commit('[FOO-100]')
       expect(subject.card_data('FOO-').count).to eq(3)
-      only_one_FOO1 = Card.new('FOO-1', 1, current_date, current_date)
-      only_one_FOO10 = Card.new('FOO-10', 1, current_date, current_date)
+      only_one_FOO1 = PairSee::Card.new('FOO-1', 1, current_date, current_date)
+      only_one_FOO10 = PairSee::Card.new('FOO-10', 1, current_date, current_date)
       expect(subject.card_data('FOO-')).to include only_one_FOO1
       expect(subject.card_data('FOO-')).to include only_one_FOO10
     end

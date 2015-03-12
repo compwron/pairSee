@@ -1,13 +1,13 @@
-describe Seer do
+describe PairSee::Seer do
   let(:current_date) { Date.today }
   let(:never) { Date.parse('1970-1-1') }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { LogLines.new(repo, after_date) }
+  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
 
-  subject { Seer.new log_lines, config }
+  subject { PairSee::Seer.new log_lines, config }
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }

@@ -1,4 +1,5 @@
-class Card
+module PairSee
+  class Card
   attr_reader :card_name, :number_of_commits
 
   def initialize(card_name, number_of_commits, first_date, last_date)
@@ -15,4 +16,5 @@ class Card
     card_name == other.card_name
     number_of_commits == other.number_of_commits
   end
+end
 end

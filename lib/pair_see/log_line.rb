@@ -1,5 +1,6 @@
-require 'time'
+module PairSee
 class LogLine
+  require 'time'
   attr_reader :line
 
   def initialize(line)
@@ -51,4 +52,5 @@ class LogLine
   def to_s
     line
   end
+end
 end
