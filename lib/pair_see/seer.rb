@@ -8,11 +8,27 @@ module PairSee
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
-    def initialize(log_lines, config_file)
-      @log_lines = log_lines
-      @devs = active_devs(config_file)
+    def initialize(options)
+      @log_lines = _lines_from(options[:repo_location],  options[:after_date])
+      @devs = _active(options[:names])
+      @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
-      @card_prefix = get_card_prefix(config_file)
+
+
+      # @log_lines = log_lines
+      # @devs = active_devs(config_file)
+      # @dev_pairs = devs.combination(2)
+      # @card_prefix = get_card_prefix(config_file)
+    end
+
+    def _active(devs)
+      devs.select do |dev|
+        is_active(dev)
+      end
+    end
+
+    def _lines_from(repo, after_date)
+      LogLines.new(repo, after_date)
     end
 
     def cards_per_person

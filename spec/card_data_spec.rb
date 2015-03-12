@@ -6,7 +6,13 @@ describe PairSee::Seer do
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
 
-  subject { PairSee::Seer.new log_lines, config }
+  subject { PairSee::Seer.new({
+    names: %w{Person1 Person2 Person3 Person4 Person5 Person6 Person7 ActiveDev InactiveDev},
+    card_prefix: 'BAZ-',
+    after_date: after_date,
+    repo_location: repo,
+    })
+  }
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
