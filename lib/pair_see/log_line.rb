@@ -1,6 +1,7 @@
 module PairSee
   class LogLine
     require 'time'
+    attr_reader :date
 
     def initialize(commit)
       @message = commit.message
@@ -17,11 +18,11 @@ module PairSee
     end
 
     def contains_card?(card_prefix)
-      message.match(card_prefix) || @branch_history.match(card_prefix)
+      @message.match(card_prefix) || @branch_history.match(card_prefix)
     end
 
     def contains_card_name?(card_name)
-      _card_matchers.any? {|cm| !cm.nil? }
+      _card_matchers(card_name).any? {|cm| !cm.nil? }
     end
 
     def _card_matchers(card_name)
@@ -45,7 +46,7 @@ module PairSee
     end
 
     def merge_commit?
-      message.match('Merge remote-tracking branch') || @message.match('Merge branch')
+      @message.match('Merge remote-tracking branch') || @message.match('Merge branch')
     end
 
     def not_by_pair?(devs)

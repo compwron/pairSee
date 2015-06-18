@@ -17,6 +17,7 @@ module PairSee
         LogLine.new(commit)
       end
       puts 'got commits'
+      
       a
     end
 
