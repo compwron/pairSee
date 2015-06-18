@@ -3,7 +3,7 @@ module PairSee
   class LogLines
     require_relative 'log_line'
     require 'git'
- 
+
     include Enumerable
 
     def initialize(git_home, date_string)
@@ -17,7 +17,7 @@ module PairSee
         LogLine.new(commit)
       end
       puts 'got commits'
-      
+
       a
     end
 
