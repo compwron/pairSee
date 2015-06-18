@@ -1,4 +1,5 @@
 module PairSee
+  require 'pry'
   class Seer
     require 'yamler'
     require_relative 'combo'
@@ -32,20 +33,23 @@ module PairSee
     end
 
     def cards_per_person
-      @devs.map do |dev|
-        { dev => cards_dev_worked_on(log_lines, dev) }
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.map do |dev_name, cards_worked|
-        { dev_name => cards_worked.uniq }
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.map do|dev, cards|
+      # binding.pry
+      a = @devs.inject({}) { |agg, dev|
+        agg[dev] = cards_dev_worked_on(log_lines, dev).uniq
+        agg
+      }
+
+      # binding.pry 
+
+      b = a.map { |dev, cards|
         "#{dev}: [#{cards.size} cards] #{cards.sort.join(', ')}"
-      end
+      }
+
+      b
     end
 
     def cards_dev_worked_on(log_lines, dev)
+      # binding.pry
       log_lines.select do |log_line|
         log_line.authored_by?(dev)
       end.map do|log_line|

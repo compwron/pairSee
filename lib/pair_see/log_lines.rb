@@ -1,8 +1,9 @@
+require 'pry'
 module PairSee
   class LogLines
     require_relative 'log_line'
     require 'git'
-
+ 
     include Enumerable
 
     def initialize(git_home, date_string)
@@ -11,17 +12,20 @@ module PairSee
 
     def _lines_from(git_home, date_string)
       g = Git.open(git_home)
-      g.log.since(date_string).map do |l|
-        LogLine.new("#{l.date} #{l.message}")
+      puts 'getting commits'
+      a = g.log(1000000).since(date_string).map do |commit|
+        LogLine.new(commit)
       end
+      puts 'got commits'
+      a
     end
 
     def each(&block)
-      lines.each &block
+      @lines.each &block
     end
 
     def last
-      lines.last
+      @lines.last
     end
 
     def active?(dev)
@@ -43,9 +47,5 @@ module PairSee
         log_line.authored_by?(dev) && (devs - [dev]).none? { |d| log_line.authored_by?(d) }
       end
     end
-
-    private
-
-    attr_reader :lines
   end
 end
