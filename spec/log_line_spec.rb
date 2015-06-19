@@ -28,14 +28,22 @@ describe PairSee::LogLine do
       end
     end
 
-    it 'should not need brackets to detect card name' do
-      expect(_new_logline('FOO-515 stuff').contains_card_name?('FOO-51')).to eq(false)
-      expect(_new_logline('FOO-51 other stuff').contains_card_name?('FOO-51')).to eq(true)
+    context 'with bracketless card name' do
+      let(:card_name) { 'FOO-51' }
+      let(:message) { 'FOO-51 other stuff' }
+      it 'detects card name' do
+        expect(subject).to be true
+      end
     end
 
-    it 'should detect multiple-card commit' do
-      expect(_new_logline('[FOO-1, FOO-2] stuff').contains_card_name?('FOO-1')).to eq(true)
-      expect(_new_logline('[FOO-1, FOO-2] stuff').contains_card_name?('FOO-2')).to eq(true)
+    context 'with multiple cards in commit' do
+      let(:message) { '[FOO-1, FOO-2] stuff' }
+      let(:card1) { 'FOO-1' }
+      let(:card2) { 'FOO-2' }
+      it 'detects both cards' do
+        expect(PairSee::LogLine.new(commit).contains_card_name?(card1)).to be true
+        expect(PairSee::LogLine.new(commit).contains_card_name?(card2)).to be true
+      end
     end
 
     it "doesn't mind bracketless with immediate colon" do
