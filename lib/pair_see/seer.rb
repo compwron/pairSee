@@ -11,7 +11,7 @@ module PairSee
 
     def initialize(options)
       @log_lines = _lines_from(options[:repo_location], options[:after_date])
-      @devs = _active(options[:names])
+      @devs = log_lines.devs
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
     end
@@ -60,14 +60,6 @@ module PairSee
     def get_card_prefix(config_file)
       config = YAML.load_file(config_file)
       config['card_prefix']
-    end
-
-    def active_devs(config_file)
-      config = YAML.load_file(config_file)
-      devs_in_config = config['names'].split(' ')
-      devs_in_config.select do |dev|
-        _is_active?(dev)
-      end
     end
 
     def _is_active?(dev)
@@ -125,12 +117,6 @@ module PairSee
         most_recent_commit_date(person1, person2).nil?
       end.map do |person1, person2|
         "#{person1}, #{person2}"
-      end
-    end
-
-    def _active(devs)
-      devs.select do |dev|
-        _is_active?(dev)
       end
     end
 

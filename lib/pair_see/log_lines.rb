@@ -7,18 +7,12 @@ module PairSee
     include Enumerable
 
     def initialize(git_home, date_string)
-      @lines = _lines_from(git_home, date_string)
+      @commits = Git.open(git_home).log(1000000).since(date_string)
+      @lines = []
     end
 
-    def _lines_from(git_home, date_string)
-      g = Git.open(git_home)
-      puts 'getting commits'
-      a = g.log(1000000).since(date_string).map do |commit|
-        LogLine.new(commit)
-      end
-      puts 'got commits'
-
-      a
+    def devs
+      @dev_names ||= @commits.map {|c| c.author.name }.uniq
     end
 
     def each(&block)
@@ -27,12 +21,6 @@ module PairSee
 
     def last
       @lines.last
-    end
-
-    def active?(dev)
-      any? do |log_line|
-        log_line.authored_by?(dev)
-      end
     end
 
     def commits_for_pair(person1, person2)

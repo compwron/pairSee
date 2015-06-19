@@ -5,7 +5,7 @@ module PairSee
 
     def initialize(commit)
       @message = commit.message
-      @branch_history = _card_name_message(commit)
+      @branch_history = ''#_card_name_message(commit)
       @date = commit.date
       @author = commit.author.name
     end
