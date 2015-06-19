@@ -20,8 +20,10 @@ describe PairSee::LogLine do
       end
     end
 
-    it 'should not detect FOO-515 as matching card name FOO-51' do
-      expect(_new_logline('[FOO-515]').contains_card_name?('FOO-51')).to eq(false)
+    context 'with card name containing other card name' do
+      it 'does not detect partial card name' do
+        expect(_new_logline('[FOO-515]').contains_card_name?('FOO-51')).to eq(false)
+      end
     end
 
     it 'should not need brackets to detect card name' do

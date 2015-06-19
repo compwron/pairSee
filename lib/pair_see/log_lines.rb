@@ -6,11 +6,19 @@ module PairSee
     include Enumerable
 
     def initialize(git_home, date_string)
+      puts "getting commits"
       @commits = Git.open(git_home).log(1000000).since(date_string)
+      puts "got commits"
     end
 
     def lines
-      @lines_from ||= @commits.map {|c| LogLine.new(c)}
+      puts "turning #{@commits.count} commits into lines"
+      @lines_from ||= @commits.each_with_index.map do |c, index| 
+        puts "#{Time.now} converting line #{index}" if index % 10 == 0
+        LogLine.new(c)
+      end
+      puts "done turning commits into lines"
+      @lines_from
     end
 
     def devs
