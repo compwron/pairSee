@@ -1,19 +1,16 @@
 module PairSee
   class LogLine
-    require 'time'
-    attr_reader :date
 
     def initialize(commit)
       @message = commit.message
-      @branch_history = ''#_card_name_message(commit)
+      @branch_history = _agg_branch_history(commit)
       @date = commit.date
-      @author = commit.author.name
+      @author = commit.author.name.gsub(' ', '')
     end
 
     def authored_by?(*people)
-      # binding.pry
-      a = people.empty? ? false : people.all? do |person|
-        @author.include?(person)
+      people.empty? ? false : people.all? do |person|
+        @author.include?(person) || @message.include?(person)
       end
     end
 
@@ -49,19 +46,15 @@ module PairSee
       @message.match('Merge remote-tracking branch') || @message.match('Merge branch')
     end
 
-    def not_by_pair?(devs)
-      devs.any? { |dev| authored_by?(dev) || merge_commit? }
-    end
-
     def to_s
-      line
+      [@message, @branch_history, @date, @author].join(' ')
     end
 
-    def _card_name_message(commit)
+    def _agg_branch_history(commit)
       branch_history = commit.name
       branch_history += ' ' + commit.parent.name if commit.parent.name 
       branch_history += ' ' + commit.parent.parent.name if commit.parent.parent
-      branch_history + ' ' + commit.message
+      branch_history
     end
   end
 end

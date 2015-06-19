@@ -1,4 +1,3 @@
-require 'pry'
 module PairSee
   class LogLines
     require_relative 'log_line'
@@ -8,19 +7,22 @@ module PairSee
 
     def initialize(git_home, date_string)
       @commits = Git.open(git_home).log(1000000).since(date_string)
-      @lines = []
+    end
+
+    def lines
+      @lines_from ||= @commits.map {|c| LogLine.new(c)}
     end
 
     def devs
-      @dev_names ||= @commits.map {|c| c.author.name }.uniq
+      @dev_names ||= @commits.map {|c| c.author.name.gsub(' ', '') }.uniq
     end
 
     def each(&block)
-      @lines.each &block
+      lines.each &block
     end
 
     def last
-      @lines.last
+      lines.last
     end
 
     def commits_for_pair(person1, person2)

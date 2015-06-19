@@ -1,12 +1,23 @@
 describe PairSee::LogLine do
-  def _new_logline(msg)
-    PairSee::LogLine.new(msg)
-  end
+  let(:commit) { OpenStruct.new(
+    message: message,
+    date: Time.now,
+    author: OpenStruct.new(name: author_name),
+    name: 'branch1',
+    parent: OpenStruct.new(name: 'branch2')
+    )
+  }
+  let(:author_name) { 'Person1' }
+  let(:message) { 'some message' }
+  subject { PairSee::LogLine.new commit }
 
   describe '#contains_card_name?' do
-    it 'should see that FOO-51 is card name' do
-      card_name = 'FOO-51'
-      expect(_new_logline("[#{card_name}]").contains_card_name?(card_name)).to eq(true)
+    context 'with card name' do
+      let(:card_name) { 'FOO-51' }
+      let(:message) { card_name + ' some other message stuff' }
+      it 'identifies card name' do
+        expect(subject.contains_card_name?(card_name)).to be true
+      end
     end
 
     it 'should not detect FOO-515 as matching card name FOO-51' do

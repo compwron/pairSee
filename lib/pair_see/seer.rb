@@ -1,5 +1,4 @@
 module PairSee
-  require 'pry'
   class Seer
     require 'yamler'
     require_relative 'combo'
@@ -24,7 +23,6 @@ module PairSee
     end
 
     def cards_dev_worked_on(log_lines, dev)
-      # binding.pry
       log_lines.select do |log_line|
         log_line.authored_by?(dev)
       end.map do |log_line|
