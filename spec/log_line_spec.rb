@@ -9,20 +9,22 @@ describe PairSee::LogLine do
   }
   let(:author_name) { 'Person1' }
   let(:message) { 'some message' }
-  subject { PairSee::LogLine.new commit }
 
   describe '#contains_card_name?' do
+    subject { PairSee::LogLine.new(commit).contains_card_name?(card_name) }
     context 'with card name' do
       let(:card_name) { 'FOO-51' }
       let(:message) { card_name + ' some other message stuff' }
       it 'identifies card name' do
-        expect(subject.contains_card_name?(card_name)).to be true
+        expect(subject).to be true
       end
     end
 
     context 'with card name containing other card name' do
+      let(:card_name) { 'FOO-51' }
+      let(:message) { '[FOO-515]' }
       it 'does not detect partial card name' do
-        expect(_new_logline('[FOO-515]').contains_card_name?('FOO-51')).to eq(false)
+        expect(subject).to be false
       end
     end
 
