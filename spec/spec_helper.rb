@@ -4,6 +4,8 @@ CodeClimate::TestReporter.start
 require 'git'
 require 'fileutils'
 require 'pair_see'
+require 'timecop'
+require 'pry'
 
 Dir[File.expand_path('../../lib/pair_see/*.rb', __FILE__)].each do |file|
   require file

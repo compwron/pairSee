@@ -1,16 +1,17 @@
 module PairSee
   class LogLine
+    attr_reader :date, :author, :message
 
     def initialize(commit)
       @message = commit.message
       @branch_history = _agg_branch_history(commit)
       @date = commit.date
-      @author = commit.author.name.gsub(' ', '')
+      @author = (commit.author.name || '').gsub(' ', '')
     end
 
     def authored_by?(*people)
       people.empty? ? false : people.all? do |person|
-        @author.include?(person) || @message.include?(person)
+        @author.include?(person) || /(^|\s+|\W)#{person}(\s+|$|\W)/i =~ @message
       end
     end
 
@@ -52,7 +53,11 @@ module PairSee
 
     def _agg_branch_history(commit)
       branch_history = commit.name
-      branch_history += ' ' + commit.parent.name if commit.parent.name 
+      if commit && commit.parent
+        branch_history += ' ' + commit.parent.name 
+      else
+        return branch_history
+      end
       branch_history += ' ' + commit.parent.parent.name if commit.parent.parent
       branch_history
     end

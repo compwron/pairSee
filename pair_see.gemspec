@@ -29,4 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.29'
   spec.add_development_dependency 'rake_commit', '~> 1.1'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 0.4.7'
+  spec.add_development_dependency 'timecop'
+  spec.add_development_dependency 'pry'
 end

@@ -46,72 +46,86 @@ describe PairSee::LogLine do
       end
     end
 
-    it "doesn't mind bracketless with immediate colon" do
-      expect(_new_logline('FOO-1: stuff').contains_card_name?('FOO-1')).to eq(true)
+    context "bracketless with immediate colon" do
+      let(:message) { 'FOO-1: stuff' }
+      let(:card_name) { 'FOO-1' }
+      it 'detects card name' do
+        expect(subject).to be true
+      end
     end
 
-    it 'detects containment of card name when there is no space between card number and bracket' do
-      line = 'FOO-100[bar]'
-      expect(_new_logline(line).contains_card_name?('FOO-100')).to eq(true)
+    context 'with no space between card number and bracket' do
+      let(:message) { 'FOO-100[bar]' }
+      let(:card_name) { 'FOO-100' }
+      it 'detects containment of card name' do
+        expect(subject).to be true
+      end
     end
   end
 
   describe '#card_name(prefix)' do
-    it 'detects card name when there is no space between card number and bracket' do
-      line = 'FOO-100[bar]'
-      expect(_new_logline(line).card_name('FOO-')).to eq('FOO-100')
+    subject { PairSee::LogLine.new(commit).card_name(prefix) }
+    context 'with no space between card number and bracket' do
+      let(:message) { 'FOO-100[bar]' }
+      let(:prefix) { 'FOO-' }
+      it 'detects card name when there is' do
+        expect(subject).to eq 'FOO-100'
+      end
     end
   end
 
   describe '#date' do
-    it 'should recognize date in GIT format line' do
-      line = '2012-10-21 10:54:47 -0500 message'
-      date = _new_logline(line).date
-      expect(date.year).to eq(2012)
-      expect(date.month).to eq(10)
-      expect(date.day).to eq(21)
+    subject { PairSee::LogLine.new(commit).date }
+    it 'takes date from commit date' do
+      Timecop.freeze(Time.new(2012, 10, 21)) do
+        expect(subject.year).to eq(2012)
+        expect(subject.month).to eq(10)
+        expect(subject.day).to eq(21)
+      end
     end
   end
 
   describe '#authored_by?' do
-    it 'should not falsely see committer in commit message' do
-      line = 'FOO-000 [Committer1, Committer2] commitmessageCommitter3foo'
-      expect(_new_logline(line).authored_by?('Committer3', 'Committer2')).to be_falsey
+    subject { PairSee::LogLine.new(commit).authored_by?(*pair) }
+    context 'with commiter name as part of a larger word in commit message' do
+      let(:message) { 'FOO-000 [Committer1, Committer2] commitmessageCommitter3foo' }
+      let(:pair) { ['Committer3', 'Committer2'] }
+      it 'does not falsely see committer as author' do
+        expect(subject).to be false
+      end
     end
 
-    it 'should not return true when there are no committers' do
-      line = 'stuff'
-      expect(_new_logline(line).authored_by?).to be_falsey
+    context 'with no committers' do
+      let(:message) { 'stuff' }
+      let(:author_name) { nil }
+      let(:pair) { [] }
+      it 'returns false' do
+        expect(subject).to be false
+      end
     end
 
-    it 'should not wrongly detect committer between Person1 and Person2' do
-      line = '2013-11-13 20:38:24 -0800 [Person1] BAZ-200'
-      expect(_new_logline(line).authored_by?('Person2')).to be_falsey
+    context 'with commiter name containing same substring as other committer name' do
+      let(:message) { '[Person1] BAZ-200' }
+      let(:pair) { ['Person2'] }
+      it 'does not wrongly detect committer' do
+        expect(subject).to be false
+      end
     end
 
-    it 'should not wrongly detect committer between James and Arnie' do
-      line = '2013-11-13 20:38:24 -0800 [James] BAZ-200'
-      expect(_new_logline(line).authored_by?('Arnie')).to be_falsey
+    context 'with names James and Arnie' do
+      let(:message) { '[James] BAZ-200' }
+      let(:pair) { ['Arnie'] }
+      it 'detects committer accurately' do
+        expect(subject).to be false
+      end
     end
 
-    it 'argh' do
-      line = '2013-11-13 22:35:37 -0800 [Person2]'
-      expect(_new_logline(line).authored_by?('Person1')).to be_falsey
-    end
-
-    it 'should detect person in line' do
-      line = '[Person1] stuff'
-      expect(_new_logline(line).authored_by?('Person1')).to be_truthy
-    end
-
-    it 'should not detect person in empty line' do
-      line = 'stuff'
-      expect(_new_logline(line).authored_by?('Person1')).to be_falsey
-    end
-
-    it 'should not detect other committer in line' do
-      line = 'Person1 stuff'
-      expect(_new_logline(line).authored_by?('Person2')).to be_falsey
+    context 'with author not present in commit' do
+      let(:pair) { ['Person1'] }
+      let(:author_name) { 'Human' }
+      it 'does not detect nonexistant author' do
+        expect(subject).to be false
+      end
     end
   end
 end

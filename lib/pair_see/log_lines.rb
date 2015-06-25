@@ -6,9 +6,7 @@ module PairSee
     include Enumerable
 
     def initialize(git_home, date_string)
-      puts "getting commits"
       @commits = Git.open(git_home).log(1000000).since(date_string)
-      puts "got commits"
     end
 
     def lines
