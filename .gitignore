@@ -11,3 +11,4 @@ config/config.yml
 /tmp/
 .DS_Store
 pair_see*.gem
+spec/fixtures/git/*

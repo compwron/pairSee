@@ -10,12 +10,12 @@ module PairSee
     end
 
     def lines
-      puts "turning #{@commits.count} commits into lines"
-      @lines_from ||= @commits.each_with_index.map do |c, index| 
-        puts "#{Time.now} converting line #{index}" if index % 10 == 0
+      # puts "turning #{@commits.count} commits into lines"
+      @lines_from ||= @commits.each_with_index.map do |c, index|
+        # puts "#{Time.now} converting line #{index}" if index % 10 == 0
         LogLine.new(c)
       end
-      puts "done turning commits into lines"
+      # puts "done turning commits into lines"
       @lines_from
     end
 
@@ -36,7 +36,7 @@ module PairSee
     end
 
     def commits_not_by_known_pair(devs)
-      reject { |log_line| log_line.not_by_pair? devs }
+      reject { |log_line| !log_line.authored_by?(*devs) }
     end
 
     def solo_commits(devs, dev)
