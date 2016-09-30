@@ -13,5 +13,5 @@ module PairSee
     def empty?
       count == 0
     end
-end
+  end
 end
