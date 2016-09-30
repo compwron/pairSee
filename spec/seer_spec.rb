@@ -1,43 +1,36 @@
+require_relative '../lib/pair_see/log_lines'
+class TestLogLines < PairSee::LogLines
+  include Enumerable
+  require 'ostruct'
+
+  def initialize(author, *commit_messages)
+    @commits = commit_messages.map { |cm|
+      OpenStruct.new(author: OpenStruct.new(name: author), message: cm)
+    }
+  end
+end
+
 describe PairSee::Seer do
   let(:current_date) { Date.today }
   let(:never) { Date.parse('1970-1-1') }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
   let(:config) { 'spec/fixtures/spec_config.yml' }
-  let(:g) { Git.init(repo) }
+  let(:commit_messages) { [] }
+  let(:card_prefix) { 'FOO-' }
 
-  subject { PairSee::Seer.new({
-    names: %w{Person1 Person2 Person3 Person4 Person5 Person6 Person7 ActiveDev InactiveDev},
-    card_prefix: 'BAZ-',
-    after_date: after_date,
-    repo_location: repo,
-    })
-  }
 
-  def create_commit(message)
-    File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
-    g.add
-    g.commit(message)
-  end
+  let(:log_lines) { TestLogLines.new("author", commit_messages) }
+  subject { PairSee::Seer.new(card_prefix, log_lines) }
 
-  before do
-    g # must create repo before putting a file in it; 'let' is lazy
-  end
-
-  after do
-    FileUtils.rm_r(repo)
-  end
-
-  it 'accepts configuration' do
-    options = {
-      names: %w(Person1 Person2 Person3),
-      card_prefix: 'FOO-',
-      after_date: after_date,
-      repo_location: repo
-    }
-    create_commit("anything")
-    subject2 = PairSee::Seer.new(options)
+  context "accepts configuration" do
+    let(:commit_messages) { ["anything"] }
+    it 'accepts configuration' do
+      expect(subject.log_lines.count).to eq 1
+      expect(subject.devs).to eq(["author"])
+      expect(subject.dev_pairs.count).to eq 0
+      expect(subject.card_prefix).to eq card_prefix
+    end
   end
 
   describe '#all_commits' do

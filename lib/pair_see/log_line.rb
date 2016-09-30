@@ -20,7 +20,7 @@ module PairSee
     end
 
     def contains_card_name?(card_name)
-      _card_matchers(card_name).any? {|cm| !cm.nil? }
+      _card_matchers(card_name).any? { |cm| !cm.nil? }
     end
 
     def _card_matchers(card_name)
@@ -54,7 +54,7 @@ module PairSee
     def _agg_branch_history(commit)
       branch_history = commit.name
       if commit && commit.parent
-        branch_history += ' ' + commit.parent.name 
+        branch_history += ' ' + commit.parent.name
       else
         return branch_history
       end

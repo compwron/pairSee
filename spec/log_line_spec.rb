@@ -1,11 +1,11 @@
 describe PairSee::LogLine do
   let(:commit) { OpenStruct.new(
-    message: message,
-    date: Time.now,
-    author: OpenStruct.new(name: author_name),
-    name: 'branch1',
-    parent: OpenStruct.new(name: 'branch2')
-    )
+      message: message,
+      date: Time.now,
+      author: OpenStruct.new(name: author_name),
+      name: 'branch1',
+      parent: OpenStruct.new(name: 'branch2')
+  )
   }
   let(:author_name) { 'Person1' }
   let(:message) { 'some message' }

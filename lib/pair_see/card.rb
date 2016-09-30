@@ -16,5 +16,5 @@ module PairSee
       card_name == other.card_name
       number_of_commits == other.number_of_commits
     end
-end
+  end
 end

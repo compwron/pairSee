@@ -8,10 +8,10 @@ module PairSee
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
-    def initialize(options)
-      @log_lines = _lines_from(options[:repo_location], options[:after_date])
+    def initialize(card_prefix, log_lines)
+      @log_lines = log_lines
       @devs = log_lines.devs
-      @card_prefix = options[:card_prefix]
+      @card_prefix = card_prefix
       @dev_pairs = devs.combination(2)
     end
 
@@ -116,10 +116,6 @@ module PairSee
       end.map do |person1, person2|
         "#{person1}, #{person2}"
       end
-    end
-
-    def _lines_from(repo, after_date)
-      LogLines.new(repo, after_date)
     end
   end
 end

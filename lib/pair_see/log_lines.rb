@@ -20,7 +20,7 @@ module PairSee
     end
 
     def devs
-      @dev_names ||= @commits.map {|c| c.author.name.gsub(' ', '') }.uniq
+      @dev_names ||= @commits.map { |c| c.author.name.gsub(' ', '') }.uniq
     end
 
     def each(&block)
