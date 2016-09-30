@@ -44,23 +44,27 @@ describe PairSee::Seer do
       expect(all_commits).to include 'Person1, Person2: 1'
     end
 
-    it "doesn't list counts for pairs who have no commits" do
-      create_commit('no pair')
-      expect(all_commits).not_to include 'Person2, Person3: 0'
+    describe "pairs who have no commits" do
+      let(:commit_messages) {["no pair"]}
+      it "doesn't list counts" do
+        expect(all_commits).not_to include 'Person2, Person3: 0'
+      end
     end
 
-    it "gets all commits which only have person1's name on them" do
-      create_commit('Person3 code')
-      expect(all_commits).not_to include 'Person1: 0'
-      expect(all_commits).to include 'Person3: 1'
+    describe "commits which only have person1's name on them" do
+      let(:commit_messages) {["Person3 code"]}
+      it "gets all commits which only have person1's name on them" do
+        expect(all_commits).not_to include 'Person1: 0'
+        expect(all_commits).to include 'Person3: 1'
+      end
     end
 
-    it 'sorts all by count' do
-      create_commit('Person1/Person3 code')
-      create_commit('Person1/Person3 more code')
-      create_commit('Person1/Person2 code')
-      expect(all_commits.last).to end_with ': 2'
-      expect(all_commits.first).to end_with ': 1'
+    describe "with several pairings" do
+      let(:commit_messages) {["Person1/Person3 code", "Person1/Person3 more code", "Person1/Person2 code"]}
+      it 'sorts all by count' do
+        expect(all_commits.last).to end_with ': 2'
+        expect(all_commits.first).to end_with ': 1'
+      end
     end
 
     context 'with an after date in the future' do
