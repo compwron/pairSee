@@ -17,10 +17,10 @@ end
 def run_command(opts)
   config = YAML.load_file(opts[:config])
   options = {
-    names: config['names'].split(' '),
-    card_prefix: config['card_prefix'],
-    after_date: opts[:after],
-    repo_location: opts[:root]
+      names: config['names'].split(' '),
+      card_prefix: config['card_prefix'],
+      after_date: opts[:after],
+      repo_location: opts[:root]
   }
 
   seer = PairSee::Seer.new(options)

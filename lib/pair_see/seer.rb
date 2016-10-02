@@ -9,11 +9,12 @@ module PairSee
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
     def initialize(options)
-      @log_lines = _lines_from(options[:repo_location],  options[:after_date])
+      @log_lines = _lines_from(options[:repo_location], options[:after_date])
       @devs = _active(options[:names])
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
     end
+
 # seer.commits_not_by_known_pair
 # seer.all_most_recent_commits
 # seer.recommended_pairings
@@ -33,14 +34,14 @@ module PairSee
 
     def cards_per_person
       @devs.map do |dev|
-        { dev => cards_dev_worked_on(log_lines, dev) }
+        {dev => cards_dev_worked_on(log_lines, dev)}
       end.inject({}) do |result, element|
         result.merge(element)
       end.map do |dev_name, cards_worked|
-        { dev_name => cards_worked.uniq }
+        {dev_name => cards_worked.uniq}
       end.inject({}) do |result, element|
         result.merge(element)
-      end.map do|dev, cards|
+      end.map do |dev, cards|
         "#{dev}: [#{cards.size} cards] #{cards.sort.join(', ')}"
       end
     end
@@ -48,7 +49,7 @@ module PairSee
     def cards_dev_worked_on(log_lines, dev)
       log_lines.select do |log_line|
         log_line.authored_by?(dev)
-      end.map do|log_line|
+      end.map do |log_line|
         log_line.card_number(@card_prefix)
       end.compact
     end
@@ -148,5 +149,5 @@ module PairSee
         "#{person1}, #{person2}"
       end
     end
-end
+  end
 end
