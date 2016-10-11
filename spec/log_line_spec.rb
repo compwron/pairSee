@@ -3,6 +3,12 @@ describe PairSee::LogLine do
     PairSee::LogLine.new(msg)
   end
 
+  describe "#card_number" do
+    it "sees card number" do
+      expect(_new_logline("FOO-123 commit message").card_number("FOO-")).to eq "123"
+    end
+  end
+
   describe '#contains_card_name?' do
     it 'should see that FOO-51 is card name' do
       card_name = 'FOO-51'
