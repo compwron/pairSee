@@ -39,4 +39,13 @@ describe PairSee::LogLines do
       expect(cfp[0].to_s).to include "aaa"
     end
   end
+
+  describe "active?" do
+    it "checks activeness of dev" do
+      create_commit("FOO-123 [Person1, Person2] aaa")
+      expect(subject.active?("Person1")).to be true
+      expect(subject.active?("Person2")).to be true
+      expect(subject.active?("Person3")).to be false
+    end
+  end
 end
