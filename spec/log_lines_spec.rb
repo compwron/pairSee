@@ -48,4 +48,14 @@ describe PairSee::LogLines do
       expect(subject.active?("Person3")).to be false
     end
   end
+
+  describe "commits_not_by_known_pair" do
+    it "detects commits with no known dev name/s" do
+      create_commit("FOO-123 [Person1, Person2] aaa")
+      create_commit("FOO-123 [Person3] bbb")
+      found = subject.commits_not_by_known_pair(["Person3"])
+      expect(found.length).to eq 1
+      expect(found.to_s).to include "aaa"
+    end
+  end
 end
