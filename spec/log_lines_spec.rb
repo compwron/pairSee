@@ -58,4 +58,16 @@ describe PairSee::LogLines do
       expect(found.to_s).to include "aaa"
     end
   end
+
+  describe "solo_commits" do
+    it "is a solo commit if there is only one dev name on it" do
+      create_commit("FOO-123 [Person1, Person2] aaa")
+      create_commit("FOO-123 [Person3] bbb")
+      devs = ["Person1", "Person2", "Person3"]
+      dev = "Person3"
+      solos = subject.solo_commits(devs, dev)
+      expect(solos.length).to eq 1
+      expect(solos[0].to_s).to include "bbb"
+    end
+  end
 end
