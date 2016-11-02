@@ -29,4 +29,14 @@ describe PairSee::LogLines do
       expect(subject.last.to_s).to include "message 123"
     end
   end
+
+  describe "commits_for_pair" do
+    it "sees commits for pair" do
+      create_commit("FOO-123 [Person1, Person2] aaa")
+      create_commit("FOO-123 [Person1, Person3] bbb")
+      cfp = subject.commits_for_pair("Person1", "Person2")
+      expect(cfp.length).to eq 1
+      expect(cfp[0].to_s).to include "aaa"
+    end
+  end
 end
