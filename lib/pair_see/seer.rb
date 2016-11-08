@@ -5,6 +5,7 @@ module PairSee
     require_relative 'date_combo'
     require_relative 'log_lines'
     require_relative 'card'
+    require_relative 'cards_per_person'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
@@ -22,15 +23,6 @@ module PairSee
 # seer.cards_per_person
 # seer.all_commits
 
-    def _active(devs)
-      devs.select do |dev|
-        _is_active?(dev)
-      end
-    end
-
-    def _lines_from(repo, after_date)
-      LogLines.new(repo, after_date)
-    end
 
     def cards_per_person
       @devs.map do |dev|
@@ -52,6 +44,16 @@ module PairSee
       end.map do |log_line|
         log_line.card_number(@card_prefix)
       end.compact
+    end
+
+    def _active(devs)
+      devs.select do |dev|
+        _is_active?(dev)
+      end
+    end
+
+    def _lines_from(repo, after_date)
+      LogLines.new(repo, after_date)
     end
 
     def pretty_card_data
