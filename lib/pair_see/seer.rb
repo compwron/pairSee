@@ -30,8 +30,12 @@ module PairSee
       @sub_seer.cards_per_person
     end
 
-    def _lines_from(repo, after_date)
-      LogLines.new(repo, after_date)
+    def _lines_from(git_home, date_string)
+      g = Git.open(git_home)
+      lines = g.log.since(date_string).map do |l|
+        LogLine.new("#{l.date} #{l.message}")
+      end
+      LogLines.new(lines)
     end
 
     def pretty_card_data

@@ -5,15 +5,8 @@ module PairSee
 
     include Enumerable
 
-    def initialize(git_home, date_string)
-      @lines = _lines_from(git_home, date_string)
-    end
-
-    def _lines_from(git_home, date_string)
-      g = Git.open(git_home)
-      g.log.since(date_string).map do |l|
-        LogLine.new("#{l.date} #{l.message}")
-      end
+    def initialize(lines)
+      @lines = lines
     end
 
     def each(&block)
