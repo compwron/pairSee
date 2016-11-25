@@ -1,7 +1,7 @@
 describe PairSee::LogLines do
-  let(:date_string) {"0-1-1"}
+  let(:date_string) { "0-1-1" }
   let(:repo) { 'fake_git' }
-  let(:git_home) {repo}
+  let(:git_home) { repo }
   let(:after_date) { '0-1-1' }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
@@ -13,8 +13,6 @@ describe PairSee::LogLines do
     end
     PairSee::LogLines.new(lines)
   }
-
-
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
