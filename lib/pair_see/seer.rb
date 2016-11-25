@@ -6,12 +6,14 @@ module PairSee
     require_relative 'log_lines'
     require_relative 'card'
     require_relative 'cards_per_person'
+    require_relative 'sub_seer'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
     def initialize(options)
       @log_lines = _lines_from(options[:repo_location], options[:after_date])
-      @devs = _active(options[:names])
+      @sub_seer = SubSeer.new(@log_lines, options)
+      @devs = @sub_seer.devs
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
     end
@@ -25,31 +27,7 @@ module PairSee
 
 
     def cards_per_person
-      @devs.map do |dev|
-        {dev => cards_dev_worked_on(log_lines, dev)}
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.map do |dev_name, cards_worked|
-        {dev_name => cards_worked.uniq}
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.map do |dev, cards|
-        "#{dev}: [#{cards.size} cards] #{cards.sort.join(', ')}"
-      end
-    end
-
-    def cards_dev_worked_on(log_lines, dev)
-      log_lines.select do |log_line|
-        log_line.authored_by?(dev)
-      end.map do |log_line|
-        log_line.card_number(@card_prefix)
-      end.compact
-    end
-
-    def _active(devs)
-      devs.select do |dev|
-        _is_active?(dev)
-      end
+      @sub_seer.cards_per_person
     end
 
     def _lines_from(repo, after_date)
@@ -92,10 +70,6 @@ module PairSee
       devs_in_config.select do |dev|
         _is_active?(dev)
       end
-    end
-
-    def _is_active?(dev)
-      log_lines.active? dev
     end
 
     def pair_commits
