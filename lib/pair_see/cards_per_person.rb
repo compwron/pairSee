@@ -1,15 +1,16 @@
 module PairSee
   class CardsPerPerson
-    require_relative 'log_line'
-    attr_reader :all
+    attr_reader :devs
 
-    def initialize(card_prefix, devs, log_lines)
-      @all = _cards_per_person(card_prefix, devs, log_lines)
+    def initialize(log_lines, options)
+      @log_lines = log_lines
+      @options = options
+      @devs = _active(options[:names])
     end
 
-    def _cards_per_person(card_prefix, devs, log_lines)
-      devs.map do |dev|
-        {dev => _cards_dev_worked_on(card_prefix, log_lines, dev)}
+    def cards_per_person
+      @devs.map do |dev|
+        {dev => _cards_dev_worked_on(@log_lines, dev)}
       end.inject({}) do |result, element|
         result.merge(element)
       end.map do |dev_name, cards_worked|
@@ -21,12 +22,22 @@ module PairSee
       end
     end
 
-    def _cards_dev_worked_on(card_prefix, log_lines, dev)
+    def _cards_dev_worked_on(log_lines, dev)
       log_lines.select do |log_line|
         log_line.authored_by?(dev)
       end.map do |log_line|
-        log_line.card_number(card_prefix)
+        log_line.card_number(@options[:card_prefix])
       end.compact
+    end
+
+    def _active(devs)
+      devs.select do |dev|
+        _is_active?(dev)
+      end
+    end
+
+    def _is_active?(dev)
+      @log_lines.active? dev
     end
   end
 end

@@ -6,13 +6,12 @@ module PairSee
     require_relative 'log_lines'
     require_relative 'card'
     require_relative 'cards_per_person'
-    require_relative 'sub_seer'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
     def initialize(options)
       @log_lines = _lines_from(options[:repo_location], options[:after_date])
-      @sub_seer = SubSeer.new(@log_lines, options)
+      @sub_seer = CardsPerPerson.new(@log_lines, options)
       @devs = @sub_seer.devs
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)

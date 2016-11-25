@@ -1,7 +1,7 @@
-describe PairSee::SubSeer do
+describe PairSee::CardsPerPerson do
 
   describe '#cards_per_person' do
-    subject { PairSee::SubSeer.new(log_lines, options).cards_per_person }
+    subject { PairSee::CardsPerPerson.new(log_lines, options).cards_per_person }
     let(:log_lines) { PairSee::LogLines.new([]) }
     let(:options) { {names: []} }
     it "should see no cards for a person when there are no cards or people" do
