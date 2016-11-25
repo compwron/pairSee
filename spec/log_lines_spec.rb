@@ -28,8 +28,7 @@ describe PairSee::LogLines do
     FileUtils.rm_r(repo)
   end
 
-
-  context "with one commits" do
+  context "with one commit" do
     it "returns the one commit" do
       create_commit("message 123")
       expect(subject.last.to_s).to include "message 123"

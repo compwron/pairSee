@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'yamler', '~> 0.1'
   gem.add_dependency 'trollop', '~> 2.0'
-  gem.add_dependency 'git', '~> 1.2'
+  gem.add_dependency 'git', '~> 1.3'
 
   gem.add_development_dependency 'bundler', '~> 1.8'
   gem.add_development_dependency 'rake', '~> 10.4'
