@@ -3,10 +3,18 @@ describe PairSee::LogLines do
   let(:repo) { 'fake_git' }
   let(:git_home) {repo}
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
-  subject { PairSee::LogLines.new(git_home, date_string)}
+  subject {
+    # temporary to keep tests passing before rewriting them
+    g = Git.open(git_home)
+    lines = g.log.since(date_string).map do |l|
+      PairSee::LogLine.new("#{l.date} #{l.message}")
+    end
+    PairSee::LogLines.new(lines)
+  }
+
+
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
