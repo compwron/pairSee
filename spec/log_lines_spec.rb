@@ -8,6 +8,8 @@ describe PairSee::LogLines do
   subject {
     # temporary to keep tests passing before rewriting them
     g = Git.open(git_home)
+    g.config('user.name', 'pairsee-test')
+    g.config('user.email', 'pairsee-test@example.com')
     lines = g.log.since(date_string).map do |l|
       PairSee::LogLine.new("#{l.date} #{l.message}")
     end
