@@ -12,6 +12,7 @@ module PairSee
     def initialize(options)
       @log_lines = _lines_from(options[:repo_location], options[:after_date])
       @sub_seer = CardsPerPerson.new(@log_lines, options)
+      @active_devs = ActiveDevs.new(@log_lines, options).devs
       @devs = @sub_seer.devs
       @card_prefix = options[:card_prefix]
       @dev_pairs = devs.combination(2)
@@ -68,11 +69,7 @@ module PairSee
     end
 
     def active_devs(config_file)
-      config = YAML.load_file(config_file)
-      devs_in_config = config['names'].split(' ')
-      devs_in_config.select do |dev|
-        _is_active?(dev)
-      end
+      @active_devs
     end
 
     def pair_commits

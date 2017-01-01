@@ -1,7 +1,7 @@
 language: ruby
 rvm:
-  - "2.2.1"
-script: CODECLIMATE_REPO_TOKEN=cdb26718880608c44fda7463511e0151140ade238d92cb1044892472da13ca48 bundle exec rake rspec
+  - "2.3.3"
+script: CODECLIMATE_REPO_TOKEN=cdb26718880608c44fda7463511e0151140ade238d92cb1044892472da13ca48 bundle exec rspec
 # script: CODECLIMATE_REPO_TOKEN=fdf133973df1a994c9201d11cb862686f00341915ba80834f7a6073f71a8a947 bundle exec rake
 notifications:
   email: false
