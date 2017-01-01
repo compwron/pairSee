@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_dependency 'yamler', '~> 0.1'
-  gem.add_dependency 'trollop', '~> 2.0'
+  gem.add_dependency 'trollop', '~> 2.1'
   gem.add_dependency 'git', '~> 1.3'
 
   gem.add_development_dependency 'bundler', '~> 1.8'
