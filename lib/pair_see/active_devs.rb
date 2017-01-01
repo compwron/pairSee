@@ -1,5 +1,5 @@
 module PairSee
-  class CardsPerPerson
+  class ActiveDevs
     attr_reader :devs
 
     def initialize(log_lines, options)
@@ -14,6 +14,16 @@ module PairSee
       devs_in_config.select do |dev|
         _is_active?(dev)
       end
+    end
+
+    def _active(devs)
+      devs.select do |dev|
+        _is_active?(dev)
+      end
+    end
+
+    def _is_active?(dev)
+      @log_lines.active? dev
     end
   end
 end

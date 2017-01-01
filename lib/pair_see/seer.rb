@@ -6,6 +6,7 @@ module PairSee
     require_relative 'log_lines'
     require_relative 'card'
     require_relative 'cards_per_person'
+    require_relative 'active_devs'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
 
