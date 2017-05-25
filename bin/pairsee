@@ -18,7 +18,7 @@ def run_command(opts)
   begin
     config = YAML.load_file(opts[:config])
   rescue
-    puts "Config file not found at: " + opts[:config] + " See config/config.yml.sample for an example. ....exiting"
+    puts "Config file not found at: " + opts[:config] + " See config/config.yml.sample for an example. \n...exiting"
     exit
   end
   options = {
