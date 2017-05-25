@@ -8,7 +8,7 @@ module PairSee
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
-    attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
+    attr_reader :log_lines, :devs, :dev_pairs, :card_prefixes
     @@maximum_commits_to_parse = 9999
 
     def initialize(options)
@@ -16,17 +16,9 @@ module PairSee
       @sub_seer = CardsPerPerson.new(@log_lines, options)
       @active_devs = ActiveDevs.new(@log_lines, options).devs
       @devs = @sub_seer.devs
-      @card_prefix = options[:card_prefix]
+      @card_prefixes = options[:card_prefix]
       @dev_pairs = devs.combination(2)
     end
-
-# seer.commits_not_by_known_pair
-# seer.all_most_recent_commits
-# seer.recommended_pairings
-# seer.pretty_card_data
-# seer.cards_per_person
-# seer.all_commits
-
 
     def cards_per_person
       @sub_seer.cards_per_person
@@ -41,27 +33,29 @@ module PairSee
     end
 
     def pretty_card_data
-      card_data(card_prefix).map do |card|
+      card_data(card_prefixes).map do |card|
         "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days " unless card.nil?
       end
     end
 
-    def card_data(card_prefix)
-      card_numbers(card_prefix).map do |card_name|
-        commits = commits_on_card(card_name)
-        Card.new(card_name, commits.count, commits.first.date, commits.last.date)
-      end.sort_by(&:duration).reverse
+    def card_data(card_prefixes)
+      card_prefixes.map do |card_prefix|
+        card_numbers(card_prefix).map do |card_name|
+          commits = commits_on_card(card_name)
+          Card.new(card_name, commits.count, commits.first.date, commits.last.date)
+        end
+      end.flatten.sort_by(&:duration).reverse
     end
 
     def commits_on_card(card_name)
-      log_lines.select { |line| line.contains_card_name?(card_name) }
+      log_lines.select {|line| line.contains_card_name?(card_name)}
     end
 
-    def card_numbers(card_prefix)
+    def card_numbers(card_prefixes)
       log_lines.select do |line|
-        line.contains_card?(card_prefix)
+        line.contains_card?(card_prefixes)
       end.map do |line|
-        line.card_name(card_prefix)
+        line.card_name(card_prefixes)
       end.uniq.compact
     end
 

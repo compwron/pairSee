@@ -61,12 +61,12 @@ describe PairSee::Seer do
       create_commit('[FOO-2] commit 2')
       create_commit('[FOO-2] commit 3')
       number_of_cards = 2
-      card_prefix = 'FOO-'
+      card_prefixes = ['FOO-']
       card_1_data = PairSee::Card.new('FOO-1', 1, current_date, current_date)
       card_2_data = PairSee::Card.new('FOO-2', 3, current_date, current_date)
-      expect(subject.card_data(card_prefix).size).to eq(number_of_cards)
-      expect(subject.card_data(card_prefix)).to include card_1_data
-      expect(subject.card_data(card_prefix)).to include card_2_data
+      expect(subject.card_data(card_prefixes).size).to eq(number_of_cards)
+      expect(subject.card_data(card_prefixes)).to include card_1_data
+      expect(subject.card_data(card_prefixes)).to include card_2_data
     end
 
     it 'should not read only part of a card number' do
@@ -90,7 +90,7 @@ describe PairSee::Seer do
   describe '#get_card_prefix' do
     it 'should see card prefix' do
       create_commit('setup')
-      expect(subject.get_card_prefix(config)).to eq('BAZ-')
+      expect(subject.get_card_prefix(config)).to eq(['BAZ-'])
     end
   end
 
