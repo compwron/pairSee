@@ -1,2 +1,4 @@
 names: compwron Person1 Person2 Person3
-card_prefix: FOO-
+card_prefix:
+    - FOO-
+    - BAR-
