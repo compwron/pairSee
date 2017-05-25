@@ -10,3 +10,5 @@ notifications:
 before_install:
   - git config --global user.email 'pairsee-test@example.com'
   - git config --global user.name 'pairsee-test'
+after_success:
+  - bundle exec codeclimate-test-reporter
