@@ -5,3 +5,6 @@ script: CODECLIMATE_REPO_TOKEN=cdb26718880608c44fda7463511e0151140ade238d92cb104
 # script: CODECLIMATE_REPO_TOKEN=fdf133973df1a994c9201d11cb862686f00341915ba80834f7a6073f71a8a947 bundle exec rake
 notifications:
   email: false
+before_install:
+  - git config --global user.email 'pairsee-test@example.com'
+  - git config --global user.name 'pairsee-test'
