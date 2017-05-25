@@ -65,7 +65,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.8)
+  bundler (~> 1.15)
   codeclimate-test-reporter (~> 0.4.7)
   pair_see!
   pry

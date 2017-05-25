@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'trollop', '~> 2.1'
   gem.add_dependency 'git', '~> 1.3'
 
-  gem.add_development_dependency 'bundler', '~> 1.8'
+  gem.add_development_dependency 'bundler', '~> 1.15'
   gem.add_development_dependency 'rake', '~> 10.4'
   gem.add_development_dependency 'rspec', '~> 3.2'
   gem.add_development_dependency 'rubocop', '~> 0.49.0'
