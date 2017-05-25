@@ -3,7 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/compwron/pairSee/badges/gpa.svg)](https://codeclimate.com/github/compwron/pairSee)
 [![Test Coverage](https://codeclimate.com/github/compwron/pairSee/badges/coverage.svg)](https://codeclimate.com/github/compwron/pairSee)
 [![Build Status](https://travis-ci.org/compwron/pairSee.svg)](https://travis-ci.org/compwron/pairSee)
-[![Dependency Status](https://gemnasium.com/compwron/pairSee.png)](https://gemnasium.com/compwron/pairSee)
+[![Dependency Status](https://gemnasium.com/badges/github.com/compwron/pairSee.svg)](https://gemnasium.com/github.com/compwron/pairSee)
 [![Gem Version](https://img.shields.io/gem/v/pair_see.svg)](https://rubygems.org/gems/pair_see)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
@@ -13,7 +13,7 @@ Usage cases:
 * See what cards have been in play and for how long since given date: $ pairsee --cards --after 2012-10-01
 * See all devs and what cards they have worked on since given date: $ pairsee --after 2013-11-01 -s
 
-Example usage: 
+Example usage:
 ```
 $ pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
 $ pairsee --extras --root ../../my_code
@@ -53,7 +53,7 @@ names: Person1 Person2 Person3
 card_prefix: FOO-
 ```
 
-So if your commit log looks like 
+So if your commit log looks like
 ```
 "Bob/Alice [FOO-1] wrote code"
 "Alice [FOO-1] stuff"
