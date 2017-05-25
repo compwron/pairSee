@@ -1,4 +1,9 @@
-- Rakefile / rake_commit 
+- multiple names as same person
+- multiple codebases?
+- sort --latest by commit date
+- multiple card starters
+
+- Rakefile / rake_commit
 - Reduce number of git/filesystem interactions in spec
 - aggregate stats across multiple git repos
 - label for "BAD" to most-solo-commits view
