@@ -9,7 +9,7 @@ module PairSee
     require_relative 'active_devs'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefix
-    @maximum_commits_to_parse = 9999
+    @@maximum_commits_to_parse = 9999
 
     def initialize(options)
       @log_lines = _lines_from(options[:repo_location], options[:after_date])
@@ -34,7 +34,7 @@ module PairSee
 
     def _lines_from(git_home, date_string)
       g = Git.open(git_home)
-      lines = g.log(@maximum_commits_to_parse).since(date_string).map do |l|
+      lines = g.log(@@maximum_commits_to_parse).since(date_string).map do |l|
         LogLine.new("#{l.date} #{l.message}")
       end
       LogLines.new(lines)
