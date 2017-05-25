@@ -8,7 +8,7 @@ describe PairSee::Seer do
 
   subject { PairSee::Seer.new({
                                   names: %w{Person1 Person2 Person3 Person4 Person5 Person6 Person7 ActiveDev InactiveDev},
-                                  card_prefix: 'BAZ-',
+                                  card_prefix: ['BAZ-'],
                                   after_date: after_date,
                                   repo_location: repo,
                               })
@@ -32,7 +32,7 @@ describe PairSee::Seer do
     it 'apparently needs to see card names without brackets' do
       create_commit('[FOO-1] one')
       create_commit('FOO-1 two')
-      expect(subject.card_data('FOO-')).to eq([PairSee::Card.new('FOO-1', 2, current_date, current_date)])
+      expect(subject.card_data(['FOO-'])).to eq([PairSee::Card.new('FOO-1', 2, current_date, current_date)])
     end
 
     it 'in order by duration' do
@@ -45,7 +45,7 @@ describe PairSee::Seer do
 
       create_commit('[FOO-3] one ')
 
-      data = subject.card_data('FOO-')
+      data = subject.card_data(['FOO-'])
 
       three_commit_card = PairSee::Card.new('FOO-1', 3, after_date, current_date)
       one_commit_card = PairSee::Card.new('FOO-1', 1, current_date, current_date)
@@ -73,17 +73,16 @@ describe PairSee::Seer do
       create_commit('[FOO-1]')
       create_commit('[FOO-10]')
       create_commit('[FOO-100]')
-      expect(subject.card_data('FOO-').count).to eq(3)
+      expect(subject.card_data(['FOO-']).count).to eq(3)
       only_one_FOO1 = PairSee::Card.new('FOO-1', 1, current_date, current_date)
       only_one_FOO10 = PairSee::Card.new('FOO-10', 1, current_date, current_date)
-      expect(subject.card_data('FOO-')).to include only_one_FOO1
-      expect(subject.card_data('FOO-')).to include only_one_FOO10
+      expect(subject.card_data(['FOO-'])).to include only_one_FOO1
+      expect(subject.card_data(['FOO-'])).to include only_one_FOO10
     end
 
     it 'does not break on a commit without a card mentioned' do
-      card_prefix = 'FOO'
       create_commit('whatever')
-      expect(subject.card_data(card_prefix)).to eq([])
+      expect(subject.card_data(['FOO'])).to eq([])
     end
   end
 
