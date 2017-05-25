@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'git', '~> 1.3'
 
   gem.add_development_dependency 'bundler', '~> 1.15'
-  gem.add_development_dependency 'rake', '~> 10.4'
+  gem.add_development_dependency 'rake', '~> 12'
   gem.add_development_dependency 'rspec', '~> 3.2'
   gem.add_development_dependency 'rubocop', '~> 0.49.0'
   gem.add_development_dependency 'pry'
