@@ -17,6 +17,8 @@ module PairSee
         {dev_name => cards_worked.uniq}
       end.inject({}) do |result, element|
         result.merge(element)
+      end.sort do |a, b|
+        a[1].size <=> b[1].size
       end.map do |dev, cards|
         "#{dev}: [#{cards.size} cards] #{cards.sort.join(', ')}"
       end
