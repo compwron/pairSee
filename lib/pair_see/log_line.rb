@@ -23,15 +23,25 @@ module PairSee
       !git_matcher.nil?
     end
 
-    def card_name(card_prefix)
-      regex = /(#{card_prefix}\d+)/
-      matcher = line.match(regex)
-      matcher.nil? ? nil : (line.match regex)[1]
+    def card_name(card_prefixes)
+      card_prefixes.each {|cp|
+        regex = /(#{cp}\d+)/
+        matcher = line.match(regex)
+        if (!matcher.nil?)
+          return (line.match regex)[1]
+        end
+      }
+      return nil
     end
 
-    def card_number(card_prefix)
-      card_num = card_name(card_prefix)
-      card_num ? card_num.gsub(card_prefix, '') : nil
+    def card_number(card_prefixes)
+      card_prefixes.each {|cp|
+        card_num = card_name([cp])
+        if (card_num)
+          return card_num.gsub(cp, '')
+        end
+      }
+      return nil
     end
 
     def merge_commit?
@@ -46,7 +56,7 @@ module PairSee
     end
 
     def not_by_pair?(devs)
-      devs.any? { |dev| authored_by?(dev) || merge_commit? }
+      devs.any? {|dev| authored_by?(dev) || merge_commit?}
     end
 
     def to_s
