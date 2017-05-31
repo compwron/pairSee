@@ -34,7 +34,7 @@ module PairSee
 
     def pretty_card_data
       card_data(card_prefixes).map do |card|
-        "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days - - - last commit: #{card.last_date}" unless card.nil?
+        card.pretty unless card.nil?
       end
     end
 
