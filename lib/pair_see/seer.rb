@@ -34,7 +34,7 @@ module PairSee
 
     def pretty_card_data
       card_data(card_prefixes).map do |card|
-        "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days " unless card.nil?
+        "#{card.card_name} - - - commits: #{card.number_of_commits} - - - duration: #{card.duration} days - - - last commit: #{card.last_date}" unless card.nil?
       end
     end
 
@@ -51,11 +51,11 @@ module PairSee
       log_lines.select {|line| line.contains_card_name?(card_name)}
     end
 
-    def card_numbers(card_prefixes)
+    def card_numbers(card_prefix)
       log_lines.select do |line|
-        line.contains_card?(card_prefixes)
+        line.contains_card?(card_prefix)
       end.map do |line|
-        line.card_name(card_prefixes)
+        line.card_name([card_prefix])
       end.uniq.compact
     end
 
