@@ -2,10 +2,10 @@ module PairSee
   class CardsPerPerson
     attr_reader :devs
 
-    def initialize(log_lines, options)
+    def initialize(log_lines, card_prefix, people)
       @log_lines = log_lines
-      @options = options
-      @devs = _active(options[:names])
+      @card_prefix = card_prefix
+      @devs = _active(people)
     end
 
     def cards_per_person
@@ -24,22 +24,18 @@ module PairSee
       end
     end
 
-    def _cards_dev_worked_on(log_lines, dev)
+    def _cards_dev_worked_on(log_lines, person)
       log_lines.select do |log_line|
-        log_line.authored_by?(dev)
+        log_line.authored_by?(person)
       end.map do |log_line|
-        log_line.card_number(@options[:card_prefix])
+        log_line.card_number(@card_prefix)
       end.compact
     end
 
-    def _active(devs)
-      devs.select do |dev|
-        _is_active?(dev)
+    def _active(people)
+      people.select do |person|
+        @log_lines.active? person
       end
-    end
-
-    def _is_active?(dev)
-      @log_lines.active? dev
     end
   end
 end

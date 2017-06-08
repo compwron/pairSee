@@ -8,9 +8,22 @@ module PairSee
     end
 
     def authored_by?(*people)
-      people.empty? ? false : people.all? do |person|
-        /(^|\s+|\W)#{person}(\s+|$|\W)/i =~ line
+      if people.size == 0
+        return false
       end
+
+      people.each {|person|
+        person.names.each {|name|
+          if line_contains_name(name)
+            return true
+          end
+        }
+      }
+      return false
+    end
+
+    def line_contains_name(name)
+      /(^|\s+|\W)#{name}(\s+|$|\W)/i =~ line
     end
 
     def contains_card?(card_prefix)
