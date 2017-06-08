@@ -5,7 +5,7 @@ describe PairSee::LogLine do
 
   describe "#card_number" do
     it "sees card number" do
-      expect(_new_logline("FOO-123 commit message").card_number("FOO-")).to eq "123"
+      expect(_new_logline("FOO-123 commit message").card_number(["FOO-"])).to eq "123"
     end
   end
 
@@ -42,7 +42,7 @@ describe PairSee::LogLine do
   describe '#card_name(prefix)' do
     it 'detects card name when there is no space between card number and bracket' do
       line = 'FOO-100[bar]'
-      expect(_new_logline(line).card_name('FOO-')).to eq('FOO-100')
+      expect(_new_logline(line).card_name(['FOO-'])).to eq('FOO-100')
     end
   end
 

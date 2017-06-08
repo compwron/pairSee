@@ -129,7 +129,6 @@ describe PairSee::Seer do
   describe '#pretty_card_data' do
     it 'pretty output should be human-readable' do
       create_commit('[BAZ-1] code')
-      # binding.pry
       expect(subject.pretty_card_data.size).to eq 1
       expect(subject.pretty_card_data[0]).to include ("BAZ-1 - - - commits: 1 - - - duration: 1 days - - - last commit: ")
       expect(subject.pretty_card_data[0]).to include ("- - - commits per day: 1.0")
