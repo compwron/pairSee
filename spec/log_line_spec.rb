@@ -1,7 +1,7 @@
 describe PairSee::LogLine do
-  let(:arnie) {PairSee::Person.new(["Arnie"])}
-  let(:person1) {PairSee::Person.new(["Person1"])}
-  let(:person2) {PairSee::Person.new(["Person2"])}
+  let(:arnie) {PairSee::Person.new(['Arnie'])}
+  let(:person1) {PairSee::Person.new(['Person1'])}
+  let(:person2) {PairSee::Person.new(['Person2'])}
   let(:committer2) {PairSee::Person.new(['Committer2'])}
   let(:committer3) {PairSee::Person.new(['Committer3'])}
 
@@ -10,9 +10,9 @@ describe PairSee::LogLine do
     PairSee::LogLine.new(msg)
   end
 
-  describe "#card_number" do
-    it "sees card number" do
-      expect(_new_logline("FOO-123 commit message").card_number(["FOO-"])).to eq "123"
+  describe '#card_number' do
+    it 'sees card number' do
+      expect(_new_logline('FOO-123 commit message').card_number(['FOO-'])).to eq '123'
     end
   end
 
@@ -36,7 +36,7 @@ describe PairSee::LogLine do
       expect(_new_logline('[FOO-1, FOO-2] stuff').contains_card_name?('FOO-2')).to eq(true)
     end
 
-    it "doesn't mind bracketless with immediate colon" do
+    it 'does not mind bracketless with immediate colon' do
       expect(_new_logline('FOO-1: stuff').contains_card_name?('FOO-1')).to eq(true)
     end
 
