@@ -8,15 +8,15 @@ describe PairSee::Seer do
 
   subject { PairSee::Seer.new({
                                   names: [
-                                      PairSee::Person.new(["Person1"]),
-                                      PairSee::Person.new(["Person2"]),
-                                      PairSee::Person.new(["Person3"]),
-                                      PairSee::Person.new(["Person4"]),
-                                      PairSee::Person.new(["Person5"]),
-                                      PairSee::Person.new(["Person6"]),
-                                      PairSee::Person.new(["Person7"]),
-                                      PairSee::Person.new(["ActiveDev"]),
-                                      PairSee::Person.new(["InactiveDev"])
+                                      PairSee::Person.new(['Person1']),
+                                      PairSee::Person.new(['Person2']),
+                                      PairSee::Person.new(['Person3']),
+                                      PairSee::Person.new(['Person4']),
+                                      PairSee::Person.new(['Person5']),
+                                      PairSee::Person.new(['Person6']),
+                                      PairSee::Person.new(['Person7']),
+                                      PairSee::Person.new(['ActiveDev']),
+                                      PairSee::Person.new(['InactiveDev'])
                                   ],
                                   card_prefix: ['BAZ-'],
                                   after_date: after_date,
@@ -140,8 +140,8 @@ describe PairSee::Seer do
     it 'pretty output should be human-readable' do
       create_commit('[BAZ-1] code')
       expect(subject.pretty_card_data.size).to eq 1
-      expect(subject.pretty_card_data[0]).to include ("BAZ-1 - - - commits: 1 - - - duration: 1 days - - - last commit: ")
-      expect(subject.pretty_card_data[0]).to include ("- - - commits per day: 1.0")
+      expect(subject.pretty_card_data[0]).to include ('BAZ-1 - - - commits: 1 - - - duration: 1 days - - - last commit: ')
+      expect(subject.pretty_card_data[0]).to include ('- - - commits per day: 1.0')
     end
   end
 end
