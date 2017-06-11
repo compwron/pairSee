@@ -23,7 +23,6 @@ def run_command(opts)
     puts "Config file not found at: " + opts[:config] + " See config/config.yml.sample for an example. \n...exiting"
     exit
   end
-  # binding.pry
   options = {
       names: config['names'].map {|i| PairSee::Person.new(i.split(' '))}, # todo rename "names" to "people"
       card_prefix: config['card_prefix'],

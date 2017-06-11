@@ -105,13 +105,13 @@ module PairSee
 
     def recommended_pairings
       should_pair = unpaired_in_range
-      should_pair.empty? ? least_recent_pair : should_pair
+      should_pair.empty? ? [least_recent_pair] : should_pair
     end
 
     def least_recent_pair
-      devs.select do |dev|
-        log_lines.last.line.match(dev)
-      end.join(', ')
+      devs.select do |person|
+        person.names.any? {|name| log_lines.last.line.match(name)}
+      end.map(&:display_name).join(', ')
     end
 
     def unpaired_in_range
