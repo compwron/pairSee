@@ -10,6 +10,20 @@ describe PairSee::LogLine do
     PairSee::LogLine.new(msg)
   end
 
+  describe '#not_by_pair' do
+    it 'not by pair' do
+      expect(_new_logline('').not_by_pair?([person1, person2])).to eq false
+    end
+
+    it 'yes by pair' do
+      expect(_new_logline('FOO-123: person1, person2 message').not_by_pair?([person1, person2])).to eq true
+      end
+
+    it 'only by one of pair' do
+      expect(_new_logline('FOO-123: person1 message').not_by_pair?([person1, person2])).to eq true
+    end
+  end
+
   describe '#card_number' do
     it 'sees card number' do
       expect(_new_logline('FOO-123 commit message').card_number(['FOO-'])).to eq '123'

@@ -1,6 +1,6 @@
-- fix bug in "last commit" in -d, dates are not accurate
-- multiple names as same person
+- Fix bug in --extras where multi-name users are shown in extras
 - multiple codebases?
+- fix bug in "last commit" in -d, dates are not accurate
 - sort --latest by commit date
 - multiple card starters
 

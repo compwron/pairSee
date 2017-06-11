@@ -72,6 +72,10 @@ module PairSee
       devs.any? {|dev| authored_by?(dev) || merge_commit?}
     end
 
+    def by_pair?(devs) # to replace not_by_pair?
+      authored_by?(devs)
+    end
+
     def to_s
       line
     end
