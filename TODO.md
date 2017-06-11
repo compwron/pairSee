@@ -12,7 +12,7 @@
 - add COLOR to graph / outputs - use vlad's color library?
 - sort -s by # cards worked
 
-
+- standardize quotes
 
 names: compwron Person1 Person2 Person3
 card_prefix:
