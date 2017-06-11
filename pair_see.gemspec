@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   gem.bindir = 'bin'
-  gem.executables = ["pairsee"]
+  gem.executables = ['pairsee']
   gem.require_paths = ['lib']
 
   gem.add_dependency 'yamler', '~> 0.1'
