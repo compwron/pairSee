@@ -5,6 +5,11 @@ describe PairSee::LogLines do
   let(:after_date) { '0-1-1' }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
+  let(:person1) {PairSee::Person.new(["Person1"])}
+  let(:person2) {PairSee::Person.new(["Person2"])}
+  let(:person3) {PairSee::Person.new(["Person3"])}
+
+
   subject {
     # temporary to keep tests passing before rewriting them
     g = Git.open(git_home)
@@ -41,7 +46,7 @@ describe PairSee::LogLines do
     it "sees commits for pair" do
       create_commit("FOO-123 [Person1, Person2] aaa")
       create_commit("FOO-123 [Person1, Person3] bbb")
-      cfp = subject.commits_for_pair("Person1", "Person2")
+      cfp = subject.commits_for_pair(person1, person2)
       expect(cfp.length).to eq 1
       expect(cfp[0].to_s).to include "aaa"
     end
@@ -50,9 +55,9 @@ describe PairSee::LogLines do
   describe "active?" do
     it "checks activeness of dev" do
       create_commit("FOO-123 [Person1, Person2] aaa")
-      expect(subject.active?("Person1")).to be true
-      expect(subject.active?("Person2")).to be true
-      expect(subject.active?("Person3")).to be false
+      expect(subject.active?(person1)).to be true
+      expect(subject.active?(person2)).to be true
+      expect(subject.active?(person3)).to be false
     end
   end
 
@@ -60,7 +65,7 @@ describe PairSee::LogLines do
     it "detects commits with no known dev name/s" do
       create_commit("FOO-123 [Person1, Person2] aaa")
       create_commit("FOO-123 [Person3] bbb")
-      found = subject.commits_not_by_known_pair(["Person3"])
+      found = subject.commits_not_by_known_pair([person3])
       expect(found.length).to eq 1
       expect(found.to_s).to include "aaa"
     end
@@ -70,8 +75,8 @@ describe PairSee::LogLines do
     it "is a solo commit if there is only one dev name on it" do
       create_commit("FOO-123 [Person1, Person2] aaa")
       create_commit("FOO-123 [Person3] bbb")
-      devs = ["Person1", "Person2", "Person3"]
-      dev = "Person3"
+      devs = [person1, person2, person3]
+      dev = person3
       solos = subject.solo_commits(devs, dev)
       expect(solos.length).to eq 1
       expect(solos[0].to_s).to include "bbb"

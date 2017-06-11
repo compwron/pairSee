@@ -14,12 +14,12 @@ module PairSee
 
       people.each {|person|
         person.names.each {|name|
-          if line_contains_name(name)
-            return true
+          if !line_contains_name(name)
+            return false
           end
         }
       }
-      return false
+      return true
     end
 
     def line_contains_name(name)
