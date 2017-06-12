@@ -8,6 +8,7 @@ describe PairSee::LogLines do
   let(:person1) {PairSee::Person.new(['Person1'])}
   let(:person2) {PairSee::Person.new(['Person2'])}
   let(:person3) {PairSee::Person.new(['Person3'])}
+  let(:multi_name_person) {PairSee::Person.new(['multi', 'multiname', 'multinameperson'])}
 
 
   subject {
@@ -69,6 +70,13 @@ describe PairSee::LogLines do
       expect(found.length).to eq 1
       expect(found.to_s).to include 'aaa'
     end
+
+    it 'does not think that commits by a multi-alias dev are by no one' do
+      create_commit('FOO-123 [MultiNamePerson] aaa')
+      found = subject.commits_not_by_known_pair([multi_name_person])
+      expect(found.length).to eq 0
+    end
+
   end
 
   describe 'solo_commits' do

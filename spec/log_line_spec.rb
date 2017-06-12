@@ -4,13 +4,17 @@ describe PairSee::LogLine do
   let(:person2) {PairSee::Person.new(['Person2'])}
   let(:committer2) {PairSee::Person.new(['Committer2'])}
   let(:committer3) {PairSee::Person.new(['Committer3'])}
-
+  let(:multi_name_person) {PairSee::Person.new(['multi', 'multiname', 'multinameperson'])}
 
   def _new_logline(msg)
     PairSee::LogLine.new(msg)
   end
 
   describe '#by_any?' do
+    it 'by multi-name person' do
+      expect(_new_logline('FOO-123: multinameperson').by_any?([multi_name_person])).to eq true
+    end
+
     it 'not by pair' do
       expect(_new_logline('').by_any?([person1, person2])).to eq false
     end

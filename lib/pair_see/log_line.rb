@@ -8,18 +8,14 @@ module PairSee
     end
 
     def authored_by?(*people)
-      if people.size == 0
-        return false
-      end
+      return false if people.empty?
+      people.map {|person|
+        contains_any_of?(person.names)
+      }.all?
+    end
 
-      people.each {|person|
-        person.names.each {|name|
-          if !line_contains_name(name)
-            return false
-          end
-        }
-      }
-      return true
+    def contains_any_of?(names)
+      names.any? {|name| line_contains_name(name)}
     end
 
     def line_contains_name(name)
