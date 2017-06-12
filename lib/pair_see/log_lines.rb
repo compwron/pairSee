@@ -28,7 +28,7 @@ module PairSee
     end
 
     def commits_not_by_known_pair(devs)
-      reject {|log_line| log_line.not_by_pair? devs}
+      reject {|log_line| log_line.by_any? devs}
     end
 
     def solo_commits(people, person)

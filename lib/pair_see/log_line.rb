@@ -76,6 +76,13 @@ module PairSee
       authored_by?(devs)
     end
 
+    def by_any?(devs)
+      if devs.size == 0
+        return false
+      end
+      devs.any? {|dev| authored_by?(dev)}
+    end
+
     def to_s
       line
     end
