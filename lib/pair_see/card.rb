@@ -2,15 +2,15 @@ module PairSee
   class Card
     attr_reader :card_name, :number_of_commits, :last_date
 
-    def initialize(card_name, number_of_commits, first_date, last_date)
+    def initialize(card_name, commits)
       @card_name = card_name
-      @number_of_commits = number_of_commits
-      @first_date = first_date
-      @last_date = last_date
+      @number_of_commits = commits.count
+      @first_date = commits.first.date
+      @last_date = commits.last.date
     end
 
     def duration
-      (@first_date - @last_date).to_i + 1
+      (@last_date - @first_date).to_i + 1
     end
 
     def ==(other)

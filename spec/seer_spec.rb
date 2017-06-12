@@ -37,10 +37,12 @@ describe PairSee::Seer do
   end
 
   describe '#card_data' do
-    it 'apparently needs to see card names without brackets' do
+    it 'needs to see card names without brackets' do
       create_commit('[FOO-1] one')
       create_commit('FOO-1 two')
-      expect(subject.card_data(['FOO-'])).to eq([PairSee::Card.new('FOO-1', 2, current_date, current_date)])
+      data = subject.card_data(['FOO-'])
+      expect(data.size).to eq 1
+      expect(data[0].card_name).to eq 'FOO-1'
     end
 
     it 'in order by duration' do
@@ -55,12 +57,16 @@ describe PairSee::Seer do
 
       data = subject.card_data(['FOO-'])
 
-      three_commit_card = PairSee::Card.new('FOO-1', 3, after_date, current_date)
-      one_commit_card = PairSee::Card.new('FOO-1', 1, current_date, current_date)
-
       expect(data.size).to eq(3)
-      expect(data.first).to eq(three_commit_card)
-      expect(data.last).to eq(one_commit_card)
+
+      expect(data.first.card_name).to eq 'FOO-1'
+      expect(data.first.number_of_commits).to eq 3
+
+      expect(data[1].card_name).to eq 'FOO-2'
+      expect(data[1].number_of_commits).to eq 2
+
+      expect(data.last.card_name).to eq 'FOO-3'
+      expect(data.last.number_of_commits).to eq 1
     end
 
     it 'gets data from multiple cards' do
@@ -70,22 +76,25 @@ describe PairSee::Seer do
       create_commit('[FOO-2] commit 3')
       number_of_cards = 2
       card_prefixes = ['FOO-']
-      card_1_data = PairSee::Card.new('FOO-1', 1, current_date, current_date)
-      card_2_data = PairSee::Card.new('FOO-2', 3, current_date, current_date)
-      expect(subject.card_data(card_prefixes).size).to eq(number_of_cards)
-      expect(subject.card_data(card_prefixes)).to include card_1_data
-      expect(subject.card_data(card_prefixes)).to include card_2_data
+
+      data = subject.card_data(card_prefixes)
+
+      expect(data.size).to eq(number_of_cards)
+      expect(data[0].card_name).to eq 'FOO-1'
+      expect(data[0].number_of_commits).to eq 1
+      expect(data[1].card_name).to eq 'FOO-2'
+      expect(data[1].number_of_commits).to eq 3
     end
 
     it 'should not read only part of a card number' do
       create_commit('[FOO-1]')
       create_commit('[FOO-10]')
       create_commit('[FOO-100]')
-      expect(subject.card_data(['FOO-']).count).to eq(3)
-      only_one_foo1 = PairSee::Card.new('FOO-1', 1, current_date, current_date)
-      only_one_foo10 = PairSee::Card.new('FOO-10', 1, current_date, current_date)
-      expect(subject.card_data(['FOO-'])).to include only_one_foo1
-      expect(subject.card_data(['FOO-'])).to include only_one_foo10
+      data = subject.card_data(['FOO-'])
+      expect(data.count).to eq(3)
+      expect(data[0].card_name).to eq 'FOO-1'
+      expect(data[1].card_name).to eq 'FOO-10'
+      expect(data[2].card_name).to eq 'FOO-100'
     end
 
     it 'does not break on a commit without a card mentioned' do

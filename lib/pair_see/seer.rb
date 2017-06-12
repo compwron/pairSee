@@ -44,8 +44,7 @@ module PairSee
     def card_data(card_prefixes)
       card_prefixes.map do |card_prefix|
         card_numbers(card_prefix).map do |card_name|
-          commits = commits_on_card(card_name)
-          Card.new(card_name, commits.count, commits.first.date, commits.last.date)
+          Card.new(card_name, commits_on_card(card_name).sort_by(&:date))
         end
       end.flatten.sort_by(&:duration).reverse
     end
