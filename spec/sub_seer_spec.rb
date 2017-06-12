@@ -11,7 +11,7 @@ describe PairSee::CardsPerPerson do
 
     describe 'with people but no cards' do
       let(:people) { [PairSee::Person.new(['name'])] }
-      it 'should see no cards for a person' do
+      it 'should see zero cards for a non-active person' do
         expect(subject).to eq([])
       end
     end

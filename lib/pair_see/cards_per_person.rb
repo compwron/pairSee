@@ -1,35 +1,30 @@
 module PairSee
   class CardsPerPerson
-    attr_reader :devs
+    attr_reader :people
 
     def initialize(log_lines, card_prefix, people)
       @log_lines = log_lines
       @card_prefix = card_prefix
-      @devs = _active(people)
+      @people = _active(people)
     end
 
     def cards_per_person
-      @devs.map do |dev|
-        { dev => _cards_dev_worked_on(@log_lines, dev) }
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.map do |dev_name, cards_worked|
-        { dev_name => cards_worked.uniq }
-      end.inject({}) do |result, element|
-        result.merge(element)
-      end.sort do |a, b|
-        a[1].size <=> b[1].size
-      end.map do |dev, cards|
-        "#{dev}: [#{cards.size} cards] #{cards.sort.join(', ')}"
-      end
-    end
+      all = {}
+      people.each {|person|
+        all[person] = []
+      }
 
-    def _cards_dev_worked_on(log_lines, person)
-      log_lines.select do |log_line|
-        log_line.authored_by?(person)
-      end.map do |log_line|
-        log_line.card_number(@card_prefix)
-      end.compact
+      @log_lines.each {|log_line|
+        all.each {|person, _|
+          if log_line.authored_by? person
+            all[person] << log_line.card_number(@card_prefix)
+          end
+        }
+      }
+
+      all.sort_by {|_, card_names| card_names.count}.map {|person, card_names|
+        "#{person}: [#{card_names.size} cards] #{card_names.sort.join(', ')}"
+      }
     end
 
     def _active(people)

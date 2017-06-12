@@ -15,9 +15,9 @@ module PairSee
       @log_lines = _lines_from(options[:repo_locations], options[:after_date])
       @sub_seer = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
       @active_devs = ActiveDevs.new(@log_lines, options[:names]).devs
-      @devs = @sub_seer.devs
+      @devs = @sub_seer.people
       @card_prefixes = options[:card_prefix]
-      @dev_pairs = devs.combination(2)
+      @dev_pairs = @sub_seer.people.combination(2)
     end
 
     def cards_per_person
