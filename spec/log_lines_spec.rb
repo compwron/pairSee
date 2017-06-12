@@ -65,14 +65,14 @@ describe PairSee::LogLines do
     it 'detects commits with no known dev name/s' do
       create_commit('FOO-123 [Person1, Person2] aaa')
       create_commit('FOO-123 [Person3] bbb')
-      found = subject.commits_not_by_known_pair([person3])
+      found = subject.commits_not_by_known_person([person3])
       expect(found.length).to eq 1
       expect(found.to_s).to include 'aaa'
     end
 
     it 'does not think that commits by a multi-alias dev are by no one' do
       create_commit('FOO-123 [MultiNamePerson] aaa')
-      found = subject.commits_not_by_known_pair([multi_name_person])
+      found = subject.commits_not_by_known_person([multi_name_person])
       expect(found.length).to eq 0
     end
   end

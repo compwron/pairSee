@@ -9,7 +9,7 @@ module PairSee
     end
 
     def commits_not_by_known_pair
-      seer.commits_not_by_known_pair
+      seer.commits_not_by_known_person
     end
 
     def all_most_recent_commits

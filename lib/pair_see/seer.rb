@@ -90,8 +90,8 @@ module PairSee
       log_lines.commits_for_pair person1, person2
     end
 
-    def commits_not_by_known_pair
-      log_lines.commits_not_by_known_pair devs
+    def commits_not_by_known_person
+      log_lines.commits_not_by_known_person devs
     end
 
     def most_recent_commit_date(person1, person2)

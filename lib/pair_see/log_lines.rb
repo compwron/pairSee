@@ -27,7 +27,7 @@ module PairSee
       select { |log_line| log_line.authored_by?(person1, person2) }
     end
 
-    def commits_not_by_known_pair(devs)
+    def commits_not_by_known_person(devs)
       reject { |log_line| log_line.by_any? devs }
     end
 
