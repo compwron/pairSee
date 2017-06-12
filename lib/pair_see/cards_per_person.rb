@@ -9,12 +9,9 @@ module PairSee
     end
 
     def cards_per_person
-      all = {}
-      people.each {|person|
-        all[person] = []
-      }
+      all = Hash[people.map {|key, _| [key, []]}]
 
-      @log_lines.each {|log_line|
+      @log_lines.each {|log_line| # loop through the biggest list only once
         all.each {|person, _|
           if log_line.authored_by? person
             all[person] << log_line.card_number(@card_prefix)
@@ -22,6 +19,7 @@ module PairSee
         }
       }
 
+      all.each {|_, card_names| card_names.uniq!}
       all.sort_by {|_, card_names| card_names.count}.map {|person, card_names|
         "#{person}: [#{card_names.size} cards] #{card_names.sort.join(', ')}"
       }
