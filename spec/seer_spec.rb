@@ -1,31 +1,30 @@
 describe PairSee::Seer do
-  let(:current_date) { Date.today }
-  let(:repo) { 'fake_git' }
-  let(:after_date) { '0-1-1' }
-  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
-  let(:config) { 'spec/fixtures/spec_config.yml' }
-  let(:g) { Git.init(repo) }
+  let(:current_date) {Date.today}
+  let(:repo) {'fake_git'}
+  let(:after_date) {'0-1-1'}
+  let(:log_lines) {PairSee::LogLines.new(repo, after_date)}
+  let(:g) {Git.init(repo)}
 
-  subject { PairSee::Seer.new({
-                                  names: [
-                                      PairSee::Person.new(['Person1']),
-                                      PairSee::Person.new(['Person2']),
-                                      PairSee::Person.new(['Person3']),
-                                      PairSee::Person.new(['Person4']),
-                                      PairSee::Person.new(['Person5']),
-                                      PairSee::Person.new(['Person6']),
-                                      PairSee::Person.new(['Person7']),
-                                      PairSee::Person.new(['ActiveDev']),
-                                      PairSee::Person.new(['InactiveDev'])
-                                  ],
-                                  card_prefix: ['BAZ-'],
-                                  after_date: after_date,
-                                  repo_location: repo,
-                              })
+  subject {PairSee::Seer.new({
+                                 names: [
+                                     PairSee::Person.new(['Person1']),
+                                     PairSee::Person.new(['Person2']),
+                                     PairSee::Person.new(['Person3']),
+                                     PairSee::Person.new(['Person4']),
+                                     PairSee::Person.new(['Person5']),
+                                     PairSee::Person.new(['Person6']),
+                                     PairSee::Person.new(['Person7']),
+                                     PairSee::Person.new(['ActiveDev']),
+                                     PairSee::Person.new(['InactiveDev'])
+                                 ],
+                                 card_prefix: ['BAZ-'],
+                                 after_date: after_date,
+                                 repo_locations: [repo],
+                             })
   }
 
   def create_commit(message)
-    File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
+    File.open("#{repo}/foo.txt", 'w') {|f| f.puts(message)}
     g.add
     g.commit(message)
   end
@@ -97,6 +96,7 @@ describe PairSee::Seer do
   end
 
   describe '#get_card_prefix' do
+    let(:config) {'spec/fixtures/spec_config.yml'}
     it 'should see card prefix' do
       create_commit('setup')
       expect(subject.get_card_prefix(config)).to eq(['BAZ-'])

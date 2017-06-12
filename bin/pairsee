@@ -6,7 +6,6 @@ require 'trollop'
 require 'pry'
 
 opts = Trollop.options do
-  opt :root, 'Folder in which .git folder is', default: '.'
   opt :config, 'location of config file, example: ../../config/config.yml', default: "config/config.yml"
   opt :after, 'Date since which you want to get commits, in yyyy-mm-dd format', default: '0-1-1'
   opt :extras, 'See all commits without the name of any dev in them', default: false
@@ -27,7 +26,7 @@ def run_command(opts)
       names: config['names'].map {|i| PairSee::Person.new(i.split(' '))}, # todo rename "names" to "people"
       card_prefix: config['card_prefix'],
       after_date: opts[:after],
-      repo_location: opts[:root]
+      repo_locations: config['roots']
   }
 
   seer = PairSee::Seer.new(options)

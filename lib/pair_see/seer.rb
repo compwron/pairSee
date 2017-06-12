@@ -12,7 +12,7 @@ module PairSee
     @@maximum_commits_to_parse = 9999
 
     def initialize(options)
-      @log_lines = _lines_from(options[:repo_location], options[:after_date])
+      @log_lines = _lines_from(options[:repo_locations], options[:after_date])
       @sub_seer = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
       @active_devs = ActiveDevs.new(@log_lines, options).devs
       @devs = @sub_seer.devs
@@ -24,12 +24,15 @@ module PairSee
       @sub_seer.cards_per_person
     end
 
-    def _lines_from(git_home, date_string)
-      g = Git.open(git_home)
-      lines = g.log(@@maximum_commits_to_parse).since(date_string).map do |l|
-        LogLine.new("#{l.date} #{l.message}")
-      end
-      LogLines.new(lines)
+    def _lines_from(roots, date_string)
+      lines = []
+      roots.each {|root|
+        g = Git.open(root)
+        lines << g.log(@@maximum_commits_to_parse).since(date_string).map do |l|
+          LogLine.new("#{l.date} #{l.message}")
+        end
+      }
+      LogLines.new(lines.flatten)
     end
 
     def pretty_card_data
