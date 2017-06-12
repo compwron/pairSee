@@ -1,4 +1,8 @@
-
+0.1.5
+=====
+* adding support for multiple git repositories specified by full path 
+* adding support for multiple commit aliases per person (i.e. name typos)
+* adding support for multiple card/project identifiers
 
 0.1.4
 =====
