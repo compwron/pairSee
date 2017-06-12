@@ -68,14 +68,6 @@ module PairSee
       Date.parse(part_to_parse)
     end
 
-    def not_by_pair?(devs)
-      devs.any? {|dev| authored_by?(dev) || merge_commit?}
-    end
-
-    def by_pair?(devs) # to replace not_by_pair?
-      authored_by?(devs)
-    end
-
     def by_any?(devs)
       if devs.size == 0
         return false
