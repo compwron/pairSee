@@ -14,10 +14,9 @@
 
 - standardize quotes
 
-names: compwron Person1 Person2 Person3
-card_prefix:
-    - FOO-
-    - BAR-
-repo_root:
-    - /Users/lgoldste/repositories/sonic/menu-bff
-    - /Users/lgoldste/repositories/sonic/menu-api
+Fix this bug:
+DMM-103 - - - commits: 7 - - - duration: 0 days - - - last commit: 2017-03-07 - - - commits per day: Infinity
+DMM-17 - - - commits: 71 - - - duration: -1 days - - - last commit: 2017-04-06 - - - commits per day: -71.0
+DMM-39 - - - commits: 6 - - - duration: -6 days - - - last commit: 2017-04-12 - - - commits per day: -1.0
+DMM-81 - - - commits: 3 - - - duration: -6 days - - - last commit: 2017-03-08 - - - commits per day: -0.5
+DMM-136 - - - commits: 33 - - - duration: -33 days - - - last commit: 2017-05-30 - - - commits per day: -1.0
