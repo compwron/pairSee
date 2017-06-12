@@ -5,13 +5,12 @@ describe PairSee::LogLines do
   let(:after_date) { '0-1-1' }
   let(:config) { 'spec/fixtures/spec_config.yml' }
   let(:g) { Git.init(repo) }
-  let(:person1) {PairSee::Person.new(['Person1'])}
-  let(:person2) {PairSee::Person.new(['Person2'])}
-  let(:person3) {PairSee::Person.new(['Person3'])}
-  let(:multi_name_person) {PairSee::Person.new(['multi', 'multiname', 'multinameperson'])}
+  let(:person1) { PairSee::Person.new(['Person1']) }
+  let(:person2) { PairSee::Person.new(['Person2']) }
+  let(:person3) { PairSee::Person.new(['Person3']) }
+  let(:multi_name_person) { PairSee::Person.new(%w[multi multiname multinameperson]) }
 
-
-  subject {
+  subject do
     # temporary to keep tests passing before rewriting them
     g = Git.open(git_home)
     g.config('user.name', 'pairsee-test')
@@ -20,7 +19,7 @@ describe PairSee::LogLines do
       PairSee::LogLine.new("#{l.date} #{l.message}")
     end
     PairSee::LogLines.new(lines)
-  }
+  end
 
   def create_commit(message)
     File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
@@ -76,7 +75,6 @@ describe PairSee::LogLines do
       found = subject.commits_not_by_known_pair([multi_name_person])
       expect(found.length).to eq 0
     end
-
   end
 
   describe 'solo_commits' do

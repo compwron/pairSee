@@ -9,13 +9,13 @@ module PairSee
 
     def authored_by?(*people)
       return false if people.empty?
-      people.map {|person|
+      people.map do |person|
         contains_any_of?(person.names)
-      }.all?
+      end.all?
     end
 
     def contains_any_of?(names)
-      names.any? {|name| line_contains_name(name)}
+      names.any? { |name| line_contains_name(name) }
     end
 
     def line_contains_name(name)
@@ -33,24 +33,20 @@ module PairSee
     end
 
     def card_name(card_prefixes)
-      card_prefixes.each {|cp|
+      card_prefixes.each do |cp|
         regex = /(#{cp}\d+)/
         matcher = line.match(regex)
-        if (!matcher.nil?)
-          return (line.match regex)[1]
-        end
-      }
-      return nil
+        return (line.match regex)[1] unless matcher.nil?
+      end
+      nil
     end
 
     def card_number(card_prefixes)
-      card_prefixes.each {|cp|
+      card_prefixes.each do |cp|
         card_num = card_name([cp])
-        if (card_num)
-          return card_num.gsub(cp, '')
-        end
-      }
-      return nil
+        return card_num.gsub(cp, '') if card_num
+      end
+      nil
     end
 
     def merge_commit?
@@ -65,10 +61,8 @@ module PairSee
     end
 
     def by_any?(devs)
-      if devs.size == 0
-        return false
-      end
-      devs.any? {|dev| authored_by?(dev)}
+      return false if devs.empty?
+      devs.any? { |dev| authored_by?(dev) }
     end
 
     def to_s

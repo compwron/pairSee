@@ -6,7 +6,7 @@ require 'trollop'
 require 'pry'
 
 opts = Trollop.options do
-  opt :config, 'location of config file, example: ../../config/config.yml', default: "config/config.yml"
+  opt :config, 'location of config file, example: ../../config/config.yml', default: 'config/config.yml'
   opt :after, 'Date since which you want to get commits, in yyyy-mm-dd format', default: '0-1-1'
   opt :extras, 'See all commits without the name of any dev in them', default: false
   opt :latest, 'See dates of most recent commits by pairs', default: false
@@ -19,14 +19,14 @@ def run_command(opts)
   begin
     config = YAML.load_file(opts[:config])
   rescue
-    puts "Config file not found at: " + opts[:config] + " See config/config.yml.sample for an example. \n...exiting"
+    puts 'Config file not found at: ' + opts[:config] + " See config/config.yml.sample for an example. \n...exiting"
     exit
   end
   options = {
-      names: config['names'].map {|i| PairSee::Person.new(i.split(' '))}, # todo rename "names" to "people"
-      card_prefix: config['card_prefix'],
-      after_date: opts[:after],
-      repo_locations: config['roots']
+    names: config['names'].map { |i| PairSee::Person.new(i.split(' ')) }, # TODO: rename "names" to "people"
+    card_prefix: config['card_prefix'],
+    after_date: opts[:after],
+    repo_locations: config['roots']
   }
 
   seer = PairSee::Seer.new(options)

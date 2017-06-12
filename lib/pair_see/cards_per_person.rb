@@ -10,11 +10,11 @@ module PairSee
 
     def cards_per_person
       @devs.map do |dev|
-        {dev => _cards_dev_worked_on(@log_lines, dev)}
+        { dev => _cards_dev_worked_on(@log_lines, dev) }
       end.inject({}) do |result, element|
         result.merge(element)
       end.map do |dev_name, cards_worked|
-        {dev_name => cards_worked.uniq}
+        { dev_name => cards_worked.uniq }
       end.inject({}) do |result, element|
         result.merge(element)
       end.sort do |a, b|

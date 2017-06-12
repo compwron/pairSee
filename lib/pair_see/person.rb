@@ -1,6 +1,5 @@
 module PairSee
   class Person
-
     attr_reader :display_name
     attr_reader :names
 

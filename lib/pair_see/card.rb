@@ -5,7 +5,8 @@ module PairSee
     def initialize(card_name, number_of_commits, first_date, last_date)
       @card_name = card_name
       @number_of_commits = number_of_commits
-      @first_date, @last_date = first_date, last_date
+      @first_date = first_date
+      @last_date = last_date
     end
 
     def duration

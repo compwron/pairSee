@@ -3,7 +3,8 @@ module PairSee
     attr_reader :date, :devs
 
     def initialize(date, *devs)
-      @date, @devs = date, devs
+      @date = date
+      @devs = devs
     end
 
     def to_s

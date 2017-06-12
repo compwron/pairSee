@@ -3,7 +3,8 @@ module PairSee
     attr_reader :count, :devs
 
     def initialize(count, *devs)
-      @count, @devs = count, devs
+      @count = count
+      @devs = devs
     end
 
     def to_s

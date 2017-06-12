@@ -26,12 +26,12 @@ module PairSee
 
     def _lines_from(roots, date_string)
       lines = []
-      roots.each {|root|
+      roots.each do |root|
         g = Git.open(root)
         lines << g.log(@@maximum_commits_to_parse).since(date_string).map do |l|
           LogLine.new("#{l.date} #{l.message}")
         end
-      }
+      end
       LogLines.new(lines.flatten)
     end
 
@@ -51,7 +51,7 @@ module PairSee
     end
 
     def commits_on_card(card_name)
-      log_lines.select {|line| line.contains_card_name?(card_name)}
+      log_lines.select { |line| line.contains_card_name?(card_name) }
     end
 
     def card_numbers(card_prefix)
@@ -67,7 +67,7 @@ module PairSee
       config['card_prefix']
     end
 
-    def active_devs(config_file)
+    def active_devs(_config_file)
       @active_devs
     end
 
@@ -113,7 +113,7 @@ module PairSee
 
     def least_recent_pair
       devs.select do |person|
-        person.names.any? {|name| log_lines.last.line.match(name)}
+        person.names.any? { |name| log_lines.last.line.match(name) }
       end.map(&:display_name).join(', ')
     end
 

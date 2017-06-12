@@ -1,30 +1,29 @@
 describe PairSee::Seer do
-  let(:current_date) {Date.today}
-  let(:repo) {'fake_git'}
-  let(:after_date) {'0-1-1'}
-  let(:log_lines) {PairSee::LogLines.new(repo, after_date)}
-  let(:g) {Git.init(repo)}
+  let(:current_date) { Date.today }
+  let(:repo) { 'fake_git' }
+  let(:after_date) { '0-1-1' }
+  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
+  let(:g) { Git.init(repo) }
 
-  subject {PairSee::Seer.new({
-                                 names: [
-                                     PairSee::Person.new(['Person1']),
-                                     PairSee::Person.new(['Person2']),
-                                     PairSee::Person.new(['Person3']),
-                                     PairSee::Person.new(['Person4']),
-                                     PairSee::Person.new(['Person5']),
-                                     PairSee::Person.new(['Person6']),
-                                     PairSee::Person.new(['Person7']),
-                                     PairSee::Person.new(['ActiveDev']),
-                                     PairSee::Person.new(['InactiveDev'])
-                                 ],
-                                 card_prefix: ['BAZ-'],
-                                 after_date: after_date,
-                                 repo_locations: [repo],
-                             })
-  }
+  subject do
+    PairSee::Seer.new(names: [
+                        PairSee::Person.new(['Person1']),
+                        PairSee::Person.new(['Person2']),
+                        PairSee::Person.new(['Person3']),
+                        PairSee::Person.new(['Person4']),
+                        PairSee::Person.new(['Person5']),
+                        PairSee::Person.new(['Person6']),
+                        PairSee::Person.new(['Person7']),
+                        PairSee::Person.new(['ActiveDev']),
+                        PairSee::Person.new(['InactiveDev'])
+                      ],
+                      card_prefix: ['BAZ-'],
+                      after_date: after_date,
+                      repo_locations: [repo])
+  end
 
   def create_commit(message)
-    File.open("#{repo}/foo.txt", 'w') {|f| f.puts(message)}
+    File.open("#{repo}/foo.txt", 'w') { |f| f.puts(message) }
     g.add
     g.commit(message)
   end
@@ -83,10 +82,10 @@ describe PairSee::Seer do
       create_commit('[FOO-10]')
       create_commit('[FOO-100]')
       expect(subject.card_data(['FOO-']).count).to eq(3)
-      only_one_FOO1 = PairSee::Card.new('FOO-1', 1, current_date, current_date)
-      only_one_FOO10 = PairSee::Card.new('FOO-10', 1, current_date, current_date)
-      expect(subject.card_data(['FOO-'])).to include only_one_FOO1
-      expect(subject.card_data(['FOO-'])).to include only_one_FOO10
+      only_one_foo1 = PairSee::Card.new('FOO-1', 1, current_date, current_date)
+      only_one_foo10 = PairSee::Card.new('FOO-10', 1, current_date, current_date)
+      expect(subject.card_data(['FOO-'])).to include only_one_foo1
+      expect(subject.card_data(['FOO-'])).to include only_one_foo10
     end
 
     it 'does not break on a commit without a card mentioned' do
@@ -96,7 +95,7 @@ describe PairSee::Seer do
   end
 
   describe '#get_card_prefix' do
-    let(:config) {'spec/fixtures/spec_config.yml'}
+    let(:config) { 'spec/fixtures/spec_config.yml' }
     it 'should see card prefix' do
       create_commit('setup')
       expect(subject.get_card_prefix(config)).to eq(['BAZ-'])
@@ -140,8 +139,8 @@ describe PairSee::Seer do
     it 'pretty output should be human-readable' do
       create_commit('[BAZ-1] code')
       expect(subject.pretty_card_data.size).to eq 1
-      expect(subject.pretty_card_data[0]).to include ('BAZ-1 - - - commits: 1 - - - duration: 1 days - - - last commit: ')
-      expect(subject.pretty_card_data[0]).to include ('- - - commits per day: 1.0')
+      expect(subject.pretty_card_data[0]).to include 'BAZ-1 - - - commits: 1 - - - duration: 1 days - - - last commit: '
+      expect(subject.pretty_card_data[0]).to include '- - - commits per day: 1.0'
     end
   end
 end

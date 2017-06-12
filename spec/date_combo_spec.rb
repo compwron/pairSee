@@ -46,14 +46,14 @@ describe PairSee::DateCombo do
   end
 
   describe 'with two devs' do
-    let(:devs) { ['dev1', 'dev2'] }
+    let(:devs) { %w[dev1 dev2] }
     it 'returns both devs' do
       expect(subject.to_s).to eq 'dev1, dev2: 0-1-1'
     end
   end
 
   describe 'with three devs' do
-    let(:devs) { ['dev1', 'dev2'] }
+    let(:devs) { %w[dev1 dev2] }
     it 'returns only two devs since this is a combo' do
       expect(subject.to_s).to eq 'dev1, dev2: 0-1-1'
     end

@@ -10,7 +10,7 @@ describe PairSee::Combo do
 
   describe 'one pair' do
     let(:count) { 1 }
-    let(:devs) { ['person1', 'person2'] }
+    let(:devs) { %w[person1 person2] }
     it 'is not empty' do
       expect(subject.empty?).to be false
     end
