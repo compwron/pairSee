@@ -21,7 +21,8 @@ module PairSee
 
       all.each {|_, card_names| card_names.uniq!}
       all.sort_by {|_, card_names| card_names.count}.map {|person, card_names|
-        "#{person}: [#{card_names.size} cards] #{card_names.sort.join(', ')}"
+        sorted = card_names.compact.sort_by {|i| i.to_i}
+        "#{person}: [#{card_names.size} cards] #{sorted.join(', ')}"
       }
     end
 
