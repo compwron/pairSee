@@ -3,7 +3,6 @@
 require_relative '../lib/pair_see/seer'
 require_relative '../lib/pair_see/person'
 require 'trollop'
-require 'pry'
 
 opts = Trollop.options do
   opt :config, 'location of config file, example: ../../config/config.yml', default: 'config/config.yml'
