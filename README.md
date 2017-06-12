@@ -15,22 +15,39 @@ Usage cases:
 
 Example usage:
 ```
-$ pairsee --root ../../my_code --after 2012-07-10 --config ../../foo/config/config.yml
-$ pairsee --extras --root ../../my_code
-$ pairsee --latest --after 2012-09-01 # this outputs pairings by most recent by all devs who have committed since given date (purpose of this is to exclude people who are no longer committers)
+$ pairsee --after 2012-07-10 --config ../../foo/config/config.yml
+$ pairsee --extras
+$ pairsee --cards
 ```
 
 ```
 Options:
-          --root, -r <s>:   Folder in which .git folder is (default: .)
-        --config, -c <s>:   location of config file, example: ../../config/config.yml (default: bin/pairsee/../../config/config.yml)
-         --after, -a <s>:   Date since which you want to get commits, in yyyy-mm-dd format (default: 0-1-1)
-            --extras, -e:   See all commits without the name of any dev in them
-            --latest, -l:   See dates of most recent commits by pairs
-       --recommended, -o:   See active devs who have not paired (and therefore should)
-             --cards, -d:   See cards and number of commits on each
-  --cards-per-person, -s:   See cards for each dev
-              --help, -h:   Show this message
+  -c, --config=<s>          location of config file, example: ../../config/config.yml (default:
+                            config/config.yml)
+  -a, --after=<s>           Date since which you want to get commits, in yyyy-mm-dd format (default:
+                            0-1-1)
+  -e, --extras              See all commits without the name of any dev in them
+  -l, --latest              See dates of most recent commits by pairs
+  -r, --recommended         See active devs who have not paired (and therefore should)
+  -d, --cards               See cards and number of commits on each
+  -s, --cards-per-person    See cards for each dev
+  -h, --help                Show this message
+
+```
+
+Example config file (see also config/config.yml.sample)
+```
+names:
+  - Person1
+  - Person2
+  - ManyNamesPerson mnperson mprss
+card_prefix:
+  - FOO-
+  - BAR-
+roots:
+  - /Users/foo/repo1/
+  - /Users/foo/repositories/repo2
+  - /Users/foo/repositories/baz/repo3
 ```
 
 to put on path:

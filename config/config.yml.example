@@ -1,0 +1,11 @@
+names:
+  - Person1
+  - Person2
+  - ManyNamesPerson mnperson mprss
+card_prefix:
+  - FOO-
+  - BAR-
+roots:
+  - /Users/foo/repo1
+  - /Users/foo/repositories/repo2
+  - /Users/foo/repositories/baz/repo3
