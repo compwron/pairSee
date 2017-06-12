@@ -1,10 +1,10 @@
 describe PairSee::Card do
-  require "ostruct"
+  require 'ostruct'
 
-  let(:first_commit_date) {Date.new(2012, 1, 1)}
-  let(:last_commit_date) {first_commit_date + 2}
-  let(:one_commits) {[OpenStruct.new(date: first_commit_date)]}
-  let(:two_commits) {[OpenStruct.new(date: first_commit_date), OpenStruct.new(date: last_commit_date)]}
+  let(:first_commit_date) { Date.new(2012, 1, 1) }
+  let(:last_commit_date) { first_commit_date + 2 }
+  let(:one_commits) { [OpenStruct.new(date: first_commit_date)] }
+  let(:two_commits) { [OpenStruct.new(date: first_commit_date), OpenStruct.new(date: last_commit_date)] }
 
   describe '#duration' do
     it 'should see duration of a one-commit card' do

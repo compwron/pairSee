@@ -15,7 +15,7 @@ module PairSee
     end
 
     def contains_any_of?(names)
-      names.any? {|name| line_contains_name(name)}
+      names.any? { |name| line_contains_name(name) }
     end
 
     def line_contains_name(name)
@@ -62,7 +62,7 @@ module PairSee
 
     def by_any?(devs)
       return false if devs.empty?
-      devs.any? {|dev| authored_by?(dev)}
+      devs.any? { |dev| authored_by?(dev) }
     end
 
     def to_s

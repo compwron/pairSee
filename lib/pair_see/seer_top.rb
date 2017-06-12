@@ -33,5 +33,3 @@ module PairSee
     end
   end
 end
-
-

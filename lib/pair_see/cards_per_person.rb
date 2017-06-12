@@ -9,21 +9,19 @@ module PairSee
     end
 
     def cards_per_person
-      all = Hash[people.map {|key, _| [key, []]}]
+      all = Hash[people.map { |key, _| [key, []] }]
 
-      @log_lines.each {|log_line| # loop through the biggest list only once
-        all.each {|person, _|
-          if log_line.authored_by? person
-            all[person] << log_line.card_number(@card_prefix)
-          end
-        }
-      }
+      @log_lines.each do |log_line| # loop through the biggest list only once
+        all.each do |person, _|
+          all[person] << log_line.card_number(@card_prefix) if log_line.authored_by? person
+        end
+      end
 
-      all.each {|_, card_names| card_names.uniq!}
-      all.sort_by {|_, card_names| card_names.count}.map {|person, card_names|
-        sorted = card_names.compact.sort_by {|i| i.to_i}
+      all.each { |_, card_names| card_names.uniq! }
+      all.sort_by { |_, card_names| card_names.count }.map do |person, card_names|
+        sorted = card_names.compact.sort_by(&:to_i)
         "#{person}: [#{card_names.size} cards] #{sorted.join(', ')}"
-      }
+      end
     end
 
     def _active(people)
