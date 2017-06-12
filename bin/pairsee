@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/pair_see/seer'
+require_relative '../lib/pair_see/seer_top'
 require_relative '../lib/pair_see/person'
 require 'trollop'
 
@@ -28,7 +28,7 @@ def run_command(opts)
     repo_locations: config['roots']
   }
 
-  seer = PairSee::Seer.new(options)
+  seer = PairSee::SeerTop.new(options)
   if opts[:extras]
     seer.commits_not_by_known_pair
   elsif opts[:latest]
