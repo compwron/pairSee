@@ -1,10 +1,11 @@
 module PairSee
   class CardsPerPerson
-    attr_reader :people, :cards_per_person
+    attr_reader :people, :cards_per_person, :dev_pairs
 
     def initialize(log_lines, card_prefix, people)
       @people = _active(people, log_lines)
       @cards_per_person = _cards_per_person(log_lines, card_prefix)
+      @dev_pairs = @people.combination(2)
     end
 
     private
