@@ -9,8 +9,6 @@ module PairSee
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
-    attr_reader :log_lines
-
     def initialize(options)
       @log_lines = LogLineParse.new(options[:repo_locations], options[:after_date]).log_lines
       @active_devs = ActiveDevs.new(@log_lines, options[:names]).devs
@@ -38,11 +36,11 @@ module PairSee
     end
 
     def commits_on_card(card_name)
-      log_lines.select { |line| line.contains_card_name?(card_name) }
+      @log_lines.select { |line| line.contains_card_name?(card_name) }
     end
 
     def card_numbers(card_prefix)
-      log_lines.select do |line|
+      @log_lines.select do |line|
         line.contains_card?(card_prefix)
       end.map do |line|
         line.card_name([card_prefix])
@@ -62,7 +60,7 @@ module PairSee
 
     def solo_commits
       @devs.map do |dev|
-        PairCommitCount.new(log_lines.solo_commits(@devs, dev).count, dev)
+        PairCommitCount.new(@log_lines.solo_commits(@devs, dev).count, dev)
       end
     end
 
@@ -71,11 +69,11 @@ module PairSee
     end
 
     def commits_for_pair(person1, person2)
-      log_lines.commits_for_pair person1, person2
+      @log_lines.commits_for_pair person1, person2
     end
 
     def commits_not_by_known_person
-      log_lines.commits_not_by_known_person @devs
+      @log_lines.commits_not_by_known_person @devs
     end
 
     def most_recent_commit_date(person1, person2)
@@ -96,7 +94,7 @@ module PairSee
 
     def least_recent_pair
       devs.select do |person|
-        person.names.any? { |name| log_lines.last.line.match(name) }
+        person.names.any? { |name| @log_lines.last.line.match(name) }
       end.map(&:display_name).join(', ')
     end
 
