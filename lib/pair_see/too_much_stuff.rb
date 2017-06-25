@@ -4,15 +4,15 @@ module PairSee
     require_relative 'pair_commit_count'
     require_relative 'date_combo'
     require_relative 'log_lines'
+    require_relative 'log_line_parse'
     require_relative 'card'
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
     attr_reader :log_lines, :devs, :dev_pairs, :card_prefixes
-    @@maximum_commits_to_parse = 9999
 
     def initialize(options)
-      @log_lines = _lines_from(options[:repo_locations], options[:after_date])
+      @log_lines = LogLineParse.new(options[:repo_locations], options[:after_date]).log_lines
       @sub_seer = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
       @active_devs = ActiveDevs.new(@log_lines, options[:names]).devs
       @devs = @sub_seer.people
@@ -22,17 +22,6 @@ module PairSee
 
     def cards_per_person
       @sub_seer.cards_per_person
-    end
-
-    def _lines_from(roots, date_string)
-      lines = []
-      roots.each do |root|
-        g = Git.open(root)
-        lines << g.log(@@maximum_commits_to_parse).since(date_string).map do |l|
-          LogLine.new("#{l.date} #{l.message}")
-        end
-      end
-      LogLines.new(lines.flatten)
     end
 
     def pretty_card_data
