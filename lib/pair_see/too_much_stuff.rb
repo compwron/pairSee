@@ -9,16 +9,16 @@ module PairSee
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
-    attr_reader :log_lines, :devs, :dev_pairs, :card_prefixes, :cards_per_person
+    attr_reader :log_lines, :devs, :dev_pairs, :card_prefixes, :cards_per_person, :active_devs
 
     def initialize(options)
       @log_lines = LogLineParse.new(options[:repo_locations], options[:after_date]).log_lines
-      @foo = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
+      cards_per_person = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
       @active_devs = ActiveDevs.new(@log_lines, options[:names]).devs
-      @devs = @foo.people
+      @devs = cards_per_person.people
       @card_prefixes = options[:card_prefix]
-      @dev_pairs = @foo.people.combination(2)
-      @cards_per_person = @foo.cards_per_person
+      @dev_pairs = cards_per_person.people.combination(2)
+      @cards_per_person = cards_per_person.cards_per_person
     end
 
     def pretty_card_data
@@ -50,10 +50,6 @@ module PairSee
     def get_card_prefix(config_file)
       config = YAML.load_file(config_file)
       config['card_prefix']
-    end
-
-    def active_devs(_config_file)
-      @active_devs
     end
 
     def pair_commits
