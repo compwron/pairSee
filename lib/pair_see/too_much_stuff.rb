@@ -35,7 +35,7 @@ module PairSee
     end
 
     def commits_on_card(card_name)
-      @log_lines.select { |line| line.contains_card_name?(card_name) }
+      @log_lines.select {|line| line.contains_card_name?(card_name)}
     end
 
     def card_numbers(card_prefix)
@@ -52,9 +52,10 @@ module PairSee
     end
 
     def pair_commits
-      @dev_pairs.map do |person1, person2|
-        PairCommitCount.new(commits_for_pair(person1, person2).count, person1, person2)
-      end
+      @dev_pairs.map {|person1, person2|
+        log_lines_commits_for_pair = @log_lines.commits_for_pair person1, person2
+        PairCommitCount.new(log_lines_commits_for_pair.count, person1, person2)
+      }
     end
 
     def solo_commits
@@ -64,8 +65,41 @@ module PairSee
     end
 
     def all_commits
-      (pair_commits + solo_commits).sort_by(&:count).reject(&:empty?).map(&:to_s)
+
+      @dev_pairs.map {|person1, person2|
+        foo = @log_lines.map {|log_line|
+          aa = log_line.authored_by?(person1, person2)
+          bb = log_line.authored_by?(person1) && (@devs - [person1]).none? { |single_person| log_line.authored_by?(single_person) }
+          (aa ? ["pair", log_line, [person1, person2]] : nil) ||
+              (bb ? ["solo", log_line, [person1]])
+        }
+                  .compact
+        .map {|type, log_line, devs|
+          PairCommitCount.new()
+        }
+                  .sort_by {|type, log_line, devs| pcc.count}.map {|type, pcc| pcc.to_s}
+      }
+
+      a = @dev_pairs.map do |person1, person2|
+        PairCommitCount.new(@log_lines.commits_for_pair(person1, person2).count, person1, person2)
+      end
+
+      b = @devs.map {|person|
+        PairCommitCount.new(@log_lines.solo_commits(@devs, person).count, person)
+      }
+
+      (a + b).sort_by(&:count).reject(&:empty?).map(&:to_s)
+
     end
+
+    def b(log_line, person1)
+      log_line.authored_by?(person1) && (people - [person1]).none? {|single_person| log_line.authored_by?(single_person)}
+    end
+
+    def a(log_line, person1, person2)
+      log_line.authored_by?(person1, person2)
+    end
+
 
     def commits_for_pair(person1, person2)
       @log_lines.commits_for_pair person1, person2
@@ -93,7 +127,7 @@ module PairSee
 
     def least_recent_pair
       devs.select do |person|
-        person.names.any? { |name| @log_lines.last.line.match(name) }
+        person.names.any? {|name| @log_lines.last.line.match(name)}
       end.map(&:display_name).join(', ')
     end
 
