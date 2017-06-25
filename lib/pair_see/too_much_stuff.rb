@@ -9,7 +9,7 @@ module PairSee
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
-    attr_reader :log_lines, :devs
+    attr_reader :log_lines
 
     def initialize(options)
       @log_lines = LogLineParse.new(options[:repo_locations], options[:after_date]).log_lines
@@ -61,8 +61,8 @@ module PairSee
     end
 
     def solo_commits
-      devs.map do |dev|
-        PairCommitCount.new(log_lines.solo_commits(devs, dev).count, dev)
+      @devs.map do |dev|
+        PairCommitCount.new(log_lines.solo_commits(@devs, dev).count, dev)
       end
     end
 
@@ -75,7 +75,7 @@ module PairSee
     end
 
     def commits_not_by_known_person
-      log_lines.commits_not_by_known_person devs
+      log_lines.commits_not_by_known_person @devs
     end
 
     def most_recent_commit_date(person1, person2)
