@@ -1,7 +1,7 @@
-describe PairSee::Combo do
+describe PairSee::PairCommitCount do
   let(:count) { 0 }
   let(:devs) { [] }
-  subject { PairSee::Combo.new(count, devs) }
+  subject { PairSee::PairCommitCount.new(count, devs) }
   describe 'empty' do
     it 'returns none' do
       expect(subject.empty?).to be true

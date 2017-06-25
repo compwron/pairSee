@@ -1,5 +1,5 @@
 module PairSee
-  class Combo
+  class PairCommitCount
     attr_reader :count, :devs
 
     def initialize(count, *devs)

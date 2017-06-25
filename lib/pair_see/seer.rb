@@ -1,7 +1,7 @@
 module PairSee
   class Seer
     require 'yamler'
-    require_relative 'combo'
+    require_relative 'pair_commit_count'
     require_relative 'date_combo'
     require_relative 'log_lines'
     require_relative 'card'
@@ -72,13 +72,13 @@ module PairSee
 
     def pair_commits
       dev_pairs.map do |person1, person2|
-        Combo.new(commits_for_pair(person1, person2).count, person1, person2)
+        PairCommitCount.new(commits_for_pair(person1, person2).count, person1, person2)
       end
     end
 
     def solo_commits
       devs.map do |dev|
-        Combo.new(log_lines.solo_commits(devs, dev).count, dev)
+        PairCommitCount.new(log_lines.solo_commits(devs, dev).count, dev)
       end
     end
 
