@@ -1,48 +1,49 @@
 module PairSee
   class CardsPerPerson
-    attr_reader :people
+    attr_reader :people, :cards_per_person
 
     def initialize(log_lines, card_prefix, people)
-      @log_lines = log_lines
-      @card_prefix = card_prefix
-      @people = _active(people)
+      @people = _active(people, log_lines)
+      @cards_per_person = _cards_per_person(log_lines, card_prefix)
     end
 
-    def cards_per_person
-      all = people_hash
-      populate_card_numbers(all)
-      unique_cards_per_person(all)
-      sort_by_cards_count(all)
+    private
+
+    def _cards_per_person(log_lines, card_prefix)
+      all = _people_hash
+      _populate_card_numbers(all, log_lines, card_prefix)
+      _unique_cards_per_person(all)
+      _sort_by_cards_count(all)
     end
 
-    def sort_by_cards_count(all)
+    def _sort_by_cards_count(all)
       all.sort_by {|_, card_names| card_names.count}.map do |person, card_names|
         sorted = card_names.compact.sort_by(&:to_i)
         "#{person}: [#{card_names.size} cards] #{sorted.join(', ')}"
       end
     end
 
-    def unique_cards_per_person(all)
+    def _unique_cards_per_person(all)
       all.each {|_, card_names| card_names.uniq!}
     end
 
-    def populate_card_numbers(all)
-      @log_lines.each do |log_line| # loop through the biggest list only once
+    def _populate_card_numbers(all, log_lines, card_prefix)
+      log_lines.each do |log_line| # loop through the biggest list only once
         all.each do |person, _|
           if log_line.authored_by? person then
-            all[person] << log_line.card_number(@card_prefix)
+            all[person] << log_line.card_number(card_prefix)
           end
         end
       end
     end
 
-    def people_hash
+    def _people_hash
       Hash[people.map {|key, _| [key, []]}]
     end
 
-    def _active(people)
+    def _active(people, log_lines)
       people.select do |person|
-        @log_lines.active? person
+        log_lines.active? person
       end
     end
   end
