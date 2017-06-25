@@ -5,6 +5,11 @@ module PairSee
     attr_reader :seer
 
     def initialize(options)
+      @repo_locations = options[:repo_locations]
+      @after_date = options[:after_date]
+      @card_prefix = options[:card_prefix]
+      @names = options[:names]
+
       @seer = PairSee::TooMuchStuff.new(options)
     end
 
@@ -25,7 +30,8 @@ module PairSee
     end
 
     def cards_per_person
-      seer.cards_per_person
+      log_lines = LogLineParse.new(@repo_locations, @after_date).log_lines
+      CardsPerPerson.new(log_lines, @card_prefix, @names).cards_per_person
     end
 
     def all_commits

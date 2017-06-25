@@ -16,7 +16,6 @@ module PairSee
       cards_per_person = CardsPerPerson.new(@log_lines, options[:card_prefix], options[:names])
       @devs = cards_per_person.people
       @dev_pairs = cards_per_person.dev_pairs
-      @cards_per_person = cards_per_person.cards_per_person
 
       @card_prefixes = options[:card_prefix]
     end
