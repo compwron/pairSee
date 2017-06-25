@@ -9,7 +9,7 @@ module PairSee
     require_relative 'cards_per_person'
     require_relative 'active_devs'
 
-    attr_reader :log_lines, :devs, :dev_pairs
+    attr_reader :log_lines, :devs
 
     def initialize(options)
       @log_lines = LogLineParse.new(options[:repo_locations], options[:after_date]).log_lines
@@ -55,7 +55,7 @@ module PairSee
     end
 
     def pair_commits
-      dev_pairs.map do |person1, person2|
+      @dev_pairs.map do |person1, person2|
         PairCommitCount.new(commits_for_pair(person1, person2).count, person1, person2)
       end
     end
@@ -84,7 +84,7 @@ module PairSee
     end
 
     def all_most_recent_commits
-      dev_pairs.map do |person1, person2|
+      @dev_pairs.map do |person1, person2|
         DateCombo.new(most_recent_commit_date(person1, person2), person1, person2)
       end.sort.reverse.map &:to_s
     end
@@ -101,7 +101,7 @@ module PairSee
     end
 
     def unpaired_in_range
-      dev_pairs.select do |person1, person2|
+      @dev_pairs.select do |person1, person2|
         most_recent_commit_date(person1, person2).nil?
       end.map do |person1, person2|
         "#{person1}, #{person2}"
