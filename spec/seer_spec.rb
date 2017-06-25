@@ -1,4 +1,4 @@
-describe PairSee::Seer do
+describe PairSee::TooMuchStuff do
   let(:current_date) { Date.today }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
@@ -6,7 +6,7 @@ describe PairSee::Seer do
   let(:g) { Git.init(repo) }
 
   subject do
-    PairSee::Seer.new(names: [
+    PairSee::TooMuchStuff.new(names: [
                         PairSee::Person.new(['Person1']),
                         PairSee::Person.new(['Person2']),
                         PairSee::Person.new(['Person3']),
@@ -17,9 +17,9 @@ describe PairSee::Seer do
                         PairSee::Person.new(['ActiveDev']),
                         PairSee::Person.new(['InactiveDev'])
                       ],
-                      card_prefix: ['BAZ-'],
-                      after_date: after_date,
-                      repo_locations: [repo])
+                              card_prefix: ['BAZ-'],
+                              after_date: after_date,
+                              repo_locations: [repo])
   end
 
   def create_commit(message)

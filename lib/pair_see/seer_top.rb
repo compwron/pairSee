@@ -1,11 +1,11 @@
 module PairSee
   class SeerTop
-    require_relative 'seer'
+    require_relative 'too_much_stuff'
 
     attr_reader :seer
 
     def initialize(options)
-      @seer = PairSee::Seer.new(options)
+      @seer = PairSee::TooMuchStuff.new(options)
     end
 
     def commits_not_by_known_pair

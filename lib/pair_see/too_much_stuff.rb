@@ -1,5 +1,5 @@
 module PairSee
-  class Seer
+  class TooMuchStuff
     require 'yamler'
     require_relative 'pair_commit_count'
     require_relative 'date_combo'
