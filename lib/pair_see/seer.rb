@@ -1,5 +1,5 @@
 module PairSee
-  class SeerTop
+  class Seer
     require_relative 'too_much_stuff'
 
     attr_reader :seer
