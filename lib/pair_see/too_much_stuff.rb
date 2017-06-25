@@ -1,3 +1,4 @@
+require 'pry'
 module PairSee
   class TooMuchStuff
     require 'yamler'
@@ -65,31 +66,43 @@ module PairSee
     end
 
     def all_commits
+      pairs_result = Hash[@dev_pairs.map {|k, v| [names_key(k, v), 0]}]
+      solos_result = Hash[@devs.map {|k| [k.display_name, 0]}]
+      result = pairs_result.merge solos_result
 
-      @dev_pairs.map {|person1, person2|
-        foo = @log_lines.map {|log_line|
-          aa = log_line.authored_by?(person1, person2)
-          bb = log_line.authored_by?(person1) && (@devs - [person1]).none? { |single_person| log_line.authored_by?(single_person) }
-          (aa ? ["pair", log_line, [person1, person2]] : nil) ||
-              (bb ? ["solo", log_line, [person1]])
-        }
-                  .compact
-        .map {|type, log_line, devs|
-          PairCommitCount.new()
-        }
-                  .sort_by {|type, log_line, devs| pcc.count}.map {|type, pcc| pcc.to_s}
+      @log_lines.each {|ll|
+        result = method_name(ll, result)
       }
+      result
+          .sort_by {|_, count| count}
+          .reject {|_, count| count == 0}
+          .map {|names, count| "#{names}: #{count}"}
 
-      a = @dev_pairs.map do |person1, person2|
-        PairCommitCount.new(@log_lines.commits_for_pair(person1, person2).count, person1, person2)
-      end
+    end
 
-      b = @devs.map {|person|
-        PairCommitCount.new(@log_lines.solo_commits(@devs, person).count, person)
+    def method_name(ll, result)
+      @dev_pairs.each {|d1, d2|
+        if ll.authored_by?(d1, d2) then
+          result[names_key(d1, d2)] += 1
+          return result
+        elsif is_solo_by?(@devs, d1, ll)
+          result[d1.display_name] += 1
+          return result
+        elsif is_solo_by?(@devs, d2, ll)
+          result[d2.display_name] += 1
+          return result
+        end
       }
+      return result
+    end
 
-      (a + b).sort_by(&:count).reject(&:empty?).map(&:to_s)
+    def is_solo_by?(devs, person, log_line)
+      no_other_devs_in_commit = (devs - [person]).none? {|dx| log_line.authored_by?(dx)}
+      log_line.authored_by?(person) && no_other_devs_in_commit
+    end
 
+    def names_key(k, v)
+      [k, v].sort_by {|a| a.display_name}.map(&:to_s).join(", ")
     end
 
     def b(log_line, person1)
