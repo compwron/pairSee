@@ -1,3 +1,7 @@
+- feature "cards without more than one developer"
+
+
+
 - fix bug in "last commit" in -d, dates are not accurate
 - sort --latest by commit date
 
