@@ -2,6 +2,7 @@
 
 require_relative '../lib/pair_see/seer'
 require_relative '../lib/pair_see/person'
+require_relative '../lib/pair_see/knowledge_debt'
 require 'trollop'
 
 opts = Trollop.options do
@@ -12,6 +13,7 @@ opts = Trollop.options do
   opt :recommended, 'See active devs who have not paired (and therefore should)', default: false
   opt :cards, 'See cards and number of commits on each', default: false
   opt :cards_per_person, 'See cards for each dev', default: false
+  opt :knowledge_debt, 'Knowledge debt (cards that only one person worked on)', default: false
 end
 
 def run_command(opts)
@@ -22,10 +24,10 @@ def run_command(opts)
     exit
   end
   options = {
-    names: config['names'].map { |i| PairSee::Person.new(i.split(' ')) }, # TODO: rename "names" to "people"
-    card_prefix: config['card_prefix'],
-    after_date: opts[:after],
-    repo_locations: config['roots']
+      names: config['names'].map {|i| PairSee::Person.new(i.split(' '))}, # TODO: rename "names" to "people"
+      card_prefix: config['card_prefix'],
+      after_date: opts[:after],
+      repo_locations: config['roots']
   }
 
   seer = PairSee::Seer.new(options)
@@ -39,6 +41,8 @@ def run_command(opts)
     seer.pretty_card_data
   elsif opts[:cards_per_person]
     seer.cards_per_person
+  elsif opts[:knowledge_debt]
+    seer.knowledge_debt
   else
     seer.all_commits
   end

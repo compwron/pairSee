@@ -90,7 +90,7 @@ module PairSee
           return result
         elsif is_solo_by?(@devs, d2, ll)
           result[d2.display_name] += 1
-          return result
+          return results
         end
       }
       return result
@@ -127,7 +127,7 @@ module PairSee
       recent_commit ? recent_commit.date : nil
     end
 
-    def all_most_recent_commits
+    def eall_most_recent_commits
       @dev_pairs.map do |person1, person2|
         DateCombo.new(most_recent_commit_date(person1, person2), person1, person2)
       end.sort.reverse.map &:to_s

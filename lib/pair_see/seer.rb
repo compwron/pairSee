@@ -9,8 +9,8 @@ module PairSee
       @after_date = options[:after_date]
       @card_prefix = options[:card_prefix]
       @names = options[:names]
-
       @seer = PairSee::TooMuchStuff.new(options)
+      @log_lines = LogLineParse.new(@repo_locations, @after_date).log_lines
     end
 
     def commits_not_by_known_pair
@@ -30,12 +30,15 @@ module PairSee
     end
 
     def cards_per_person
-      log_lines = LogLineParse.new(@repo_locations, @after_date).log_lines
-      CardsPerPerson.new(log_lines, @card_prefix, @names).cards_per_person
+      CardsPerPerson.new(@log_lines, @card_prefix, @names).cards_per_person
     end
 
     def all_commits
       seer.all_commits
+    end
+
+    def knowledge_debt
+      KnowledgeDebt.new(@log_lines, @card_prefix, @names).knowledge_debt
     end
   end
 end
