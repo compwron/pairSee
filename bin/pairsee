@@ -3,6 +3,8 @@
 require_relative '../lib/pair_see/seer'
 require_relative '../lib/pair_see/person'
 require_relative '../lib/pair_see/knowledge_debt'
+require_relative '../lib/pair_see/pairing_event'
+require_relative '../lib/pair_see/pair_recency'
 require 'trollop'
 
 opts = Trollop.options do
@@ -14,6 +16,7 @@ opts = Trollop.options do
   opt :cards, 'See cards and number of commits on each', default: false
   opt :cards_per_person, 'See cards for each dev', default: false
   opt :knowledge_debt, 'Knowledge debt (cards that only one person worked on)', default: false
+  opt :my_pairs, 'Most recent dates of pairing for user', default: false
 end
 
 def run_command(opts)
@@ -43,6 +46,8 @@ def run_command(opts)
     seer.cards_per_person
   elsif opts[:knowledge_debt]
     seer.knowledge_debt
+  elsif opts[:my_pairs]
+    seer.pair_recency
   else
     seer.all_commits
   end

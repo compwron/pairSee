@@ -40,5 +40,9 @@ module PairSee
     def knowledge_debt
       KnowledgeDebt.new(@log_lines, @card_prefix, @names).knowledge_debt
     end
+
+    def pair_recency
+      PairRecency.new(@log_lines, @card_prefix, @names).pair_recency
+    end
   end
 end
