@@ -127,7 +127,7 @@ module PairSee
       recent_commit ? recent_commit.date : nil
     end
 
-    def eall_most_recent_commits
+    def all_most_recent_commits
       @dev_pairs.map do |person1, person2|
         DateCombo.new(most_recent_commit_date(person1, person2), person1, person2)
       end.sort.reverse.map &:to_s
