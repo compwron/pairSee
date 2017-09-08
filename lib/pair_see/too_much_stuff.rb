@@ -90,7 +90,7 @@ module PairSee
           return result
         elsif is_solo_by?(@devs, d2, ll)
           result[d2.display_name] += 1
-          return results
+          return result
         end
       }
       return result
