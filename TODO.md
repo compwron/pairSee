@@ -1,3 +1,5 @@
+- see devs on longest running cards
+- see cards still in progress (all commits, with commits within the last x days)
 - feature "cards without more than one developer"
 
 
