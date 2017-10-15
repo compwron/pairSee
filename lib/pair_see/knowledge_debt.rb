@@ -7,7 +7,21 @@ module PairSee
     end
 
     def knowledge_debt
-      #   cards - > commits -> people on commits -> early elimination of mult. names for now (later, %)
+      # TODO do something here with percentage knowledge per card
+      commits_per_card.map {|card_name, commits|
+        authors_per_commit = commits.map {|log_line|
+          log_line.all_authors(@people)
+        }
+        authors = authors_per_commit.flatten.uniq
+        CardKnowledgeSummary.new(card_name, commits.count, authors)
+      }.select {|cks|
+        cks.has_debt
+      }.map {|cks|
+        cks.pretty
+      }
+    end
+
+    def commits_per_card
       card_to_commits = {}
 
       @log_lines.each {|ll|
@@ -17,22 +31,7 @@ module PairSee
         end
         card_to_commits[cn] << ll
       }
-
-      c2c = card_to_commits.reject {|k, v| v.count == 0}
-
-
-      c2c.map {|card_name, commits|
-        has_debt = commits.map {|c|
-          @people.select {|person| c.authored_by?(person)}.count > 1
-        }.all?
-        [commits.count, card_name, has_debt]
-      }.reject {|_, _, has_debt| !has_debt
-      }.sort {|a| a.first
-      }.map {|a|
-        count = a[0]
-        card_name = a[1]
-        has_debt = a[2]
-        "#{card_name} has #{count} commits with only one committer"}
+      card_to_commits
     end
   end
 end

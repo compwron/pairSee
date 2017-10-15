@@ -3,6 +3,7 @@
 require_relative '../lib/pair_see/seer'
 require_relative '../lib/pair_see/person'
 require_relative '../lib/pair_see/knowledge_debt'
+require_relative '../lib/pair_see/card_knowledge_summary'
 require_relative '../lib/pair_see/pairing_event'
 require_relative '../lib/pair_see/pair_recency'
 require 'trollop'

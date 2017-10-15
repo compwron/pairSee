@@ -7,6 +7,12 @@ module PairSee
       @line = line
     end
 
+    def all_authors(people)
+      people.select do |person|
+        contains_any_of?(person.names)
+      end
+    end
+
     def authored_by?(*people)
       return false if people.empty?
       people.map do |person|
