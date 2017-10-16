@@ -21,7 +21,7 @@ describe PairSee::KnowledgeDebt do
 
   describe '#knowledge_debt' do
     it 'finds debt only when card has pair' do
-      expect(subject).to eq ["444 has 2 commits with only 1 committer(s) on the entire card"]
+      expect(subject).to eq ["444 has 2 commits with only 1 committer(s) Person3 on the entire card"]
     end
   end
 end

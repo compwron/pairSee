@@ -16,7 +16,7 @@ module PairSee
         CardKnowledgeSummary.new(card_name, commits.count, authors)
       }.select {|cks|
         cks.has_debt
-      }.map {|cks|
+      }.sort.map {|cks|
         cks.pretty
       }
     end
