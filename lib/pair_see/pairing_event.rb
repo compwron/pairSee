@@ -4,7 +4,7 @@ module PairSee
       @current_person = current_person
       @most_recent_commits = most_recent_commits
 
-    # most_recent_commits = {Person => [log_line, Person]}
+      # most_recent_commits = {Person => [log_line, Person]}
     end
 
     def pretty
