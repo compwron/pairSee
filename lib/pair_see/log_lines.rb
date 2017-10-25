@@ -10,11 +10,11 @@ module PairSee
     end
 
     def each(&block)
-      lines.each &block
+      @lines.each &block
     end
 
     def last
-      lines.last
+      @lines.last
     end
 
     def active?(person)
@@ -36,9 +36,5 @@ module PairSee
         log_line.authored_by?(person) && (people - [person]).none? {|single_person| log_line.authored_by?(single_person)}
       end
     end
-
-    private
-
-    attr_reader :lines
   end
 end

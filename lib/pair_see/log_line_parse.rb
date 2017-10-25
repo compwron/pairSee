@@ -1,8 +1,8 @@
 module PairSee
   class LogLineParse
-
     require_relative 'log_lines'
     require 'git'
+
     @@maximum_commits_to_parse = 9999
     attr_reader :log_lines
 
