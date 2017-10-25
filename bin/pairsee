@@ -29,10 +29,10 @@ def run_command(opts)
     exit
   end
   options = {
-      names: config['names'].map {|i| PairSee::Person.new(i.split(' '))}, # TODO: rename "names" to "people"
-      card_prefix: config['card_prefix'],
-      after_date: opts[:after],
-      repo_locations: config['roots']
+    names: config['names'].map { |i| PairSee::Person.new(i.split(' ')) }, # TODO: rename "names" to "people"
+    card_prefix: config['card_prefix'],
+    after_date: opts[:after],
+    repo_locations: config['roots']
   }
 
   seer = PairSee::Seer.new(options)

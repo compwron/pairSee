@@ -18,20 +18,20 @@ module PairSee
     end
 
     def _sort_by_cards_count(all)
-      all.sort_by {|_, card_names| card_names.count}.map do |person, card_names|
+      all.sort_by { |_, card_names| card_names.count }.map do |person, card_names|
         sorted = card_names.compact.sort_by(&:to_i)
         "#{person}: [#{card_names.size} cards] #{sorted.join(', ')}"
       end
     end
 
     def _unique_cards_per_person(all)
-      all.each {|_, card_names| card_names.uniq!}
+      all.each { |_, card_names| card_names.uniq! }
     end
 
     def _populate_card_numbers(all, log_lines, card_prefix)
       log_lines.each do |log_line| # loop through the biggest list only once
         all.each do |person, _|
-          if log_line.authored_by? person then
+          if log_line.authored_by? person
             all[person] << log_line.card_number(card_prefix)
           end
         end
@@ -39,7 +39,7 @@ module PairSee
     end
 
     def _people_hash
-      Hash[people.map {|key, _| [key, []]}]
+      Hash[people.map { |key, _| [key, []] }]
     end
 
     def _active(people, log_lines)

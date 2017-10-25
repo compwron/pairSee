@@ -14,12 +14,12 @@ module PairSee
     end
 
     def pretty
-      pretty_author_names = @authors.map {|a| a.to_s}.join
-      "#{@card_number} has #{@commits_on_card_count} commits with only #{@authors.count} committer(s) #{pretty_author_names } on the entire card"
+      pretty_author_names = @authors.map(&:to_s).join
+      "#{@card_number} has #{@commits_on_card_count} commits with only #{@authors.count} committer(s) #{pretty_author_names} on the entire card"
     end
 
     def authors_list
-      @authors.sort.join(" ")
+      @authors.sort.join(' ')
     end
   end
 end

@@ -6,11 +6,10 @@ module PairSee
     end
 
     def pretty
-      @most_recent_commits.sort_by {|pair, tuple| tuple.first.date}.map {|pair, tuple|
+      @most_recent_commits.sort_by { |_pair, tuple| tuple.first.date }.map do |_pair, tuple|
         "#{@current_person}, #{tuple.last}: #{tuple.first.date}"
-      } + _pretty_spacing
+      end + _pretty_spacing
     end
-
 
     def person
       @current_person
@@ -19,8 +18,7 @@ module PairSee
     private
 
     def _pretty_spacing
-      [""]
+      ['']
     end
-
   end
 end

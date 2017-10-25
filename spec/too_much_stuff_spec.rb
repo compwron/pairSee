@@ -6,16 +6,16 @@ describe PairSee::TooMuchStuff do
 
   subject do
     PairSee::TooMuchStuff.new(names: [
-                        PairSee::Person.new(['Person1']),
-                        PairSee::Person.new(['Person2']),
-                        PairSee::Person.new(['Person3']),
-                        PairSee::Person.new(['Person4']),
-                        PairSee::Person.new(['Person5']),
-                        PairSee::Person.new(['Person6']),
-                        PairSee::Person.new(['Person7']),
-                        PairSee::Person.new(['ActiveDev']),
-                        PairSee::Person.new(['InactiveDev'])
-                      ],
+                                PairSee::Person.new(['Person1']),
+                                PairSee::Person.new(['Person2']),
+                                PairSee::Person.new(['Person3']),
+                                PairSee::Person.new(['Person4']),
+                                PairSee::Person.new(['Person5']),
+                                PairSee::Person.new(['Person6']),
+                                PairSee::Person.new(['Person7']),
+                                PairSee::Person.new(['ActiveDev']),
+                                PairSee::Person.new(['InactiveDev'])
+                              ],
                               card_prefix: ['BAZ-'],
                               after_date: after_date,
                               repo_locations: [repo])

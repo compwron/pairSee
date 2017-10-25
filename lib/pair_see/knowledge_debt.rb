@@ -7,28 +7,24 @@ module PairSee
     end
 
     def knowledge_debt
-      # TODO do something here with percentage knowledge per card
-      commits_per_card.map {|card_name, commits|
-        authors_per_commit = commits.map {|log_line|
+      # TODO: do something here with percentage knowledge per card
+      commits_per_card.map do |card_name, commits|
+        authors_per_commit = commits.map do |log_line|
           log_line.all_authors(@people)
-        }
+        end
         authors = authors_per_commit.flatten.uniq
         CardKnowledgeSummary.new(card_name, commits.count, authors)
-      }.select {|cks|
-        cks.has_debt
-      }.sort_by(&:authors_list).map(&:pretty)
+      end.select(&:has_debt).sort_by(&:authors_list).map(&:pretty)
     end
 
     def commits_per_card
       card_to_commits = {}
 
-      @log_lines.each {|ll|
+      @log_lines.each do |ll|
         cn = ll.card_number(@card_prefixes)
-        unless card_to_commits[cn]
-          card_to_commits[cn] = []
-        end
+        card_to_commits[cn] = [] unless card_to_commits[cn]
         card_to_commits[cn] << ll
-      }
+      end
       card_to_commits
     end
   end

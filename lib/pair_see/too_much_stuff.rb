@@ -23,7 +23,7 @@ module PairSee
 
     def pretty_card_data
       card_data(@card_prefixes).map do |card|
-        card.pretty unless card.nil?
+        card&.pretty
       end
     end
 
@@ -40,7 +40,7 @@ module PairSee
     end
 
     def commits_on_card(card_name)
-      @log_lines.select {|line| line.contains_card_name?(card_name)}
+      @log_lines.select { |line| line.contains_card_name?(card_name) }
     end
 
     def card_numbers(card_prefix)
@@ -57,10 +57,10 @@ module PairSee
     end
 
     def pair_commits
-      @dev_pairs.map {|person1, person2|
+      @dev_pairs.map do |person1, person2|
         log_lines_commits_for_pair = @log_lines.commits_for_pair person1, person2
         PairCommitCount.new(log_lines_commits_for_pair.count, person1, person2)
-      }
+      end
     end
 
     def solo_commits
@@ -70,23 +70,22 @@ module PairSee
     end
 
     def all_commits
-      pairs_result = Hash[@dev_pairs.map {|k, v| [names_key(k, v), 0]}]
-      solos_result = Hash[@devs.map {|k| [k.display_name, 0]}]
+      pairs_result = Hash[@dev_pairs.map { |k, v| [names_key(k, v), 0] }]
+      solos_result = Hash[@devs.map { |k| [k.display_name, 0] }]
       result = pairs_result.merge solos_result
 
-      @log_lines.each {|ll|
+      @log_lines.each do |ll|
         result = method_name(ll, result)
-      }
+      end
       result
-          .sort_by {|_, count| count}
-          .reject {|_, count| count == 0}
-          .map {|names, count| "#{names}: #{count}"}
-
+        .sort_by { |_, count| count }
+        .reject { |_, count| count == 0 }
+        .map { |names, count| "#{names}: #{count}" }
     end
 
     def method_name(ll, result)
-      @dev_pairs.each {|d1, d2|
-        if ll.authored_by?(d1, d2) then
+      @dev_pairs.each do |d1, d2|
+        if ll.authored_by?(d1, d2)
           result[names_key(d1, d2)] += 1
           return result
         elsif is_solo_by?(@devs, d1, ll)
@@ -96,27 +95,26 @@ module PairSee
           result[d2.display_name] += 1
           return result
         end
-      }
-      return result
+      end
+      result
     end
 
     def is_solo_by?(devs, person, log_line)
-      no_other_devs_in_commit = (devs - [person]).none? {|dx| log_line.authored_by?(dx)}
+      no_other_devs_in_commit = (devs - [person]).none? { |dx| log_line.authored_by?(dx) }
       log_line.authored_by?(person) && no_other_devs_in_commit
     end
 
     def names_key(k, v)
-      [k, v].sort_by {|a| a.display_name}.map(&:to_s).join(", ")
+      [k, v].sort_by(&:display_name).map(&:to_s).join(', ')
     end
 
     def b(log_line, person1)
-      log_line.authored_by?(person1) && (people - [person1]).none? {|single_person| log_line.authored_by?(single_person)}
+      log_line.authored_by?(person1) && (people - [person1]).none? { |single_person| log_line.authored_by?(single_person) }
     end
 
     def a(log_line, person1, person2)
       log_line.authored_by?(person1, person2)
     end
-
 
     def commits_for_pair(person1, person2)
       @log_lines.commits_for_pair person1, person2
@@ -144,7 +142,7 @@ module PairSee
 
     def least_recent_pair
       devs.select do |person|
-        person.names.any? {|name| @log_lines.last.line.match(name)}
+        person.names.any? { |name| @log_lines.last.line.match(name) }
       end.map(&:display_name).join(', ')
     end
 

@@ -1,10 +1,10 @@
 describe PairSee::LogLine do
-  let(:arnie) {PairSee::Person.new(['Arnie'])}
-  let(:person1) {PairSee::Person.new(['Person1'])}
-  let(:person2) {PairSee::Person.new(['Person2'])}
-  let(:committer2) {PairSee::Person.new(['Committer2'])}
-  let(:committer3) {PairSee::Person.new(['Committer3'])}
-  let(:multi_name_person) {PairSee::Person.new(%w[multi multiname multinameperson])}
+  let(:arnie) { PairSee::Person.new(['Arnie']) }
+  let(:person1) { PairSee::Person.new(['Person1']) }
+  let(:person2) { PairSee::Person.new(['Person2']) }
+  let(:committer2) { PairSee::Person.new(['Committer2']) }
+  let(:committer3) { PairSee::Person.new(['Committer3']) }
+  let(:multi_name_person) { PairSee::Person.new(%w[multi multiname multinameperson]) }
 
   def _new_logline(msg)
     PairSee::LogLine.new(msg)

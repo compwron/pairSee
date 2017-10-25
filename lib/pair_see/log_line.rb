@@ -46,7 +46,7 @@ module PairSee
 
     def by_any?(devs)
       return false if devs.empty?
-      devs.any? {|dev| authored_by?(dev)}
+      devs.any? { |dev| authored_by?(dev) }
     end
 
     def contains_card?(card_prefix)
@@ -62,13 +62,11 @@ module PairSee
     def _get_date(line)
       regex = /(\d{4}-\d{2}-\d{2})/
       matcher = line.match(regex)
-      unless matcher.nil?
-        Date.parse((line.match regex)[1])
-      end
+      Date.parse((line.match regex)[1]) unless matcher.nil?
     end
 
     def _contains_any_of?(names)
-      names.any? {|name| _line_contains_name(name)}
+      names.any? { |name| _line_contains_name(name) }
     end
 
     def _line_contains_name(name)
