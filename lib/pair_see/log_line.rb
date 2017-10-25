@@ -62,8 +62,9 @@ module PairSee
     def _get_date(line)
       regex = /(\d{4}-\d{2}-\d{2})/
       matcher = line.match(regex)
-      part_to_parse = matcher.nil? ? '' : (line.match regex)[1]
-      Date.parse(part_to_parse)
+      unless matcher.nil?
+        Date.parse((line.match regex)[1])
+      end
     end
 
     def _contains_any_of?(names)

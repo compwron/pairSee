@@ -1,9 +1,9 @@
 describe PairSee::CardsPerPerson do
   describe '#cards_per_person' do
-    subject { PairSee::CardsPerPerson.new(log_lines, card_prefix, people).cards_per_person }
     let(:log_lines) { PairSee::LogLines.new([]) }
     let(:people) { [] }
     let(:card_prefix) {}
+    subject { PairSee::CardsPerPerson.new(log_lines, card_prefix, people).cards_per_person }
 
     it 'should see no cards for a person when there are no cards or people' do
       expect(subject).to eq([])
