@@ -78,4 +78,4 @@ DEPENDENCIES
   rubocop (~> 0.49.0)
 
 BUNDLED WITH
-   1.15.0
+   1.16.0.pre.3
