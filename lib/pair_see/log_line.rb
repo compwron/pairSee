@@ -9,27 +9,23 @@ module PairSee
 
     def all_authors(people)
       people.select do |person|
-        contains_any_of?(person.names)
+        _contains_any_of?(person.names)
       end
     end
 
     def authored_by?(*people)
       return false if people.empty?
       people.map do |person|
-        contains_any_of?(person.names)
+        _contains_any_of?(person.names)
       end.all?
     end
 
-    def contains_any_of?(names)
-      names.any? {|name| line_contains_name(name)}
-    end
-
-    def line_contains_name(name)
-      /(^|\s+|\W)#{name}(\s+|$|\W)/i =~ line
-    end
-
-    def contains_card?(card_prefix)
-      line.match(card_prefix)
+    def card_number(card_prefixes)
+      card_prefixes.each do |cp|
+        card_num = card_name([cp])
+        return card_num.gsub(cp, '') if card_num
+      end
+      nil
     end
 
     def contains_card_name?(card_name)
@@ -47,16 +43,13 @@ module PairSee
       nil
     end
 
-    def card_number(card_prefixes)
-      card_prefixes.each do |cp|
-        card_num = card_name([cp])
-        return card_num.gsub(cp, '') if card_num
-      end
-      nil
+    def to_s
+      line
     end
 
-    def merge_commit?
-      line.match('Merge remote-tracking branch') || line.match('Merge branch')
+    def by_any?(devs)
+      return false if devs.empty?
+      devs.any? {|dev| authored_by?(dev)}
     end
 
     def date
@@ -66,13 +59,18 @@ module PairSee
       Date.parse(part_to_parse)
     end
 
-    def by_any?(devs)
-      return false if devs.empty?
-      devs.any? {|dev| authored_by?(dev)}
+    def contains_card?(card_prefix)
+      line.match(card_prefix)
     end
 
-    def to_s
-      line
+    private
+
+    def _contains_any_of?(names)
+      names.any? {|name| _line_contains_name(name)}
+    end
+
+    def _line_contains_name(name)
+      /(^|\s+|\W)#{name}(\s+|$|\W)/i =~ line
     end
   end
 end

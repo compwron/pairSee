@@ -24,7 +24,7 @@ module PairSee
 
       @log_lines.each {|ll|
         cn = ll.card_number(@card_prefixes)
-        if !card_to_commits[cn]
+        unless card_to_commits[cn]
           card_to_commits[cn] = []
         end
         card_to_commits[cn] << ll
