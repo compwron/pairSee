@@ -1,3 +1,11 @@
+0.1.16
+======
+
+* refactoring & tests
+* knowledge debt
+* add sorting option --cards-by-commits    This goes with --cards and sorts by number of commits instead of active card days
+* add view --my-pairs            Most recent dates of pairing for user
+
 0.1.5
 =====
 * adding support for multiple git repositories specified by full path 
