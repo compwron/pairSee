@@ -16,9 +16,7 @@ module PairSee
         CardKnowledgeSummary.new(card_name, commits.count, authors)
       }.select {|cks|
         cks.has_debt
-      }.sort.map {|cks|
-        cks.pretty
-      }
+      }.sort_by(&:authors_list).map(&:pretty)
     end
 
     def commits_per_card

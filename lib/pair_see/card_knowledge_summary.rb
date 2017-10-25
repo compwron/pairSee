@@ -1,7 +1,7 @@
 module PairSee
   class CardKnowledgeSummary
     include Comparable
-    attr_reader :commits_on_card_count
+    attr_reader :commits_on_card_count, :authors
 
     def initialize(card_number, commits_on_card_count, authors)
       @card_number = card_number
@@ -18,8 +18,8 @@ module PairSee
       "#{@card_number} has #{@commits_on_card_count} commits with only #{@authors.count} committer(s) #{pretty_author_names } on the entire card"
     end
 
-    def <=>(other)
-      @commits_on_card_count <=> other.commits_on_card_count
+    def authors_list
+      @authors.sort.join(" ")
     end
   end
 end
