@@ -2,7 +2,6 @@ describe PairSee::TooMuchStuff do
   let(:current_date) { Date.today }
   let(:repo) { 'fake_git' }
   let(:after_date) { '0-1-1' }
-  let(:log_lines) { PairSee::LogLines.new(repo, after_date) }
   let(:g) { Git.init(repo) }
 
   subject do
