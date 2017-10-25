@@ -22,15 +22,16 @@ $ pairsee --cards
 
 ```
 Options:
-  -c, --config=<s>          location of config file, example: ../../config/config.yml (default:
-                            config/config.yml)
-  -a, --after=<s>           Date since which you want to get commits, in yyyy-mm-dd format (default:
-                            0-1-1)
+  -c, --config=<s>          location of config file, example: ../../config/config.yml (default: config/config.yml)
+  -a, --after=<s>           Date since which you want to get commits, in yyyy-mm-dd format (default: 0-1-1)
   -e, --extras              See all commits without the name of any dev in them
   -l, --latest              See dates of most recent commits by pairs
   -r, --recommended         See active devs who have not paired (and therefore should)
   -d, --cards               See cards and number of commits on each
-  -s, --cards-per-person    See cards for each dev
+  -s, --cards-by-commits    This goes with --cards and sorts by number of commits instead of active card days
+  -p, --cards-per-person    See cards for each dev
+  -k, --knowledge-debt      Knowledge debt (cards that only one person worked on)
+  -m, --my-pairs            Most recent dates of pairing for user
   -h, --help                Show this message
 
 ```
@@ -63,35 +64,9 @@ rspec
 rake_commit
 ```
 
-Config file: `config/config.yml`
-contains names and card prefix, a la
-```
-names: Person1 Person2 Person3
-card_prefix: FOO-
-```
-
-So if your commit log looks like
-```
-"Bob/Alice [FOO-1] wrote code"
-"Alice [FOO-1] stuff"
-"Sarah|Alice [FOO-2] code and stuff"
-```
-
-Then your config file will look like:
-```
-names: Bob Alice Sarah
-card_prefix: FOO-
 ```
 
 To use PairSee with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'pair_see'
-```
 
 
 ## Development
