@@ -1,10 +1,11 @@
 module PairSee
   class LogLine
     require 'time'
-    attr_reader :line
+    attr_reader :line, :date, :card_number
 
     def initialize(line)
       @line = line
+      @date = _get_date(line)
     end
 
     def all_authors(people)
@@ -43,27 +44,27 @@ module PairSee
       nil
     end
 
-    def to_s
-      line
-    end
-
     def by_any?(devs)
       return false if devs.empty?
       devs.any? {|dev| authored_by?(dev)}
-    end
-
-    def date
-      regex = /(\d{4}-\d{2}-\d{2})/
-      matcher = line.match(regex)
-      part_to_parse = matcher.nil? ? '' : (line.match regex)[1]
-      Date.parse(part_to_parse)
     end
 
     def contains_card?(card_prefix)
       line.match(card_prefix)
     end
 
+    def to_s
+      line
+    end
+
     private
+
+    def _get_date(line)
+      regex = /(\d{4}-\d{2}-\d{2})/
+      matcher = line.match(regex)
+      part_to_parse = matcher.nil? ? '' : (line.match regex)[1]
+      Date.parse(part_to_parse)
+    end
 
     def _contains_any_of?(names)
       names.any? {|name| _line_contains_name(name)}
