@@ -1,7 +1,7 @@
 module PairSee
   class CardKnowledgeSummary
     include Comparable
-    attr_reader :commits_on_card_count, :authors
+    attr_reader :commits_on_card_count
 
     def initialize(card_number, commits_on_card_count, authors)
       @card_number = card_number
