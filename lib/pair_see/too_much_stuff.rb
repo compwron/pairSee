@@ -27,6 +27,10 @@ module PairSee
       end
     end
 
+    def pretty_card_data_by_commits
+      card_data(@card_prefixes).compact.sort_by.sort_by(&:number_of_commits).reverse.map(&:pretty)
+    end
+
     def card_data(card_prefixes)
       card_prefixes.map do |card_prefix|
         card_numbers(card_prefix).map do |card_name|

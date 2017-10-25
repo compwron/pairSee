@@ -29,6 +29,10 @@ module PairSee
       seer.pretty_card_data
     end
 
+    def pretty_card_data_by_commits
+      seer.pretty_card_data_by_commits
+    end
+
     def cards_per_person
       CardsPerPerson.new(@log_lines, @card_prefix, @names).cards_per_person
     end

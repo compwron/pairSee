@@ -15,6 +15,7 @@ opts = Trollop.options do
   opt :latest, 'See dates of most recent commits by pairs', default: false
   opt :recommended, 'See active devs who have not paired (and therefore should)', default: false
   opt :cards, 'See cards and number of commits on each', default: false
+  opt :cards_by_commits, 'This goes with --cards and sorts by number of commits instead of active card days', default: false
   opt :cards_per_person, 'See cards for each dev', default: false
   opt :knowledge_debt, 'Knowledge debt (cards that only one person worked on)', default: false
   opt :my_pairs, 'Most recent dates of pairing for user', default: false
@@ -42,7 +43,11 @@ def run_command(opts)
   elsif opts[:recommended]
     seer.recommended_pairings
   elsif opts[:cards]
-    seer.pretty_card_data
+    if opts[:cards_by_commits]
+      seer.pretty_card_data_by_commits
+    else
+      seer.pretty_card_data
+    end
   elsif opts[:cards_per_person]
     seer.cards_per_person
   elsif opts[:knowledge_debt]
