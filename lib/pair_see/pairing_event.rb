@@ -3,8 +3,6 @@ module PairSee
     def initialize(current_person, most_recent_commits)
       @current_person = current_person
       @most_recent_commits = most_recent_commits
-
-      # most_recent_commits = {Person => [log_line, Person]}
     end
 
     def pretty
@@ -19,6 +17,7 @@ module PairSee
     end
 
     private
+
     def _pretty_spacing
       [""]
     end
