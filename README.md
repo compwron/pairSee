@@ -64,8 +64,6 @@ rspec
 rake_commit
 ```
 
-```
-
 To use PairSee with SVN, check out SVN codebase with git like: `git svn clone http://svn.example.com/project`
 
 
